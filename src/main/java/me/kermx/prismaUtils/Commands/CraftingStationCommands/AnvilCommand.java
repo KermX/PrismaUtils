@@ -19,7 +19,7 @@ public class AnvilCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.anvil")){
-            player.sendMessage("You do not have permission to use this command! DUMMY");
+            player.sendMessage("You do not have permission to use this command!");
             return true;
         }
 
