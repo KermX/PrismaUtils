@@ -2,3 +2,65 @@ name: PrismaUtils
 version: '1.0-SNAPSHOT'
 main: me.kermx.prismaUtils.PrismaUtils
 api-version: '1.21'
+
+commands:
+  craftingtable:
+    description: Opens a crafting table interface.
+    usage: /craftingtable
+    permission: prismautils.command.craftingtable
+    aliases:
+      - craft
+      - wb
+      - workbench
+  stonecutter:
+    description: Opens a stonecutter interface.
+    usage: /stonecutter
+    permission: prismautils.command.stonecutter
+    aliases:
+      - scut
+  anvil:
+    description: Opens an anvil interface.
+    usage: /anvil
+    permission: prismautils.command.anvil
+    aliases:
+      - anv
+  enchantingtable:
+    description: Opens an enchanting table interface.
+    usage: /enchantingtable
+    permission: prismautils.command.enchantingtable
+    aliases:
+      - etable
+  smithingtable:
+    description: Opens a smithing table interface.
+    usage: /smithingtable
+    permission: prismautils.command.smithingtable
+    aliases:
+      - smith
+  grindstone:
+    description: Opens a grindstone interface.
+    usage: /grindstone
+    permission: prismautils.command.grindstone
+    aliases:
+      - grind
+  loom:
+    description: Opens a loom interface.
+    usage: /loom
+    permission: prismautils.command.loom
+    aliases:
+      - loom
+  cartographytable:
+    description: Opens a cartography table interface.
+    usage: /cartographytable
+    permission: prismautils.command.cartographytable
+  feed:
+    description: Feeds the player.
+    usage: /feed
+    permission: prismautils.command.feed
+  heal:
+    description: Heals the player.
+    usage: /heal
+    permission: prismautils.command.heal
+  near:
+    description: Shows nearby players.
+    usage: /near [radius]
+    permission: prismautils.command.near
