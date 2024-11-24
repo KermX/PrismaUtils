@@ -60,6 +60,10 @@ commands:
     description: Heals the player.
     usage: /heal
     permission: prismautils.command.heal
+  itemname:
+    description: Renames the item in the player's hand.
+    usage: /itemname <name>
+    permission: prismautils.command.itemname
   near:
     description: Shows nearby players.
     usage: /near [radius]

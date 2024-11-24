@@ -3,6 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.FeedCommand;
 import me.kermx.prismaUtils.Commands.OtherCommands.HealCommand;
+import me.kermx.prismaUtils.Commands.OtherCommands.ItemNameCommand;
 import me.kermx.prismaUtils.Commands.OtherCommands.NearCommand;
 import me.kermx.prismaUtils.Handlers.NetherMobZombificationHandler;
 import me.kermx.prismaUtils.Handlers.RemoveDropsHandler;
@@ -34,6 +35,7 @@ public final class PrismaUtils extends JavaPlugin {
 
         getCommand("feed").setExecutor(new FeedCommand());
         getCommand("heal").setExecutor(new HealCommand());
+        getCommand("itemname").setExecutor(new ItemNameCommand());
         getCommand("near").setExecutor(new NearCommand());
     }
 
