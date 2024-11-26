@@ -22,15 +22,13 @@ public class HealCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                if (!player.hasPermission("prismautils.command.heal")) {
-                    player.sendMessage("§cYou don't have permission to use this command!");
-                    return true;
-                }
-                healPlayer(player);
-                player.sendMessage("§aYou have been healed!");
+            Player player = (Player) sender;
+            if (!player.hasPermission("prismautils.command.heal")) {
+                player.sendMessage("§cYou don't have permission to use this command!");
+                return true;
             }
+            healPlayer(player);
+            player.sendMessage("§aYou have been healed!");
             return true;
         }
 

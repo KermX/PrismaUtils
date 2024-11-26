@@ -21,15 +21,13 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                if (!player.hasPermission("prismautils.command.feed")) {
-                    player.sendMessage("§cYou don't have permission to use this command!");
-                    return true;
-                }
-                feedPlayer(player);
-                player.sendMessage("§aYour hunger has been refilled!");
+            Player player = (Player) sender;
+            if (!player.hasPermission("prismautils.command.feed")) {
+                player.sendMessage("§cYou don't have permission to use this command!");
+                return true;
             }
+            feedPlayer(player);
+            player.sendMessage("§aYour hunger has been refilled!");
             return true;
         }
 

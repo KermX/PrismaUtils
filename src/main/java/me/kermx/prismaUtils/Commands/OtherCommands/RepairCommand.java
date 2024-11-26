@@ -47,7 +47,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
     private void repairHand(Player player) {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) {
+        if (itemInHand.getType() == Material.AIR) {
             player.sendMessage("You must be holding an item to use this command!");
             return;
         }

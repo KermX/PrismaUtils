@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -28,7 +29,7 @@ public class CustomDeathMessageHandler implements Listener {
         this.configUtils = configUtils;
     }
 
-@EventHandler
+@EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event){
         Player deceased = event.getEntity();
 
@@ -38,25 +39,19 @@ public class CustomDeathMessageHandler implements Listener {
 
         if (lastDeathTime != null && (currentTime - lastDeathTime) < cooldownPeriod){
             event.deathMessage(null);
-            return;
         } else {
             playerDeathTimes.put(deceased.getUniqueId(), currentTime);
 
             EntityDamageEvent lastDamageEvent = deceased.getLastDamageCause();
             Entity killer = null;
 
-            if (lastDamageEvent instanceof EntityDamageByEntityEvent){
-                EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) lastDamageEvent;
+            if (lastDamageEvent instanceof EntityDamageByEntityEvent damageByEntityEvent){
                 killer = damageByEntityEvent.getDamager();
             }
 
             Component deathMessage = constructDeathMessage(event, deceased, killer);
 
-            if (deathMessage != null){
-                event.deathMessage(deathMessage);
-            } else {
-                event.deathMessage(null);
-            }
+            event.deathMessage(deathMessage);
         }
     }
 
@@ -90,8 +85,7 @@ public class CustomDeathMessageHandler implements Listener {
     private Component handleProjectileKill(Player deceased, Projectile projectile){
         ProjectileSource shooter = projectile.getShooter();
 
-        if (shooter instanceof Player){
-            Player killer = (Player) shooter;
+        if (shooter instanceof Player killer){
 
             String configMessage = configUtils.deathMessageShotByPlayer;
             configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
