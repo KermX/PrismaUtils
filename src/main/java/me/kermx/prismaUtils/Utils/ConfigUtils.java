@@ -12,14 +12,17 @@ public class ConfigUtils {
         this.plugin = plugin;
         this.config = plugin.getConfig();
     }
+    // General Settings
+    public long cooldownDeathMessageSeconds;
 
+    // Death Messages - Players and Entities
     public String deathMessageKilledByPlayer;
     public String deathMessageShotByPlayer;
     public String deathMessageShotByEntity;
     public String deathMessageShot;
     public String deathMessageKilledByEntity;
 
-    // Damage Causes
+    // Death Messages - Damage Causes
     public String deathMessageBlockExplosion; //new
     public String deathMessageCampfire; //new
     public String deathMessageContact;
@@ -51,6 +54,9 @@ public class ConfigUtils {
     public String deathMessageDefault;
 
     public void loadConfig(){
+
+        cooldownDeathMessageSeconds = config.getLong("cooldowns.cooldown_death_message_seconds");
+
         deathMessageKilledByPlayer = config.getString("death_messages.killed_by_player");
         deathMessageShotByPlayer = config.getString("death_messages.shot_by_player");
         deathMessageShotByEntity = config.getString("death_messages.shot_by_entity");

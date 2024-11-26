@@ -15,10 +15,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class CustomDeathMessageHandler implements Listener {
 
 
     private final ConfigUtils configUtils;
+    private final HashMap<UUID, Long> playerDeathTimes = new HashMap<>();
 
     public CustomDeathMessageHandler(ConfigUtils configUtils){
         this.configUtils = configUtils;
@@ -27,20 +31,32 @@ public class CustomDeathMessageHandler implements Listener {
 @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
         Player deceased = event.getEntity();
-        EntityDamageEvent lastDamageEvent = deceased.getLastDamageCause();
-        Entity killer = null;
 
-        if (lastDamageEvent instanceof EntityDamageByEntityEvent){
-            EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) lastDamageEvent;
-            killer = damageByEntityEvent.getDamager();
-        }
+        long currentTime = System.currentTimeMillis();
+        Long lastDeathTime = playerDeathTimes.get(deceased.getUniqueId());
+        long cooldownPeriod = configUtils.cooldownDeathMessageSeconds * 1000;
 
-        Component deathMessage = constructDeathMessage(event, deceased, killer);
-
-        if (deathMessage != null){
-            event.deathMessage(deathMessage);
-        } else {
+        if (lastDeathTime != null && (currentTime - lastDeathTime) < cooldownPeriod){
             event.deathMessage(null);
+            return;
+        } else {
+            playerDeathTimes.put(deceased.getUniqueId(), currentTime);
+
+            EntityDamageEvent lastDamageEvent = deceased.getLastDamageCause();
+            Entity killer = null;
+
+            if (lastDamageEvent instanceof EntityDamageByEntityEvent){
+                EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) lastDamageEvent;
+                killer = damageByEntityEvent.getDamager();
+            }
+
+            Component deathMessage = constructDeathMessage(event, deceased, killer);
+
+            if (deathMessage != null){
+                event.deathMessage(deathMessage);
+            } else {
+                event.deathMessage(null);
+            }
         }
     }
 

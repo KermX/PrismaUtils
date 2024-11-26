@@ -1,3 +1,5 @@
+  cooldowns:
+    death_message_cooldown_seconds: 120
   death_messages:
     killed_by_player: '<white>[<red>💀<white>] <deceased> <gray>was slain by <killer> <gray>using <weapon><gray>.'
     shot_by_player: '<white>[<red>💀<white>] <deceased> <gray>was shot by <killer> <gray>using <weapon><gray>.'
