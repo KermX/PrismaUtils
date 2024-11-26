@@ -1,11 +1,16 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class FlySpeedCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FlySpeedCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -44,5 +49,28 @@ public class FlySpeedCommand implements CommandExecutor {
             player.sendMessage("Invalid speed. Enter a number between 0 and 10 or 'reset'.");
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            String partialArg = args[0].toLowerCase();
+
+            // Suggest "reset" if it matches the partial argument
+            if ("reset".startsWith(partialArg)) {
+                completions.add("reset");
+            }
+
+            // Suggest numbers from 0 to 10 that start with the partial argument
+            for (int i = 0; i <= 10; i++) {
+                String speedStr = String.valueOf(i);
+                if (speedStr.startsWith(partialArg)) {
+                    completions.add(speedStr);
+                }
+            }
+        }
+        return completions;
     }
 }

@@ -21,6 +21,9 @@ import java.util.UUID;
 
 public class CustomDeathMessageHandler implements Listener {
 
+    //MAYBE ADD
+    // death messages say if someone died while getting attacked by another player or entity
+    // randomized death messages
 
     private final ConfigUtils configUtils;
     private final HashMap<UUID, Long> playerDeathTimes = new HashMap<>();

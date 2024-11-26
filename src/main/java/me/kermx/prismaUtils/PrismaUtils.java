@@ -19,6 +19,7 @@ public final class PrismaUtils extends JavaPlugin {
         loadConfigurations();
 
         registerCommands();
+        registerTabCompletions();
         registerEvents();
     }
 
@@ -57,6 +58,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("feed").setTabCompleter(new FeedCommand());
         getCommand("heal").setTabCompleter(new HealCommand());
         getCommand("repair").setTabCompleter(new RepairCommand());
+        getCommand("flyspeed").setTabCompleter(new FlySpeedCommand());
     }
 
     public void registerEvents(){
