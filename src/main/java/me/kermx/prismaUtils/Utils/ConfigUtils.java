@@ -55,7 +55,7 @@ public class ConfigUtils {
 
     public void loadConfig(){
 
-        cooldownDeathMessageSeconds = config.getLong("cooldowns.cooldown_death_message_seconds");
+        cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
 
         deathMessageKilledByPlayer = config.getString("death_messages.killed_by_player");
         deathMessageShotByPlayer = config.getString("death_messages.shot_by_player");
