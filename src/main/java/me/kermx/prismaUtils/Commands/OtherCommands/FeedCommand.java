@@ -4,9 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class FeedCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FeedCommand implements CommandExecutor, TabCompleter {
 
 
     @Override
@@ -64,5 +68,23 @@ public class FeedCommand implements CommandExecutor {
     private void feedPlayer(Player player) {
         player.setFoodLevel(20);
         player.setSaturation(20.0F); // Max saturation
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            String partialArg = args[0].toLowerCase(); // The partially typed argument
+            if ("all".startsWith(partialArg)) {
+                completions.add("all");
+            }
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getName().toLowerCase().startsWith(partialArg)) {
+                    completions.add(player.getName());
+                }
+            }
+        }
+        return completions;
     }
 }

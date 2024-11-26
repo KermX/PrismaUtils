@@ -69,3 +69,17 @@ commands:
     description: Shows nearby players.
     usage: /near [radius]
     permission: prismautils.command.near
+  repair:
+    description: Repairs the item in the player's hand.
+    usage: /repair <hand/all>
+    permission: prismautils.command.repair
+  ping:
+    description: Shows the player's ping.
+    usage: /ping [player]
+    permission: prismautils.command.ping
+  prismautilsreload:
+    description: Reloads PrismaUtils configuration.
+    usage: /prismautilsreload
+    permission: prismautils.command.reload
+    aliases:
+      - pureload
