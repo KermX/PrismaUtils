@@ -47,6 +47,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("itemname").setExecutor(new ItemNameCommand());
         getCommand("near").setExecutor(new NearCommand());
         getCommand("repair").setExecutor(new RepairCommand());
+        getCommand("flyspeed").setExecutor(new FlySpeedCommand());
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("ping").setExecutor(new PingCommand());
