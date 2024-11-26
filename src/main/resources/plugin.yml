@@ -2,6 +2,7 @@ name: PrismaUtils
 version: '1.0-SNAPSHOT'
 main: me.kermx.prismaUtils.PrismaUtils
 api-version: '1.21'
+depend: [PlaceholderAPI]
 
 commands:
   craftingtable:

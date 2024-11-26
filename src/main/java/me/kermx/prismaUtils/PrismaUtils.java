@@ -5,15 +5,22 @@ import me.kermx.prismaUtils.Commands.OtherCommands.FeedCommand;
 import me.kermx.prismaUtils.Commands.OtherCommands.HealCommand;
 import me.kermx.prismaUtils.Commands.OtherCommands.ItemNameCommand;
 import me.kermx.prismaUtils.Commands.OtherCommands.NearCommand;
+import me.kermx.prismaUtils.Handlers.CustomDeathMessageHandler;
 import me.kermx.prismaUtils.Handlers.NetherMobZombificationHandler;
 import me.kermx.prismaUtils.Handlers.RemoveDropsHandler;
 import me.kermx.prismaUtils.Handlers.SlimeSplitHandler;
+import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
+    private ConfigUtils configUtils;
+
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        loadConfigurations();
+
         registerCommands();
         registerEvents();
     }
@@ -21,6 +28,11 @@ public final class PrismaUtils extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    private void loadConfigurations(){
+        configUtils = new ConfigUtils(this);
+        configUtils.loadConfig();
     }
 
     public void registerCommands(){
@@ -43,5 +55,6 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RemoveDropsHandler(), this);
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
+        getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(configUtils), this);
     }
 }
