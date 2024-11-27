@@ -47,6 +47,8 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("heal").setExecutor(new HealCommand());
         getCommand("itemname").setExecutor(new ItemNameCommand());
         getCommand("near").setExecutor(new NearCommand());
+        getCommand("ptime").setExecutor(new pTimeCommand());
+        getCommand("pweather").setExecutor(new pWeatherCommand());
         getCommand("repair").setExecutor(new RepairCommand());
         getCommand("flyspeed").setExecutor(new FlySpeedCommand());
 
@@ -59,6 +61,8 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("heal").setTabCompleter(new HealCommand());
         getCommand("repair").setTabCompleter(new RepairCommand());
         getCommand("flyspeed").setTabCompleter(new FlySpeedCommand());
+        getCommand("ptime").setTabCompleter(new pTimeCommand());
+        getCommand("pweather").setTabCompleter(new pWeatherCommand());
     }
 
     public void registerEvents(){

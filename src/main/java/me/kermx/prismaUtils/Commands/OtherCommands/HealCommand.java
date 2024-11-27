@@ -17,18 +17,18 @@ public class HealCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) && args.length == 0) {
-            sender.sendMessage("§cYou must specify a player name or use \"all\" when using this command from the console!");
+            sender.sendMessage("You must specify a player name or use \"all\" when using this command from the console!");
             return true;
         }
 
         if (args.length == 0) {
             Player player = (Player) sender;
             if (!player.hasPermission("prismautils.command.heal")) {
-                player.sendMessage("§cYou don't have permission to use this command!");
+                player.sendMessage("You don't have permission to use this command!");
                 return true;
             }
             healPlayer(player);
-            player.sendMessage("§aYou have been healed!");
+            player.sendMessage("You have been healed!");
             return true;
         }
 
@@ -36,31 +36,31 @@ public class HealCommand implements CommandExecutor, TabCompleter {
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")) {
                 if (!sender.hasPermission("prismautils.command.heal.all")) {
-                    sender.sendMessage("§cYou don't have permission to heal all players!");
+                    sender.sendMessage("You don't have permission to heal all players!");
                     return true;
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     healPlayer(player);
                 }
-                sender.sendMessage("§aAll players have been healed!");
+                sender.sendMessage("All players have been healed!");
             } else {
                 Player target = Bukkit.getPlayerExact(targetName);
                 if (target == null) {
-                    sender.sendMessage("§cPlayer \"" + targetName + "\" is not online!");
+                    sender.sendMessage("Player \"" + targetName + "\" is not online!");
                     return true;
                 }
                 if (!sender.hasPermission("prismautils.command.heal.others")) {
-                    sender.sendMessage("§cYou don't have permission to heal other players!");
+                    sender.sendMessage("You don't have permission to heal other players!");
                     return true;
                 }
                 healPlayer(target);
-                sender.sendMessage("§aYou have healed " + target.getName());
-                target.sendMessage("§aYou have been healed by " + sender.getName() + "!");
+                sender.sendMessage("You have healed " + target.getName());
+                target.sendMessage("You have been healed by " + sender.getName() + "!");
             }
             return true;
         }
 
-        sender.sendMessage("§cUsage: /heal [player|all]");
+        sender.sendMessage("Usage: /heal [player|all]");
         return true;
     }
 

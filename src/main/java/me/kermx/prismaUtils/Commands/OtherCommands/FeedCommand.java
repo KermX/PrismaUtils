@@ -16,18 +16,18 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) && args.length == 0) {
-            sender.sendMessage("§cYou must specify a player name or use \"all\" when using this command from the console!");
+            sender.sendMessage("You must specify a player name or use \"all\" when using this command from the console!");
             return true;
         }
 
         if (args.length == 0) {
             Player player = (Player) sender;
             if (!player.hasPermission("prismautils.command.feed")) {
-                player.sendMessage("§cYou don't have permission to use this command!");
+                player.sendMessage("You don't have permission to use this command!");
                 return true;
             }
             feedPlayer(player);
-            player.sendMessage("§aYour hunger has been refilled!");
+            player.sendMessage("Your hunger has been refilled!");
             return true;
         }
 
@@ -35,31 +35,31 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")) {
                 if (!sender.hasPermission("prismautils.command.feed.all")) {
-                    sender.sendMessage("§cYou don't have permission to feed all players!");
+                    sender.sendMessage("You don't have permission to feed all players!");
                     return true;
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     feedPlayer(player);
                 }
-                sender.sendMessage("§aAll players' hunger has been refilled!");
+                sender.sendMessage("All players' hunger has been refilled!");
             } else {
                 Player target = Bukkit.getPlayerExact(targetName);
                 if (target == null) {
-                    sender.sendMessage("§cPlayer \"" + targetName + "\" is not online!");
+                    sender.sendMessage("Player \"" + targetName + "\" is not online!");
                     return true;
                 }
                 if (!sender.hasPermission("prismautils.command.feed.others")) {
-                    sender.sendMessage("§cYou don't have permission to feed other players!");
+                    sender.sendMessage("You don't have permission to feed other players!");
                     return true;
                 }
                 feedPlayer(target);
-                sender.sendMessage("§aYou have refilled " + target.getName() + "'s hunger!");
-                target.sendMessage("§aYour hunger has been refilled by " + sender.getName() + "!");
+                sender.sendMessage("You have refilled " + target.getName() + "'s hunger!");
+                target.sendMessage("Your hunger has been refilled by " + sender.getName() + "!");
             }
             return true;
         }
 
-        sender.sendMessage("§cUsage: /feed [player|all]");
+        sender.sendMessage("Usage: /feed [player|all]");
         return true;
     }
 

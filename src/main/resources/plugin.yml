@@ -69,6 +69,14 @@ commands:
     description: Shows nearby players.
     usage: /near [radius]
     permission: prismautils.command.near
+  ptime:
+    description: Sets the player's time.
+    usage: /ptime <day/night>
+    permission: prismautils.command.ptime
+  pweather:
+    description: Sets the player's weather.
+    usage: /pweather <clear/rain/thunder>
+    permission: prismautils.command.pweather
   repair:
     description: Repairs the item in the player's hand.
     usage: /repair <hand/all>
