@@ -23,10 +23,6 @@ import java.util.UUID;
 
 public class CustomDeathMessageHandler implements Listener {
 
-    //ADD FEATURES
-    // death messages say if someone died while getting attacked by another player or entity
-    // randomized death messages, basically each config option is a list of messages and one is chosen at random
-
     private final ConfigUtils configUtils;
     private final HashMap<UUID, Long> playerDeathTimes = new HashMap<>();
     private final HashMap<UUID, AttackRecord> playerAttackers = new HashMap<>();
@@ -45,16 +41,16 @@ public class CustomDeathMessageHandler implements Listener {
             this.time = time;
         }
     }
-@EventHandler(priority = EventPriority.MONITOR)
-public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-    if (event.getEntity() instanceof Player player){
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
+        if (event.getEntity() instanceof Player player){
         long currentTime = System.currentTimeMillis();
         playerAttackers.put(player.getUniqueId(), new AttackRecord(event.getDamager(), currentTime));
+        }
     }
-}
 
 
-@EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event){
         Player deceased = event.getEntity();
 
