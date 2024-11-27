@@ -3,6 +3,8 @@ package me.kermx.prismaUtils.Utils;
 import me.kermx.prismaUtils.PrismaUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.List;
+
 public class ConfigUtils {
 
     private final PrismaUtils plugin;
@@ -16,81 +18,85 @@ public class ConfigUtils {
     public long cooldownDeathMessageSeconds;
 
     // Death Messages - Players and Entities
-    public String deathMessageKilledByPlayer;
-    public String deathMessageShotByPlayer;
-    public String deathMessageShotByEntity;
-    public String deathMessageShot;
-    public String deathMessageKilledByEntity;
+    public List<String> deathMessageKilledByPlayer;
+    public List<String> deathMessageShotByPlayer;
+    public List<String> deathMessageShotByEntity;
+    public List<String> deathMessageShot;
+    public List<String> deathMessageKilledByEntity;
+
+    public List<String> deathMessageSuffix;
 
     // Death Messages - Damage Causes
-    public String deathMessageBlockExplosion; //new
-    public String deathMessageCampfire; //new
-    public String deathMessageContact;
-    public String deathMessageCramming; //new
-    public String deathMessageCustom; //new
-    public String deathMessageDragonBreath; //new
-    public String deathMessageDrowning;
-    public String deathMessageEntityExplosion;
-    public String deathMessageFall;
-    public String deathMessageFallingBlock; //new
-    public String deathMessageFire;
-    public String deathMessageFireTick;
-    public String deathMessageFlyIntoWall; //new
-    public String deathMessageFreeze; //new
-    public String deathMessageHotFloor; //new
-    public String deathMessageKill; //new
-    public String deathMessageLava;
-    public String deathMessageLightning;
-    public String deathMessageMagic;
-    public String deathMessagePoison; //new
-    public String deathMessageSonicBoom; //new
-    public String deathMessageStarvation;
-    public String deathMessageSuffocation;
-    public String deathMessageSuicide;
-    public String deathMessageThorns;
-    public String deathMessageVoid;
-    public String deathMessageWither;
-    public String deathMessageWorldBorder; //new
-    public String deathMessageDefault;
+    public List<String> deathMessageBlockExplosion; //new
+    public List<String> deathMessageCampfire; //new
+    public List<String> deathMessageContact;
+    public List<String> deathMessageCramming; //new
+    public List<String> deathMessageCustom; //new
+    public List<String> deathMessageDragonBreath; //new
+    public List<String> deathMessageDrowning;
+    public List<String> deathMessageEntityExplosion;
+    public List<String> deathMessageFall;
+    public List<String> deathMessageFallingBlock; //new
+    public List<String> deathMessageFire;
+    public List<String> deathMessageFireTick;
+    public List<String> deathMessageFlyIntoWall; //new
+    public List<String> deathMessageFreeze; //new
+    public List<String> deathMessageHotFloor; //new
+    public List<String> deathMessageKill; //new
+    public List<String> deathMessageLava;
+    public List<String> deathMessageLightning;
+    public List<String> deathMessageMagic;
+    public List<String> deathMessagePoison; //new
+    public List<String> deathMessageSonicBoom; //new
+    public List<String> deathMessageStarvation;
+    public List<String> deathMessageSuffocation;
+    public List<String> deathMessageSuicide;
+    public List<String> deathMessageThorns;
+    public List<String> deathMessageVoid;
+    public List<String> deathMessageWither;
+    public List<String> deathMessageWorldBorder; //new
+    public List<String> deathMessageDefault;
 
     public void loadConfig(){
 
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
 
-        deathMessageKilledByPlayer = config.getString("death_messages.killed_by_player");
-        deathMessageShotByPlayer = config.getString("death_messages.shot_by_player");
-        deathMessageShotByEntity = config.getString("death_messages.shot_by_entity");
-        deathMessageShot = config.getString("death_messages.shot");
-        deathMessageKilledByEntity = config.getString("death_messages.killed_by_entity");
+        deathMessageSuffix = config.getStringList("death_messages.suffix");
 
-        deathMessageBlockExplosion = config.getString("death_messages.block_explosion");
-        deathMessageCampfire = config.getString("death_messages.campfire");
-        deathMessageContact = config.getString("death_messages.contact");
-        deathMessageCramming = config.getString("death_messages.cramming");
-        deathMessageCustom = config.getString("death_messages.custom");
-        deathMessageDragonBreath = config.getString("death_messages.dragon_breath");
-        deathMessageDrowning = config.getString("death_messages.drowning");
-        deathMessageEntityExplosion = config.getString("death_messages.entity_explosion");
-        deathMessageFall = config.getString("death_messages.fall");
-        deathMessageFallingBlock = config.getString("death_messages.falling_block");
-        deathMessageFire = config.getString("death_messages.fire");
-        deathMessageFireTick = config.getString("death_messages.fire_tick");
-        deathMessageFlyIntoWall = config.getString("death_messages.fly_into_wall");
-        deathMessageFreeze = config.getString("death_messages.freeze");
-        deathMessageHotFloor = config.getString("death_messages.hot_floor");
-        deathMessageKill = config.getString("death_messages.kill");
-        deathMessageLava = config.getString("death_messages.lava");
-        deathMessageLightning = config.getString("death_messages.lightning");
-        deathMessageMagic = config.getString("death_messages.magic");
-        deathMessagePoison = config.getString("death_messages.poison");
-        deathMessageSonicBoom = config.getString("death_messages.sonic_boom");
-        deathMessageStarvation = config.getString("death_messages.starvation");
-        deathMessageSuffocation = config.getString("death_messages.suffocation");
-        deathMessageSuicide = config.getString("death_messages.suicide");
-        deathMessageThorns = config.getString("death_messages.thorns");
-        deathMessageVoid = config.getString("death_messages.void");
-        deathMessageWither = config.getString("death_messages.wither");
-        deathMessageWorldBorder = config.getString("death_messages.world_border");
-        deathMessageDefault = config.getString("death_messages.default");
+        deathMessageKilledByPlayer = config.getStringList("death_messages.killed_by_player");
+        deathMessageShotByPlayer = config.getStringList("death_messages.shot_by_player");
+        deathMessageShotByEntity = config.getStringList("death_messages.shot_by_entity");
+        deathMessageShot = config.getStringList("death_messages.shot");
+        deathMessageKilledByEntity = config.getStringList("death_messages.killed_by_entity");
+
+        deathMessageBlockExplosion = config.getStringList("death_messages.block_explosion");
+        deathMessageCampfire = config.getStringList("death_messages.campfire");
+        deathMessageContact = config.getStringList("death_messages.contact");
+        deathMessageCramming = config.getStringList("death_messages.cramming");
+        deathMessageCustom = config.getStringList("death_messages.custom");
+        deathMessageDragonBreath = config.getStringList("death_messages.dragon_breath");
+        deathMessageDrowning = config.getStringList("death_messages.drowning");
+        deathMessageEntityExplosion = config.getStringList("death_messages.entity_explosion");
+        deathMessageFall = config.getStringList("death_messages.fall");
+        deathMessageFallingBlock = config.getStringList("death_messages.falling_block");
+        deathMessageFire = config.getStringList("death_messages.fire");
+        deathMessageFireTick = config.getStringList("death_messages.fire_tick");
+        deathMessageFlyIntoWall = config.getStringList("death_messages.fly_into_wall");
+        deathMessageFreeze = config.getStringList("death_messages.freeze");
+        deathMessageHotFloor = config.getStringList("death_messages.hot_floor");
+        deathMessageKill = config.getStringList("death_messages.kill");
+        deathMessageLava = config.getStringList("death_messages.lava");
+        deathMessageLightning = config.getStringList("death_messages.lightning");
+        deathMessageMagic = config.getStringList("death_messages.magic");
+        deathMessagePoison = config.getStringList("death_messages.poison");
+        deathMessageSonicBoom = config.getStringList("death_messages.sonic_boom");
+        deathMessageStarvation = config.getStringList("death_messages.starvation");
+        deathMessageSuffocation = config.getStringList("death_messages.suffocation");
+        deathMessageSuicide = config.getStringList("death_messages.suicide");
+        deathMessageThorns = config.getStringList("death_messages.thorns");
+        deathMessageVoid = config.getStringList("death_messages.void");
+        deathMessageWither = config.getStringList("death_messages.wither");
+        deathMessageWorldBorder = config.getStringList("death_messages.world_border");
+        deathMessageDefault = config.getStringList("death_messages.default");
     }
 }

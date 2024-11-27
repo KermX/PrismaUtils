@@ -1,38 +1,75 @@
 cooldowns:
   death_message_cooldown_seconds: 30
 death_messages:
-  killed_by_player: '<white>[<red>💀<white>] <deceased> <gray>was slain by <killer> <gray>using <weapon><gray>.'
-  shot_by_player: '<white>[<red>💀<white>] <deceased> <gray>was shot by <killer> <gray>using <weapon><gray>.'
-  shot_by_entity: '<white>[<red>💀<white>] <deceased> <gray>was shot by <killer><gray>.'
-  shot: '<white>[<red>💀<white>] <deceased> <gray>was shot.'
-  killed_by_entity: '<white>[<red>💀<white>] <deceased> <gray>was slain by <killer><gray>.'
+  suffix:
+    - ' <gray>while fleeing '
 
-  block_explosion: '<white>[<red>💀<white>] <deceased> <gray>exploded.'
-  campfire: '<white>[<red>💀<white>] <deceased> <gray>was roasted in a campfire.'
-  contact: '<white>[<red>💀<white>] <deceased> <gray>was pricked to death.'
-  cramming: '<white>[<red>💀<white>] <deceased> <gray>was squished.'
-  custom: '<white>[<red>💀<white>] <deceased> <gray>died.'
-  dragon_breath: '<white>[<red>💀<white>] <deceased> <gray>inhaled dragon breath.'
-  drowning: '<white>[<red>💀<white>] <deceased> <gray>drowned.'
-  entity_explosion: '<white>[<red>💀<white>] <deceased> <gray>was blown up.'
-  fall: '<white>[<red>💀<white>] <deceased> <gray>fell from a high place.'
-  falling_block: '<white>[<red>💀<white>] <deceased> <gray>was squashed by a falling block.'
-  fire: '<white>[<red>💀<white>] <deceased> <gray>went up in flames.'
-  fire_tick: '<white>[<red>💀<white>] <deceased> <gray>burned to death.'
-  fly_into_wall: '<white>[<red>💀<white>] <deceased> <gray>experienced kinetic energy.'
-  freeze: '<white>[<red>💀<white>] <deceased> <gray>froze to death.'
-  hot_floor: '<white>[<red>💀<white>] <deceased> <gray>discovered the floor was lava.'
-  kill: '<white>[<red>💀<white>] <deceased> <gray>was killed.'
-  lava: '<white>[<red>💀<white>] <deceased> <gray>tried to swim in lava.'
-  lightning: '<white>[<red>💀<white>] <deceased> <gray>was struck by lightning.'
-  magic: '<white>[<red>💀<white>] <deceased> <gray>was killed by magic.'
-  poison: '<white>[<red>💀<white>] <deceased> <gray>was poisoned to death.'
-  sonic_boom: '<white>[<red>💀<white>] <deceased> <gray>was sonically boomed.'
-  starvation: '<white>[<red>💀<white>] <deceased> <gray>starved to death.'
-  suffocation: '<white>[<red>💀<white>] <deceased> <gray>suffocated in a wall.'
-  suicide: '<white>[<red>💀<white>] <deceased> <gray>died.'
-  thorns: '<white>[<red>💀<white>] <deceased> <gray>was killed by thorns.'
-  void: '<white>[<red>💀<white>] <deceased> <gray>fell out of the world.'
-  wither: '<white>[<red>💀<white>] <deceased> <gray>withered away.'
-  world_border: '<white>[<red>💀<white>] <deceased> <gray>left the confines of this world.'
-  default: '<white>[<red>💀<white>] <deceased> <gray>died.'
+  killed_by_player:
+    - '<white>[<red>💀<white>] <deceased> <gray>was slain by <killer> <gray>using <weapon><gray>.'
+  shot_by_player:
+    - '<white>[<red>💀<white>] <deceased> <gray>was shot by <killer> <gray>using <weapon><gray>.'
+  shot_by_entity:
+    - '<white>[<red>💀<white>] <deceased> <gray>was shot by <killer><gray>.'
+  shot:
+    - '<white>[<red>💀<white>] <deceased> <gray>was shot.'
+  killed_by_entity:
+    - '<white>[<red>💀<white>] <deceased> <gray>was slain by <killer><gray>.'
+
+  block_explosion:
+    - '<white>[<red>💀<white>] <deceased> <gray>exploded<suffix>.'
+  campfire:
+    - '<white>[<red>💀<white>] <deceased> <gray>was roasted in a campfire<suffix>.'
+  contact:
+    - '<white>[<red>💀<white>] <deceased> <gray>was pricked to death<suffix>.'
+  cramming:
+    - '<white>[<red>💀<white>] <deceased> <gray>was squished<suffix>.'
+  custom:
+    - '<white>[<red>💀<white>] <deceased> <gray>died<suffix>.'
+  dragon_breath:
+    - '<white>[<red>💀<white>] <deceased> <gray>inhaled dragon breath<suffix>.'
+  drowning:
+    - '<white>[<red>💀<white>] <deceased> <gray>drowned<suffix>.'
+  entity_explosion:
+    - '<white>[<red>💀<white>] <deceased> <gray>was blown up<suffix>.'
+  fall:
+    - '<white>[<red>💀<white>] <deceased> <gray>fell from a high place<suffix>.'
+  falling_block:
+    - '<white>[<red>💀<white>] <deceased> <gray>was squashed by a falling block<suffix>.'
+  fire:
+    - '<white>[<red>💀<white>] <deceased> <gray>went up in flames<suffix>.'
+  fire_tick:
+    - '<white>[<red>💀<white>] <deceased> <gray>burned to death<suffix>.'
+  fly_into_wall:
+    - '<white>[<red>💀<white>] <deceased> <gray>experienced kinetic energy<suffix>.'
+  freeze:
+    - '<white>[<red>💀<white>] <deceased> <gray>froze to death<suffix>.'
+  hot_floor:
+    - '<white>[<red>💀<white>] <deceased> <gray>discovered the floor was lava<suffix>.'
+  kill:
+    - '<white>[<red>💀<white>] <deceased> <gray>was killed<suffix>.'
+  lava:
+    - '<white>[<red>💀<white>] <deceased> <gray>tried to swim in lava<suffix>.'
+  lightning:
+    - '<white>[<red>💀<white>] <deceased> <gray>was struck by lightning<suffix>.'
+  magic:
+    - '<white>[<red>💀<white>] <deceased> <gray>was killed by magic<suffix>.'
+  poison:
+    - '<white>[<red>💀<white>] <deceased> <gray>was poisoned to death<suffix>.'
+  sonic_boom:
+    - '<white>[<red>💀<white>] <deceased> <gray>was sonically boomed<suffix>.'
+  starvation:
+    - '<white>[<red>💀<white>] <deceased> <gray>starved to death<suffix>.'
+  suffocation:
+    - '<white>[<red>💀<white>] <deceased> <gray>suffocated in a wall<suffix>.'
+  suicide:
+    - '<white>[<red>💀<white>] <deceased> <gray>died<suffix>.'
+  thorns:
+    - '<white>[<red>💀<white>] <deceased> <gray>was killed by thorns<suffix>.'
+  void:
+    - '<white>[<red>💀<white>] <deceased> <gray>fell out of the world<suffix>.'
+  wither:
+    - '<white>[<red>💀<white>] <deceased> <gray>withered away<suffix>.'
+  world_border:
+    - '<white>[<red>💀<white>] <deceased> <gray>left the confines of this world<suffix>.'
+  default:
+    - '<white>[<red>💀<white>] <deceased> <gray>died<suffix>.'
