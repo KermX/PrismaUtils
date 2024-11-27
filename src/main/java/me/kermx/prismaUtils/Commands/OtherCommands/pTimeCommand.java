@@ -1,5 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,22 +24,24 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.ptime")){
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")){
             player.resetPlayerTime();
-            player.sendMessage("Player time reset to default.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeResetMessage));
             return true;
         }
 
         try {
             long time = parseTime(args[0]);
             player.setPlayerTime(time, false);
-            player.sendMessage("Player time set to " + time + ".");
+
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeSetMessage,
+                    Placeholder.component("time", Component.text(time))));
         } catch (IllegalArgumentException e){
-            player.sendMessage("Invalid time. Enter a number or 'reset'.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeInvalidTimeMessage));
         }
         return true;
     }

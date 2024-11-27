@@ -1,5 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +25,7 @@ public class FlySpeedCommand implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
         if (!player.hasPermission("prismautils.command.flyspeed")) {
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
@@ -32,21 +36,27 @@ public class FlySpeedCommand implements CommandExecutor, TabCompleter {
 
         if (args[0].equalsIgnoreCase("reset")) {
             player.setFlySpeed(0.1f);
-            player.sendMessage("Fly speed reset to default.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().flyspeedResetMessage));
             return true;
         }
 
         try {
             float speed = Float.parseFloat(args[0]);
             if (speed < 0 || speed > 10){
-                player.sendMessage("Invalid speed! Must be between 0 and 10.");
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().flyspeedInvalidSpeedMessage));
+                return true;
             }
             float adjustedSpeed = speed / 10.0f;
             player.setFlySpeed(adjustedSpeed);
-            player.sendMessage("Fly speed set to " + speed + ".");
+
+            Component speedComponent = Component.text(speed);
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().flyspeedSetMessage,
+                    Placeholder.component("speed", speedComponent)));
+
+            //player.sendMessage("Fly speed set to " + speed + ".");
 
         } catch (NumberFormatException e) {
-            player.sendMessage("Invalid speed. Enter a number between 0 and 10 or 'reset'.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().flyspeedInvalidSpeedMessage));
         }
         return true;
     }

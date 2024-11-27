@@ -1,5 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +21,7 @@ public class NearCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.near")){
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
@@ -28,22 +32,27 @@ public class NearCommand implements CommandExecutor {
             try {
                 radius = Double.parseDouble(args[0]);
             } catch (NumberFormatException e){
-                player.sendMessage("Invalid radius!");
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearInvalidRadiusMessage));
                 return true;
             }
         }
 
-        player.sendMessage("Players withing " + radius + " blocks:");
+        Component radiusComponent = Component.text(radius);
+        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNearPlayersMessage, Placeholder.component("radius", radiusComponent)));
         boolean found = false;
         for (Player onlinePlayer : player.getWorld().getPlayers()){
             if (onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != player){
-                player.sendMessage(onlinePlayer.getName() + " is " + onlinePlayer.getLocation().distance(location) + " blocks away.");
+
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNearbyPlayersMessage,
+                        Placeholder.component("player", onlinePlayer.displayName()),
+                        Placeholder.component("distance", Component.text(onlinePlayer.getLocation().distance(location)))));
                 found = true;
             }
         }
 
         if (!found){
-            player.sendMessage("No players found within " + radius + " blocks.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNoPlayersMessage,
+                    Placeholder.component("radius", radiusComponent)));
         }
         return true;
     }

@@ -1,5 +1,7 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +27,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.repair")) {
-            player.sendMessage("You don't have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
@@ -48,7 +50,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if (itemInHand.getType() == Material.AIR) {
-            player.sendMessage("You must be holding an item to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().repairNoItemInHandMessage));
             return;
         }
 
@@ -56,9 +58,9 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         if (meta instanceof Damageable damageable){
             damageable.setDamage(0);
             itemInHand.setItemMeta(meta);
-            player.sendMessage("Item in hand has been repaired!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().repairRepairedMessage));
         } else {
-            player.sendMessage("This item cannot be repaired!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().repairInvalidItemMessage));
         }
     }
 
@@ -74,7 +76,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
                 item.setItemMeta(meta);
             }
         }
-        player.sendMessage("All items in your inventory have been repaired!");
+        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().repairAllRepairedMessage));
     }
 
     @Override

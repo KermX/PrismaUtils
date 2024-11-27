@@ -1,5 +1,7 @@
 package me.kermx.prismaUtils.Commands.CraftingStationCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +20,7 @@ public class CraftingTableCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.craftingtable")){
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 

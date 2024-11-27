@@ -1,7 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,21 +19,21 @@ public class ItemNameCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0){
-            sender.sendMessage("Usage: /itemname <name>");
-            return true;
-        }
-
         Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.itemname")){
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
+            return true;
+        }
+
+        if (args.length == 0){
+            player.sendMessage("Usage: /itemname <name>");
             return true;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR){
-            player.sendMessage("You must be holding an item to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().itemNameInvalidItemMessage));
             return true;
         }
 
@@ -39,7 +41,10 @@ public class ItemNameCommand implements CommandExecutor {
         Component displayName = MiniMessage.miniMessage().deserialize(newName);
 
         item.editMeta(meta -> meta.displayName(displayName));
-        player.sendMessage("Item name set to: " + newName);
+
+        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().itemNameMessage,
+                Placeholder.component("name", displayName)));
+
         return true;
     }
 }

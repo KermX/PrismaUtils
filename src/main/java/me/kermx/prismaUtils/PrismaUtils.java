@@ -29,8 +29,8 @@ public final class PrismaUtils extends JavaPlugin {
     }
 
     private void loadConfigurations(){
-        configUtils = new ConfigUtils(this);
-        configUtils.loadConfig();
+        ConfigUtils.initialize(this);
+        ConfigUtils.getInstance().loadConfig();
     }
 
     public void registerCommands(){
@@ -69,6 +69,6 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RemoveDropsHandler(), this);
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
-        getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(configUtils), this);
+        getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
     }
 }

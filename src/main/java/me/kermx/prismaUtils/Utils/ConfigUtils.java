@@ -7,13 +7,29 @@ import java.util.List;
 
 public class ConfigUtils {
 
+    private static ConfigUtils instance;
+
     private final PrismaUtils plugin;
     private final FileConfiguration config;
 
-    public ConfigUtils(PrismaUtils plugin){
+    private ConfigUtils(PrismaUtils plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
     }
+
+    public static void initialize(PrismaUtils plugin) {
+        if (instance == null) {
+            instance = new ConfigUtils(plugin);
+        }
+    }
+
+    public static ConfigUtils getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("ConfigUtils is not initialized!");
+        }
+        return instance;
+    }
+
     // Cooldowns
     public long cooldownDeathMessageSeconds;
 
@@ -25,8 +41,8 @@ public class ConfigUtils {
     // Feed Messages
     public String feedMessage;
     public String feedAllMessage;
-    public String feedOthersMessage;
-    public String feedFedByOthersMessage;
+    public String feedOtherMessage;
+    public String feedFedByOtherMessage;
 
     // Fly Speed Messages
     public String flyspeedResetMessage;
@@ -36,8 +52,8 @@ public class ConfigUtils {
     // Heal Messages
     public String healMessage;
     public String healAllMessage;
-    public String healOthersMessage;
-    public String healHealedByOthersMessage;
+    public String healOtherMessage;
+    public String healHealedByOtherMessage;
 
     // Item Name Messages
     public String itemNameMessage;
@@ -45,11 +61,13 @@ public class ConfigUtils {
 
     // Near Messages
     public String nearNoPlayersMessage;
-    public String nearPlayerListMessage;
+    public String nearNearPlayersMessage;
+    public String nearNearbyPlayersMessage;
     public String nearInvalidRadiusMessage;
 
     // ping Messages
     public String pingMessage;
+    public String pingOtherMessage;
 
     // pTime Messages
     public String pTimeResetMessage;
@@ -112,54 +130,56 @@ public class ConfigUtils {
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
 
         // General Messages
-        noPermissionMessage;
-        mustSpecifyPlayerMessage;
-        playerNotFoundMessage;
+        noPermissionMessage = config.getString("general_messages.no_permission");
+        mustSpecifyPlayerMessage = config.getString("general_messages.must_specify_player");
+        playerNotFoundMessage = config.getString("general_messages.player_not_found");
 
         // Feed Messages
-        feedMessage;
-        feedAllMessage;
-        feedOthersMessage;
-        feedFedByOthersMessage;
+        feedMessage = config.getString("feed_messages.feed_message");
+        feedAllMessage = config.getString("feed_messages.feed_all_message");
+        feedOtherMessage = config.getString("feed_messages.feed_other_message");
+        feedFedByOtherMessage = config.getString("feed_messages.feed_fed_by_other_message");
 
         // Fly Speed Messages
-        flyspeedResetMessage;
-        flyspeedSetMessage;
-        flyspeedInvalidSpeedMessage;
+        flyspeedResetMessage = config.getString("flyspeed_messages.flyspeed_reset_message");
+        flyspeedSetMessage = config.getString("flyspeed_messages.flyspeed_set_message");
+        flyspeedInvalidSpeedMessage = config.getString("flyspeed_messages.flyspeed_invalid_speed_message");
 
         // Heal Messages
-        healMessage;
-        healAllMessage;
-        healOthersMessage;
-        healHealedByOthersMessage;
+        healMessage = config.getString("heal_messages.heal_message");
+        healAllMessage = config.getString("heal_messages.heal_all_message");
+        healOtherMessage = config.getString("heal_messages.heal_other_message");
+        healHealedByOtherMessage = config.getString("heal_messages.heal_healed_by_other_message");
 
         // Item Name Messages
-        itemNameMessage;
-        itemNameInvalidItemMessage;
+        itemNameMessage = config.getString("itemname_messages.itemname_message");
+        itemNameInvalidItemMessage = config.getString("itemname_messages.itemname_no_item_message");
 
         // Near Messages
-        nearNoPlayersMessage;
-        nearPlayerListMessage;
-        nearInvalidRadiusMessage;
+        nearNoPlayersMessage = config.getString("near_messages.near_no_players_message");
+        nearNearPlayersMessage = config.getString("near_messages.near_near_players_message");
+        nearNearbyPlayersMessage = config.getString("near_messages.near_nearby_players_message");
+        nearInvalidRadiusMessage = config.getString("near_messages.near_invalid_radius_message");
 
         // ping Messages
-        pingMessage;
+        pingMessage = config.getString("ping_messages.ping_message");
+        pingOtherMessage = config.getString("ping_messages.ping_other_message");
 
         // pTime Messages
-        pTimeResetMessage;
-        pTimeSetMessage;
-        pTimeInvalidTimeMessage;
+        pTimeResetMessage = config.getString("ptime_messages.ptime_reset_message");
+        pTimeSetMessage = config.getString("ptime_messages.ptime_set_message");
+        pTimeInvalidTimeMessage = config.getString("ptime_messages.ptime_invalid_time_message");
 
         // pWeather Messages
-        pWeatherResetMessage;
-        pWeatherSetMessage;
-        pWeatherInvalidWeatherMessage;
+        pWeatherResetMessage = config.getString("pweather_messages.pweather_reset_message");
+        pWeatherSetMessage = config.getString("pweather_messages.pweather_set_message");
+        pWeatherInvalidWeatherMessage = config.getString("pweather_messages.pweather_invalid_weather_message");
 
         // Repair Messages
-        repairNoItemInHandMessage;
-        repairInvalidItemMessage;
-        repairRepairedMessage;
-        repairAllRepairedMessage;
+        repairNoItemInHandMessage = config.getString("repair_messages.repair_no_item_message");
+        repairInvalidItemMessage = config.getString("repair_messages.repair_invalid_item_message");
+        repairRepairedMessage = config.getString("repair_messages.repair_message");
+        repairAllRepairedMessage = config.getString("repair_messages.repair_all_message");
 
         deathMessageSuffix = config.getStringList("death_messages.suffix");
 

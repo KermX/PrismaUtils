@@ -1,5 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.WeatherType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,27 +26,29 @@ public class pWeatherCommand implements CommandExecutor, TabCompleter {
 
 
         if (!player.hasPermission("prismautils.command.pweather")){
-            player.sendMessage("You do not have permission to use this command!");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")){
             player.resetPlayerWeather();
-            player.sendMessage("Player weather reset to default.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherResetMessage));
             return true;
         }
 
         switch (args[0].toLowerCase()){
             case "clear":
                 player.setPlayerWeather(WeatherType.CLEAR);
-                player.sendMessage("Player weather set to clear.");
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherSetMessage,
+                        Placeholder.component("weather", Component.text("clear"))));
                 break;
             case "rain":
                 player.setPlayerWeather(WeatherType.DOWNFALL);
-                player.sendMessage("Player weather set to rain.");
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherSetMessage,
+                        Placeholder.component("weather", Component.text("rain"))));
                 break;
             default:
-                player.sendMessage("Invalid weather type. Use 'clear', 'rain'");
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherInvalidWeatherMessage));
                 break;
         }
         return true;

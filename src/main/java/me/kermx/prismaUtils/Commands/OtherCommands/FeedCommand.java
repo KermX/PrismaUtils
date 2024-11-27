@@ -1,5 +1,8 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,14 +23,15 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+
+        Player playerSender = (Player) sender;
         if (args.length == 0) {
-            Player player = (Player) sender;
-            if (!player.hasPermission("prismautils.command.feed")) {
-                player.sendMessage("You don't have permission to use this command!");
+            if (!playerSender.hasPermission("prismautils.command.feed")) {
+                playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
                 return true;
             }
-            feedPlayer(player);
-            player.sendMessage("Your hunger has been refilled!");
+            feedPlayer(playerSender);
+            playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedMessage));
             return true;
         }
 
@@ -35,13 +39,13 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")) {
                 if (!sender.hasPermission("prismautils.command.feed.all")) {
-                    sender.sendMessage("You don't have permission to feed all players!");
+                    playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
                     return true;
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     feedPlayer(player);
                 }
-                sender.sendMessage("All players' hunger has been refilled!");
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedAllMessage));
             } else {
                 Player target = Bukkit.getPlayerExact(targetName);
                 if (target == null) {
@@ -49,12 +53,17 @@ public class FeedCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 if (!sender.hasPermission("prismautils.command.feed.others")) {
-                    sender.sendMessage("You don't have permission to feed other players!");
+                    playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
                     return true;
                 }
                 feedPlayer(target);
-                sender.sendMessage("You have refilled " + target.getName() + "'s hunger!");
-                target.sendMessage("Your hunger has been refilled by " + sender.getName() + "!");
+
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedOtherMessage,
+                        Placeholder.component("target", target.displayName())));
+                target.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedFedByOtherMessage,
+                        Placeholder.component("source", sender.name())));
+//                sender.sendMessage("You have refilled " + target.getName() + "'s hunger!");
+//                target.sendMessage("Your hunger has been refilled by " + sender.getName() + "!");
             }
             return true;
         }

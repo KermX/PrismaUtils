@@ -29,11 +29,13 @@ itemname_messages:
 
 near_messages:
   near_no_players_message: '<red>No players found within <radius> blocks!'
-  near_players_message: '<green>Players within <radius> blocks: <players>'
+  near_near_players_message: '<green>Players within <radius> blocks:'
+  near_nearby_players_message: '<green><player> is <distance> blocks away.'
   near_invalid_radius_message: '<red>Invalid radius! Must be a number!'
 
 ping_messages:
   ping_message: '<green>Your ping is <ping>ms!'
+  ping_other_message: '<green><target>''s ping is <ping>ms!'
 
 ptime_messages:
   ptime_reset_message: '<green>Your time has been reset to default!'
