@@ -14,8 +14,58 @@ public class ConfigUtils {
         this.plugin = plugin;
         this.config = plugin.getConfig();
     }
-    // General Settings
+    // Cooldowns
     public long cooldownDeathMessageSeconds;
+
+    // General Messages
+    public String noPermissionMessage;
+    public String mustSpecifyPlayerMessage;
+    public String playerNotFoundMessage;
+
+    // Feed Messages
+    public String feedMessage;
+    public String feedAllMessage;
+    public String feedOthersMessage;
+    public String feedFedByOthersMessage;
+
+    // Fly Speed Messages
+    public String flyspeedResetMessage;
+    public String flyspeedSetMessage;
+    public String flyspeedInvalidSpeedMessage;
+
+    // Heal Messages
+    public String healMessage;
+    public String healAllMessage;
+    public String healOthersMessage;
+    public String healHealedByOthersMessage;
+
+    // Item Name Messages
+    public String itemNameMessage;
+    public String itemNameInvalidItemMessage;
+
+    // Near Messages
+    public String nearNoPlayersMessage;
+    public String nearPlayerListMessage;
+    public String nearInvalidRadiusMessage;
+
+    // ping Messages
+    public String pingMessage;
+
+    // pTime Messages
+    public String pTimeResetMessage;
+    public String pTimeSetMessage;
+    public String pTimeInvalidTimeMessage;
+
+    // pWeather Messages
+    public String pWeatherResetMessage;
+    public String pWeatherSetMessage;
+    public String pWeatherInvalidWeatherMessage;
+
+    // Repair Messages
+    public String repairNoItemInHandMessage;
+    public String repairInvalidItemMessage;
+    public String repairRepairedMessage;
+    public String repairAllRepairedMessage;
 
     // Death Messages - Players and Entities
     public List<String> deathMessageKilledByPlayer;
@@ -60,6 +110,56 @@ public class ConfigUtils {
     public void loadConfig(){
 
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
+
+        // General Messages
+        noPermissionMessage;
+        mustSpecifyPlayerMessage;
+        playerNotFoundMessage;
+
+        // Feed Messages
+        feedMessage;
+        feedAllMessage;
+        feedOthersMessage;
+        feedFedByOthersMessage;
+
+        // Fly Speed Messages
+        flyspeedResetMessage;
+        flyspeedSetMessage;
+        flyspeedInvalidSpeedMessage;
+
+        // Heal Messages
+        healMessage;
+        healAllMessage;
+        healOthersMessage;
+        healHealedByOthersMessage;
+
+        // Item Name Messages
+        itemNameMessage;
+        itemNameInvalidItemMessage;
+
+        // Near Messages
+        nearNoPlayersMessage;
+        nearPlayerListMessage;
+        nearInvalidRadiusMessage;
+
+        // ping Messages
+        pingMessage;
+
+        // pTime Messages
+        pTimeResetMessage;
+        pTimeSetMessage;
+        pTimeInvalidTimeMessage;
+
+        // pWeather Messages
+        pWeatherResetMessage;
+        pWeatherSetMessage;
+        pWeatherInvalidWeatherMessage;
+
+        // Repair Messages
+        repairNoItemInHandMessage;
+        repairInvalidItemMessage;
+        repairRepairedMessage;
+        repairAllRepairedMessage;
 
         deathMessageSuffix = config.getStringList("death_messages.suffix");
 
