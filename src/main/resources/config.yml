@@ -1,5 +1,56 @@
 cooldowns:
   death_message_cooldown_seconds: 30
+
+general_messages:
+  no_permission: '<red>You do not have permission to do that!'
+  must_specify_player: '<red>You must specify a player!'
+  player_not_found: '<red>Player not found!'
+
+feed_messages:
+  feed_message: '<green>Your hunger has been refilled!'
+  feed_all_message: '<green>Everyone''s hunger has been refilled!'
+  feed_other_message: '<green>You have refilled <target>''s hunger!'
+  feed_fed_by_other_message: '<green>Your hunger has been refilled by <source>!'
+
+flyspeed_messages:
+  flyspeed_reset: '<green>Your fly speed has been reset to default!'
+  flyspeed_invalid_speed: '<red>Invalid speed! Must be between 0.1 and 10!'
+  flyspeed_set: '<green>Your fly speed has been set to <speed>!'
+
+heal_messages:
+  heal_message: '<green>You have been healed!'
+  heal_all_message: '<green>Everyone has been healed!'
+  heal_other_message: '<green>You have healed <target>!'
+  heal_heal_by_other_message: '<green>You were healed by <source>!'
+
+itemname_messages:
+  itemname_no_item: '<red>You must be holding an item to rename it!'
+  itemname_message: '<green>Your item has been renamed to <name>!'
+
+near_messages:
+  near_no_players: '<red>No players found within <radius> blocks!'
+  near_players: '<green>Players within <radius> blocks: <players>'
+  near_invalid_radius: '<red>Invalid radius! Must be a number!'
+
+ping_messages:
+  ping_message: '<green>Your ping is <ping>ms!'
+
+ptime_messages:
+  ptime_reset: '<green>Your time has been reset to default!'
+  ptime_set: '<green> Your time has been set to <time>!'
+  ptime_invalid_time: '<red>Invalid time!'
+
+pweather_messages:
+  pweather_reset: '<green>Your weather has been reset to default!'
+  pweather_set: '<green>Your weather has been set to <weather>!'
+  pweather_invalid_weather: '<red>Invalid weather!'
+
+repair_messages:
+  repair_no_item: '<red>You must be holding an item to repair it!'
+  repair_invalid_item: '<red>Invalid item!'
+  repair_message: '<green>Your item has been repaired!'
+  repair_all_message: '<green>All of your items have been repaired!'
+
 death_messages:
   suffix:
     - ' <gray>while fleeing '
