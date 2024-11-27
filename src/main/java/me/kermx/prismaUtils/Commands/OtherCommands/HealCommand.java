@@ -49,7 +49,7 @@ public class HealCommand implements CommandExecutor, TabCompleter {
             } else {
                 Player target = Bukkit.getPlayerExact(targetName);
                 if (target == null) {
-                    sender.sendMessage("Player \"" + targetName + "\" is not online!");
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().playerNotFoundMessage));
                     return true;
                 }
                 if (!sender.hasPermission("prismautils.command.heal.others")) {
@@ -61,10 +61,7 @@ public class HealCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().healOtherMessage,
                         Placeholder.component("target", target.displayName())));
                 target.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().healHealedByOtherMessage,
-                        Placeholder.component("source", sender.name())));
-
-//                sender.sendMessage("You have healed " + target.getName());
-//                target.sendMessage("You have been healed by " + sender.getName() + "!");
+                        Placeholder.component("source", sender.name())));;
             }
             return true;
         }
