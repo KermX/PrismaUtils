@@ -51,6 +51,8 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("pweather").setExecutor(new pWeatherCommand());
         getCommand("repair").setExecutor(new RepairCommand());
         getCommand("flyspeed").setExecutor(new FlySpeedCommand());
+        getCommand("top").setExecutor(new TopCommand());
+        getCommand("bottom").setExecutor(new BottomCommand());
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("ping").setExecutor(new PingCommand());

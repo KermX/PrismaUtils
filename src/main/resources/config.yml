@@ -53,6 +53,13 @@ repair_messages:
   repair_message: '<green>Your item has been repaired!'
   repair_all_message: '<green>All of your items have been repaired!'
 
+top_messages:
+  top_message: '<green>Teleported to the top!'
+
+bottom_messages:
+  bottom_message: '<green>Teleported to the bottom!'
+  bottom_message_invalid_block: '<red>No block found below you!'
+
 death_messages:
   suffix:
     - ' <gray>while fleeing '

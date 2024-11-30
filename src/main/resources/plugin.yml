@@ -85,6 +85,14 @@ commands:
     description: Sets the player's fly speed.
     usage: /flyspeed <speed>
     permission: prismautils.command.flyspeed
+  top:
+    description: Teleports the player to the top.
+    usage: /top
+    permission: prismautils.command.top
+  bottom:
+    description: Teleports the player to the bottom.
+    usage: /bottom
+    permission: prismautils.command.bottom
   ping:
     description: Shows the player's ping.
     usage: /ping [player]

@@ -85,6 +85,11 @@ public class ConfigUtils {
     public String repairRepairedMessage;
     public String repairAllRepairedMessage;
 
+    // Top Bottom Messages
+    public String topMessage;
+    public String bottomMessage;
+    public String bottomMessageInvalidBlock;
+
     // Death Messages - Players and Entities
     public List<String> deathMessageKilledByPlayer;
     public List<String> deathMessageShotByPlayer;
@@ -181,6 +186,12 @@ public class ConfigUtils {
         repairRepairedMessage = config.getString("repair_messages.repair_message");
         repairAllRepairedMessage = config.getString("repair_messages.repair_all_message");
 
+        // Top Bottom Messages
+        topMessage = config.getString("top_messages.top_message");
+        bottomMessage = config.getString("bottom_messages.bottom_message");
+        bottomMessageInvalidBlock = config.getString("bottom_messages.bottom_message_invalid_block");
+
+        // Death Messages
         deathMessageSuffix = config.getStringList("death_messages.suffix");
 
         deathMessageKilledByPlayer = config.getStringList("death_messages.killed_by_player");
