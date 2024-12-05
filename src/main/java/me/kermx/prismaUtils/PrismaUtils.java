@@ -2,10 +2,7 @@ package me.kermx.prismaUtils;
 
 import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
-import me.kermx.prismaUtils.Handlers.CustomDeathMessageHandler;
-import me.kermx.prismaUtils.Handlers.NetherMobZombificationHandler;
-import me.kermx.prismaUtils.Handlers.RemoveDropsHandler;
-import me.kermx.prismaUtils.Handlers.SlimeSplitHandler;
+import me.kermx.prismaUtils.Handlers.*;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +18,7 @@ public final class PrismaUtils extends JavaPlugin {
         registerCommands();
         registerTabCompletions();
         registerEvents();
+        startTasks();
     }
 
     @Override
@@ -72,5 +70,9 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
+    }
+
+    public void startTasks(){
+        new AfkTitlesHandler().runTaskTimer(this, 0, 40);
     }
 }

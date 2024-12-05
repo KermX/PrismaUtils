@@ -60,6 +60,15 @@ bottom_messages:
   bottom_message: '<green>Teleported to the bottom!'
   bottom_message_invalid_block: '<red>No block found below you!'
 
+afk_title_feature:
+  afk_placeholder: '%xantiafk_status%'
+  afk_titles:
+    - '<red>You are AFK'
+    - '<red>COME BACK!'
+  afk_subtitles:
+    - '<gray>The quick brown fox jumps over the lazy dog'
+    - '<gray>Look at this dude, standing there, all AFK'
+
 death_messages:
   suffix:
     - ' <gray>while fleeing '
@@ -93,6 +102,7 @@ death_messages:
     - '<white>[<red>💀<white>] <deceased> <gray>was blown up<suffix>.'
   fall:
     - '<white>[<red>💀<white>] <deceased> <gray>fell from a high place<suffix>.'
+    - '<white>[<red>💀<white>] <deceased> <gray>couldn''t fly<suffix>.'
   falling_block:
     - '<white>[<red>💀<white>] <deceased> <gray>was squashed by a falling block<suffix>.'
   fire:

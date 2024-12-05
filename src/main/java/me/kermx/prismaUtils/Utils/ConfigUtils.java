@@ -90,6 +90,11 @@ public class ConfigUtils {
     public String bottomMessage;
     public String bottomMessageInvalidBlock;
 
+    // AFK Title Messages
+    public String afkPlaceholder;
+    public List<String> afkTitles;
+    public List<String> afkSubtitles;
+
     // Death Messages - Players and Entities
     public List<String> deathMessageKilledByPlayer;
     public List<String> deathMessageShotByPlayer;
@@ -190,6 +195,11 @@ public class ConfigUtils {
         topMessage = config.getString("top_messages.top_message");
         bottomMessage = config.getString("bottom_messages.bottom_message");
         bottomMessageInvalidBlock = config.getString("bottom_messages.bottom_message_invalid_block");
+
+        // AFK Title Messages
+        afkPlaceholder = config.getString("afk_title_feature.afk_placeholder");
+        afkTitles = config.getStringList("afk_title_feature.afk_titles");
+        afkSubtitles = config.getStringList("afk_title_feature.afk_subtitles");
 
         // Death Messages
         deathMessageSuffix = config.getStringList("death_messages.suffix");
