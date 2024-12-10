@@ -51,6 +51,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("flyspeed").setExecutor(new FlySpeedCommand());
         getCommand("top").setExecutor(new TopCommand());
         getCommand("bottom").setExecutor(new BottomCommand());
+        getCommand("god").setExecutor(new GodCommand());
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("ping").setExecutor(new PingCommand());
@@ -70,6 +71,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
+        getServer().getPluginManager().registerEvents(new GodCommand(), this);
     }
 
     public void startTasks(){
