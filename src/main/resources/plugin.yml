@@ -61,6 +61,10 @@ commands:
     description: Heals the player.
     usage: /heal
     permission: prismautils.command.heal
+  god:
+    description: Toggles god mode.
+    usage: /god
+    permission: prismautils.command.god
   itemname:
     description: Renames the item in the player's hand.
     usage: /itemname <name>

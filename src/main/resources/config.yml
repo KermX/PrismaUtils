@@ -60,6 +60,10 @@ bottom_messages:
   bottom_message: '<green>Teleported to the bottom!'
   bottom_message_invalid_block: '<red>No block found below you!'
 
+god_messages:
+  god_enabled_message: '<green>God mode enabled!'
+  god_disabled_message: '<red>God mode disabled!'
+
 afk_title_feature:
   afk_placeholder: '%xantiafk_status%'
   afk_titles:

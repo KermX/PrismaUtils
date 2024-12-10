@@ -90,6 +90,10 @@ public class ConfigUtils {
     public String bottomMessage;
     public String bottomMessageInvalidBlock;
 
+    // God Messages
+    public String godEnabledMessage;
+    public String godDisabledMessage;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -195,6 +199,10 @@ public class ConfigUtils {
         topMessage = config.getString("top_messages.top_message");
         bottomMessage = config.getString("bottom_messages.bottom_message");
         bottomMessageInvalidBlock = config.getString("bottom_messages.bottom_message_invalid_block");
+
+        // God Messages
+        godEnabledMessage = config.getString("god_messages.god_enabled_message");
+        godDisabledMessage = config.getString("god_messages.god_disabled_message");
 
         // AFK Title Messages
         afkPlaceholder = config.getString("afk_title_feature.afk_placeholder");
