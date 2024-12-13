@@ -101,6 +101,10 @@ commands:
     description: Shows the player's ping.
     usage: /ping [player]
     permission: prismautils.command.ping
+  setmodeldata:
+    description: Sets the model data of the item in the player's hand.
+    usage: /setmodeldata <modeldata>
+    permission: prismautils.command.setmodeldata
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

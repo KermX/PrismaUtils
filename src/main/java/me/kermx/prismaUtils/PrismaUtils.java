@@ -54,6 +54,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("god").setExecutor(new GodCommand());
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
+        getCommand("setmodeldata").setExecutor(new SetModelDataCommand());
         getCommand("ping").setExecutor(new PingCommand());
     }
 
@@ -72,6 +73,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
         getServer().getPluginManager().registerEvents(new GodCommand(), this);
+        getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
     }
 
     public void startTasks(){

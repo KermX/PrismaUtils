@@ -1,3 +1,7 @@
+health_scale:
+  enabled: true
+  value: 20
+
 cooldowns:
   death_message_cooldown_seconds: 30
 

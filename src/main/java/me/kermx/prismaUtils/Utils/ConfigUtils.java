@@ -30,6 +30,10 @@ public class ConfigUtils {
         return instance;
     }
 
+    // Health Scale
+    public boolean healthScaleEnabled;
+    public double healthScaleValue;
+
     // Cooldowns
     public long cooldownDeathMessageSeconds;
 
@@ -141,6 +145,11 @@ public class ConfigUtils {
 
     public void loadConfig(){
 
+        // Health Scale
+        healthScaleEnabled = config.getBoolean("health_scale.enabled");
+        healthScaleValue = config.getDouble("health_scale.value");
+
+        //Cooldowns
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
 
         // General Messages
