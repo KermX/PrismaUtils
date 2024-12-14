@@ -82,7 +82,7 @@ public final class PrismaUtils extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MiniMessagePlaceholderExpansion().register();
         } else {
-            getLogger().warning("PlaceholderAPI not found! Placeholder expansion will not work!");
+            getLogger().warning("Placeholder API doesn't exist! HELP!!!");
         }
     }
 
