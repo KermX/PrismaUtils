@@ -3,6 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
 import me.kermx.prismaUtils.Handlers.*;
+import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +16,7 @@ public final class PrismaUtils extends JavaPlugin {
         saveDefaultConfig();
         loadConfigurations();
 
+        registerPlaceholders();
         registerCommands();
         registerTabCompletions();
         registerEvents();
@@ -74,6 +76,14 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
         getServer().getPluginManager().registerEvents(new GodCommand(), this);
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
+    }
+
+    public void registerPlaceholders(){
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new MiniMessagePlaceholderExpansion().register();
+        } else {
+            getLogger().warning("PlaceholderAPI not found! Placeholder expansion will not work!");
+        }
     }
 
     public void startTasks(){
