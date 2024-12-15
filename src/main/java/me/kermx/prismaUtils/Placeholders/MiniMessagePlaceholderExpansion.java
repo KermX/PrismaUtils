@@ -49,7 +49,9 @@ public class MiniMessagePlaceholderExpansion extends PlaceholderExpansion implem
             params = params.substring(8);
         }
 
-        String result = two != null && one instanceof Player ? PlaceholderAPI.setRelationalPlaceholders((Player) one, two, "%" + params + "%") : PlaceholderAPI.setPlaceholders(one, "%" + params + "%");
+        String result = two != null && one instanceof Player
+                ? PlaceholderAPI.setRelationalPlaceholders((Player) one, two, "%" + params + "%")
+                : PlaceholderAPI.setPlaceholders(one, "%" + params + "%");
         if (result.equals("&r") || result.equals("§r")) return "<reset>";
         Component component = serializer.deserialize(result);
         return MiniMessage.miniMessage().serialize(component);
