@@ -56,5 +56,4 @@ public class MiniMessagePlaceholderExpansion extends PlaceholderExpansion implem
         Component component = serializer.deserialize(result);
         return MiniMessage.miniMessage().serialize(component);
     }
-
 }

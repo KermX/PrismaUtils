@@ -76,6 +76,8 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
         getServer().getPluginManager().registerEvents(new GodCommand(), this);
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
+        getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
+        getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
     }
 
     public void registerPlaceholders(){

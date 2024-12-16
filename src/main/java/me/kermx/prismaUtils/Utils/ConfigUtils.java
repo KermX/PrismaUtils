@@ -30,6 +30,19 @@ public class ConfigUtils {
         return instance;
     }
 
+    // First Join Spawn
+    public boolean firstJoinSpawnEnabled;
+    public String firstJoinSpawnWorld;
+    public double firstJoinSpawnX;
+    public double firstJoinSpawnY;
+    public double firstJoinSpawnZ;
+    public float firstJoinSpawnYaw;
+    public float firstJoinSpawnPitch;
+
+    // First Join Commands
+    public boolean firstJoinCommandsEnabled;
+    public List<String> firstJoinCommands;
+
     // Health Scale
     public boolean healthScaleEnabled;
     public double healthScaleValue;
@@ -144,6 +157,19 @@ public class ConfigUtils {
     public List<String> deathMessageDefault;
 
     public void loadConfig(){
+
+        // First Join Spawn
+        firstJoinSpawnEnabled = config.getBoolean("first_join_spawn.enabled");
+        firstJoinSpawnWorld = config.getString("first_join_spawn.world");
+        firstJoinSpawnX = config.getDouble("first_join_spawn.x");
+        firstJoinSpawnY = config.getDouble("first_join_spawn.y");
+        firstJoinSpawnZ = config.getDouble("first_join_spawn.z");
+        firstJoinSpawnYaw = (float) config.getDouble("first_join_spawn.yaw");
+        firstJoinSpawnPitch = (float) config.getDouble("first_join_spawn.pitch");
+
+        // First Join Commands
+        firstJoinCommandsEnabled = config.getBoolean("first_join_commands.enabled");
+        firstJoinCommands = config.getStringList("first_join_commands.commands");
 
         // Health Scale
         healthScaleEnabled = config.getBoolean("health_scale.enabled");
