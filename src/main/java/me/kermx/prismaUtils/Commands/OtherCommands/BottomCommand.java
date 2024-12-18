@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 
 public class BottomCommand implements CommandExecutor {
 
+    //Command kinda broken, teleports to bottom of the world instead of safe block
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
