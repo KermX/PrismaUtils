@@ -56,37 +56,29 @@ public class UnixLocalTimeExpansion extends PlaceholderExpansion {
         Instant instant = Instant.ofEpochSecond(epochSeconds);
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, playerZone);
 
-        switch (formatType.toLowerCase()) {
-            case "relative":
-                return formatRelative(zonedDateTime, ZonedDateTime.now(playerZone));
-            case "time":
-                return formatTimeOnly(zonedDateTime);
-            case "datetime":
-                return formatDateTime(zonedDateTime);
-            case "weekdaydatetime":
-                return formatWeekdayDateTime(zonedDateTime);
-            default:
-                return null;
-        }
+        return switch (formatType.toLowerCase()) {
+            case "relative" -> formatRelative(zonedDateTime, ZonedDateTime.now(playerZone));
+            case "time" -> formatTimeOnly(zonedDateTime);
+            case "datetime" -> formatDateTime(zonedDateTime);
+            case "weekdaydatetime" -> formatWeekdayDateTime(zonedDateTime);
+            default -> null;
+        };
     }
 
     private ZoneId getPlayerTimeZone(OfflinePlayer offlinePlayer) {
-        // If we have a cached timezone, use it
         ZoneId cached = timezoneCache.get(offlinePlayer.getUniqueId());
         if (cached != null) {
             return cached;
         }
 
-        // If player is not online, we can't lookup their IP. Return a default.
+        // catch possible failures
         if (!offlinePlayer.isOnline()) {
             return ZoneId.of("America/New_York");
         }
-
         Player player = offlinePlayer.getPlayer();
         if (player == null) {
             return ZoneId.of("America/New_York");
         }
-
         InetSocketAddress address = player.getAddress();
         if (address == null) {
             return ZoneId.of("America/New_York");
@@ -101,7 +93,6 @@ public class UnixLocalTimeExpansion extends PlaceholderExpansion {
             timezoneCache.put(player.getUniqueId(), zone);
             return zone;
         } catch (IOException e) {
-            // On error, fallback
             return ZoneId.of("America/New_York");
         }
     }

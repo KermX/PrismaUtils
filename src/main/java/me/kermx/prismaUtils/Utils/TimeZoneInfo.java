@@ -51,17 +51,13 @@ public class TimeZoneInfo {
         return data != null;
     }
 
-    /**
-     * Attempts to return a ZoneId based on the "timezone" key returned by the API.
-     * If the data is invalid or the API is down, returns null.
-     */
     public ZoneId getZoneId() {
         if (data == null) {
             return null;
         }
 
         String tzString = getData("timezone");
-        // If API down or invalid identifier, just return null
+        // If API down or invalid identifier return null
         if ("API Down".equals(tzString) || "invalid identifier".equals(tzString)) {
             return null;
         }
@@ -69,7 +65,7 @@ public class TimeZoneInfo {
         try {
             return ZoneId.of(tzString);
         } catch (Exception e) {
-            // If the timezone string provided can't be parsed, return null
+            // If the timezone string can't be parsed return null
             return null;
         }
     }
