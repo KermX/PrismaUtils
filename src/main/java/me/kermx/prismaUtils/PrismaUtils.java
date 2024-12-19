@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
 import me.kermx.prismaUtils.Handlers.*;
 import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
+import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -83,6 +84,7 @@ public final class PrismaUtils extends JavaPlugin {
     public void registerPlaceholders(){
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MiniMessagePlaceholderExpansion().register();
+            new UnixLocalTimeExpansion().register();
         } else {
             getLogger().warning("Placeholder API doesn't exist! HELP!!!");
         }
