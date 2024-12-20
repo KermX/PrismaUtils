@@ -105,6 +105,18 @@ commands:
     description: Sets the model data of the item in the player's hand.
     usage: /setmodeldata <modeldata>
     permission: prismautils.command.setmodeldata
+  blockinfo:
+    description: Shows information about the block the player is looking at.
+    usage: /blockinfo
+    permission: prismautils.command.blockinfo
+  entityinfo:
+    description: Shows information about the entity the player is looking at.
+    usage: /entityinfo
+    permission: prismautils.command.entityinfo
+  iteminfo:
+    description: Shows information about the item in the player's hand.
+    usage: /iteminfo
+    permission: prismautils.command.iteminfo
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.Commands.OtherCommands;
+package me.kermx.prismaUtils.Commands.AdminCommands;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.Utils.ConfigUtils;

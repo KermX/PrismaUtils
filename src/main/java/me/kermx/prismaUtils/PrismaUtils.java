@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils;
 
+import me.kermx.prismaUtils.Commands.AdminCommands.*;
 import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
 import me.kermx.prismaUtils.Handlers.*;
@@ -7,6 +8,7 @@ import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class PrismaUtils extends JavaPlugin {
 
@@ -58,6 +60,9 @@ public final class PrismaUtils extends JavaPlugin {
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("setmodeldata").setExecutor(new SetModelDataCommand());
+        getCommand("blockinfo").setExecutor(new BlockInfoCommand());
+        getCommand("entityinfo").setExecutor( new EntityInfoCommand());
+        getCommand("iteminfo").setExecutor(new ItemInfoCommand());
         getCommand("ping").setExecutor(new PingCommand());
     }
 

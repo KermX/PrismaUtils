@@ -47,10 +47,6 @@ public class TimeZoneInfo {
         return data.containsKey(key) ? data.get(key).toString() : "invalid identifier";
     }
 
-    public boolean isValid() {
-        return data != null;
-    }
-
     public ZoneId getZoneId() {
         if (data == null) {
             return null;
