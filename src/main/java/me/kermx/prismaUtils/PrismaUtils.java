@@ -8,11 +8,12 @@ import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public final class PrismaUtils extends JavaPlugin {
 
     private ConfigUtils configUtils;
+
+    GodCommand godCommand = new GodCommand();
 
     @Override
     public void onEnable() {
@@ -56,7 +57,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("flyspeed").setExecutor(new FlySpeedCommand());
         getCommand("top").setExecutor(new TopCommand());
         getCommand("bottom").setExecutor(new BottomCommand());
-        getCommand("god").setExecutor(new GodCommand());
+        getCommand("god").setExecutor(godCommand);
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("setmodeldata").setExecutor(new SetModelDataCommand());
@@ -80,7 +81,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
-        getServer().getPluginManager().registerEvents(new GodCommand(), this);
+        getServer().getPluginManager().registerEvents(godCommand, this);
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
         getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
