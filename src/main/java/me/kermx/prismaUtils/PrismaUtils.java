@@ -78,6 +78,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     public void registerEvents(){
         getServer().getPluginManager().registerEvents(new RemoveDropsHandler(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
