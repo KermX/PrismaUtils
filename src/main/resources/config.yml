@@ -18,6 +18,7 @@ health_scale:
   value: 20
 
 spawner_tweaks:
+  ##must restart to toggle this feature
   disable_spawner_mob_item_drops: true
 
 cooldowns:

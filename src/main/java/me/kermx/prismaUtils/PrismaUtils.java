@@ -78,7 +78,6 @@ public final class PrismaUtils extends JavaPlugin {
 
     public void registerEvents(){
         getServer().getPluginManager().registerEvents(new RemoveDropsHandler(), this);
-        getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
@@ -86,6 +85,9 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
         getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
+        if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
+            getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
+        }
     }
 
     public void registerPlaceholders(){
