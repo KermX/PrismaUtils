@@ -16,8 +16,8 @@ import org.bukkit.plugin.Plugin;
 public class SpawnerMobItemDropsHandler implements Listener {
 
     private final Plugin plugin;
-    private NamespacedKey fromSpawnerKey;
-    private NamespacedKey damagedByPlayerKey;
+    private final NamespacedKey fromSpawnerKey;
+    private final NamespacedKey damagedByPlayerKey;
 
     public SpawnerMobItemDropsHandler(Plugin plugin) {
         this.plugin = plugin;
@@ -26,44 +26,46 @@ public class SpawnerMobItemDropsHandler implements Listener {
     }
 
     @EventHandler
-    public void onCreatureSpawn(CreatureSpawnEvent event){
-        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER){
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER) {
             LivingEntity entity = event.getEntity();
-            PersistentDataContainer data = entity.getPersistentDataContainer();
-            data.set(fromSpawnerKey, PersistentDataType.BYTE, (byte) 1);
+            entity.getPersistentDataContainer().set(
+                    fromSpawnerKey,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
         }
     }
 
-
     @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-        if (!(event.getEntity() instanceof LivingEntity entity)){
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) {
             return;
         }
         PersistentDataContainer data = entity.getPersistentDataContainer();
-        if (!data.has(fromSpawnerKey, PersistentDataType.BYTE)){
+        if (!data.has(fromSpawnerKey, PersistentDataType.BYTE)) {
             return;
         }
 
-        if (event.getDamager() instanceof Player){
+        // Check damager
+        if (event.getDamager() instanceof Player) {
             data.set(damagedByPlayerKey, PersistentDataType.BYTE, (byte) 1);
-        } else if (event.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player){
+        } else if (event.getDamager() instanceof Projectile projectile &&
+                projectile.getShooter() instanceof Player) {
             data.set(damagedByPlayerKey, PersistentDataType.BYTE, (byte) 1);
         }
     }
 
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent event){
+    public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
         PersistentDataContainer data = entity.getPersistentDataContainer();
 
-        if (data.has(fromSpawnerKey, PersistentDataType.BYTE)){
-            if (!data.has(damagedByPlayerKey, PersistentDataType.BYTE)){
+        if (data.has(fromSpawnerKey, PersistentDataType.BYTE)) {
+            if (!data.has(damagedByPlayerKey, PersistentDataType.BYTE)) {
                 event.getDrops().clear();
                 event.setDroppedExp(0);
             }
         }
     }
-
-
 }
