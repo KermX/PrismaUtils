@@ -85,6 +85,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
         getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
+        getServer().getPluginManager().registerEvents(new SilkSpawnerHandler(), this);
         if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
             getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         }

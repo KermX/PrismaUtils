@@ -29,6 +29,10 @@ general_messages:
   must_specify_player: '<red>You must specify a player!'
   player_not_found: '<red>Player not found!'
 
+spawner_messages:
+  no_silk_warning_message: '<red>You must sneak to break a spawner without silk touch'
+  spawner_name: '<gray><entitytype> Spawner'
+
 feed_messages:
   feed_message: '<green>Your hunger has been refilled!'
   feed_all_message: '<green>Everyone''s hunger has been refilled!'

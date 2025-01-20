@@ -58,6 +58,10 @@ public class ConfigUtils {
     public String mustSpecifyPlayerMessage;
     public String playerNotFoundMessage;
 
+    // Spawner Messages
+    public String spawnerNoSilkWarningMessage;
+    public String spawnerName;
+
     // Feed Messages
     public String feedMessage;
     public String feedAllMessage;
@@ -188,6 +192,10 @@ public class ConfigUtils {
         noPermissionMessage = config.getString("general_messages.no_permission");
         mustSpecifyPlayerMessage = config.getString("general_messages.must_specify_player");
         playerNotFoundMessage = config.getString("general_messages.player_not_found");
+
+        // Spawner Messages
+        spawnerNoSilkWarningMessage = config.getString("spawner_messages.no_silk_warning_message");
+        spawnerName = config.getString("spawner_messages.spawner_name");
 
         // Feed Messages
         feedMessage = config.getString("feed_messages.feed_message");

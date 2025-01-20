@@ -35,7 +35,6 @@ public class SpawnerMobItemDropsHandler implements Listener {
                     PersistentDataType.BYTE,
                     (byte) 1
             );
-            Bukkit.getLogger().info("Spawned entity from spawner");
         }
     }
 
@@ -52,11 +51,9 @@ public class SpawnerMobItemDropsHandler implements Listener {
         // Check damager
         if (event.getDamager() instanceof Player) {
             data.set(damagedByPlayerKey, PersistentDataType.BYTE, (byte) 1);
-            Bukkit.getLogger().info("Damaged by player");
         } else if (event.getDamager() instanceof Projectile projectile &&
                 projectile.getShooter() instanceof Player) {
             data.set(damagedByPlayerKey, PersistentDataType.BYTE, (byte) 1);
-            Bukkit.getLogger().info("Damaged by player projectile");
         }
     }
 
@@ -69,9 +66,6 @@ public class SpawnerMobItemDropsHandler implements Listener {
             if (!data.has(damagedByPlayerKey, PersistentDataType.BYTE)) {
                 event.getDrops().clear();
                 event.setDroppedExp(0);
-                Bukkit.getLogger().info("Cleared drops and exp");
-            } else {
-                Bukkit.getLogger().info("Drops not cleared, damaged by player");
             }
         }
     }
