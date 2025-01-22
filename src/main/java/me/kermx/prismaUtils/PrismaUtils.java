@@ -46,6 +46,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("loom").setExecutor(new LoomCommand());
         getCommand("grindstone").setExecutor(new GrindstoneCommand());
         getCommand("cartographytable").setExecutor(new CartographyTableCommand());
+        getCommand("enderchest").setExecutor(new EnderChestCommand());
 
         getCommand("feed").setExecutor(new FeedCommand());
         getCommand("heal").setExecutor(new HealCommand());

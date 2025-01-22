@@ -53,6 +53,13 @@ commands:
     description: Opens a cartography table interface.
     usage: /cartographytable
     permission: prismautils.command.cartographytable
+  enderchest:
+    description: Opens the player's ender chest.
+    usage: /enderchest
+    permission: prismautils.command.enderchest
+    aliases:
+      - ec
+      - echest
   feed:
     description: Feeds the player.
     usage: /feed
