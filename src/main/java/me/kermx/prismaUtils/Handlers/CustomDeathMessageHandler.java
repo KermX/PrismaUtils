@@ -46,7 +46,7 @@ public class CustomDeathMessageHandler implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDeath(PlayerDeathEvent event){
         Player deceased = event.getEntity();
 

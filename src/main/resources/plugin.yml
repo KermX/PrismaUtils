@@ -144,3 +144,4 @@ permissions:
         prismautils.command.grindstone: true
         prismautils.command.loom: true
         prismautils.command.cartographytable: true
+        prismautils.command.enderchest: true
