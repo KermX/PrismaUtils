@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.Commands.AdminCommands.*;
 import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
 import me.kermx.prismaUtils.Handlers.*;
+import me.kermx.prismaUtils.Managers.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
@@ -20,6 +21,7 @@ public final class PrismaUtils extends JavaPlugin {
         saveDefaultConfig();
         loadConfigurations();
 
+        doStartupOperations();
         registerPlaceholders();
         registerCommands();
         registerTabCompletions();
@@ -90,6 +92,10 @@ public final class PrismaUtils extends JavaPlugin {
         if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
             getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         }
+    }
+
+    public void doStartupOperations(){
+        new DisabledCraftingRecipesManager().removeConfiguredRecipes();
     }
 
     public void registerPlaceholders(){

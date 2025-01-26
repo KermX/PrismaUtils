@@ -47,6 +47,9 @@ public class ConfigUtils {
     public boolean healthScaleEnabled;
     public double healthScaleValue;
 
+    // Remove Crafting Recipes
+    public List<String> disabledCraftingRecipes;
+
     // Spawner Tweaks
     public boolean disableSpawnerMobItemDrops;
 
@@ -181,6 +184,9 @@ public class ConfigUtils {
         // Health Scale
         healthScaleEnabled = config.getBoolean("health_scale.enabled");
         healthScaleValue = config.getDouble("health_scale.value");
+
+        // Remove Crafting Recipes
+        disabledCraftingRecipes = config.getStringList("disabled_recipes");
 
         // Spawner Tweaks
         disableSpawnerMobItemDrops = config.getBoolean("spawner_tweaks.disable_spawner_mob_item_drops");
