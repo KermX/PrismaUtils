@@ -12,8 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
-    private ConfigUtils configUtils;
-
+    private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     GodCommand godCommand = new GodCommand();
 
     @Override
@@ -25,6 +24,10 @@ public final class PrismaUtils extends JavaPlugin {
         registerPlaceholders();
         registerCommands();
         registerTabCompletions();
+
+        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
+        seedAndShearBlocksHandler.registerTransformations();
+
         registerEvents();
         startTasks();
     }
@@ -89,6 +92,8 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
         getServer().getPluginManager().registerEvents(new SilkSpawnerHandler(), this);
+        getServer().getPluginManager().registerEvents(seedAndShearBlocksHandler, this);
+        getServer().getPluginManager().registerEvents(new CopperOxidationHandler(), this);
         if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
             getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         }
@@ -96,6 +101,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     public void doStartupOperations(){
         new DisabledCraftingRecipesManager().removeConfiguredRecipes();
+        new SeedAndShearBlocksHandler().registerTransformations();
     }
 
     public void registerPlaceholders(){
