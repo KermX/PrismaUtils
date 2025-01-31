@@ -47,7 +47,8 @@ public class PingCommand implements CommandExecutor {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             }
         } else {
-            sender.sendMessage("Usage: /ping [player]");
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))));
         }
 
         return true;

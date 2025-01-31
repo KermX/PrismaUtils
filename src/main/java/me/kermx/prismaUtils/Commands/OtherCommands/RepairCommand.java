@@ -1,7 +1,9 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
 import me.kermx.prismaUtils.Utils.ConfigUtils;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,7 +34,8 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length != 1 || (!args[0].equalsIgnoreCase("hand") && !args[0].equalsIgnoreCase("all"))) {
-            player.sendMessage("Usage: /repair <hand/all>");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))));
             return true;
         }
 
@@ -41,7 +44,8 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         } else if (args[0].equalsIgnoreCase("all")) {
             repairAll(player);
         } else {
-            player.sendMessage("Usage: /repair <hand/all>");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))));
         }
         return true;
     }

@@ -30,7 +30,8 @@ public class FlySpeedCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length != 1) {
-            player.sendMessage("Usage: /flyspeed <speed>");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))));
             return true;
         }
 

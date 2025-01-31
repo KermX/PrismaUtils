@@ -5,6 +5,7 @@ import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
 import me.kermx.prismaUtils.Commands.OtherCommands.*;
 import me.kermx.prismaUtils.Handlers.*;
 import me.kermx.prismaUtils.Managers.DisabledCraftingRecipesManager;
+import me.kermx.prismaUtils.Managers.SeenManager;
 import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PrismaUtils extends JavaPlugin {
 
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
+    private SeenManager seenManager;
     GodCommand godCommand = new GodCommand();
 
     @Override
@@ -20,14 +22,14 @@ public final class PrismaUtils extends JavaPlugin {
         saveDefaultConfig();
         loadConfigurations();
 
+        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
+        seedAndShearBlocksHandler.registerTransformations();
+        seenManager = new SeenManager();
+
         doStartupOperations();
         registerPlaceholders();
         registerCommands();
         registerTabCompletions();
-
-        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
-        seedAndShearBlocksHandler.registerTransformations();
-
         registerEvents();
         startTasks();
     }
@@ -64,6 +66,7 @@ public final class PrismaUtils extends JavaPlugin {
         getCommand("top").setExecutor(new TopCommand());
         getCommand("bottom").setExecutor(new BottomCommand());
         getCommand("god").setExecutor(godCommand);
+        getCommand("seen").setExecutor(new SeenCommand(seenManager));
 
         getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
         getCommand("setmodeldata").setExecutor(new SetModelDataCommand());
@@ -94,6 +97,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SilkSpawnerHandler(), this);
         getServer().getPluginManager().registerEvents(seedAndShearBlocksHandler, this);
         getServer().getPluginManager().registerEvents(new CopperOxidationHandler(), this);
+        getServer().getPluginManager().registerEvents(new SeenEventsHandler(seenManager), this);
         if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
             getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
         }

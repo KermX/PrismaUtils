@@ -27,7 +27,8 @@ public class ItemNameCommand implements CommandExecutor {
         }
 
         if (args.length == 0){
-            player.sendMessage("Usage: /itemname <name>");
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))));
             return true;
         }
 

@@ -104,6 +104,10 @@ commands:
     description: Teleports the player to the bottom.
     usage: /bottom
     permission: prismautils.command.bottom
+  seen:
+    description: Shows the last time a player was online.
+    usage: /seen <player>
+    permission: prismautils.command.seen
   ping:
     description: Shows the player's ping.
     usage: /ping [player]

@@ -60,6 +60,12 @@ public class ConfigUtils {
     public String noPermissionMessage;
     public String mustSpecifyPlayerMessage;
     public String playerNotFoundMessage;
+    public String incorrectUsageMessage;
+
+    // Seen Messages
+    public String seenOfflineMessage;
+    public String seenNeverJoinedMessage;
+    public String seenOnlineMessage;
 
     // Spawner Messages
     public String spawnerNoSilkWarningMessage;
@@ -198,6 +204,12 @@ public class ConfigUtils {
         noPermissionMessage = config.getString("general_messages.no_permission");
         mustSpecifyPlayerMessage = config.getString("general_messages.must_specify_player");
         playerNotFoundMessage = config.getString("general_messages.player_not_found");
+        incorrectUsageMessage = config.getString("general_messages.incorrect_usage");
+
+        // Seen Messages
+        seenOfflineMessage = config.getString("seen_messages.seen_offline_message");
+        seenNeverJoinedMessage = config.getString("seen_messages.seen_never_joined_message");
+        seenOnlineMessage = config.getString("seen_messages.seen_online_message");
 
         // Spawner Messages
         spawnerNoSilkWarningMessage = config.getString("spawner_messages.no_silk_warning_message");
