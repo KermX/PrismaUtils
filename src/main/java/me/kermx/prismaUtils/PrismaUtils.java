@@ -98,8 +98,15 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(seedAndShearBlocksHandler, this);
         getServer().getPluginManager().registerEvents(new CopperOxidationHandler(), this);
         getServer().getPluginManager().registerEvents(new SeenEventsHandler(seenManager), this);
+        registerConfigConditionalEvents();
+    }
+
+    public void registerConfigConditionalEvents(){
         if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
             getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
+        }
+        if (ConfigUtils.getInstance().endermitesImmuneToLightning){
+            getServer().getPluginManager().registerEvents(new EndermiteImmunityHandler(), this);
         }
     }
 

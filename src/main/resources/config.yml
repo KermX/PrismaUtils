@@ -21,6 +21,9 @@ spawner_tweaks:
   ##must restart to toggle this feature
   disable_spawner_mob_item_drops: true
 
+mob_tweaks:
+  endermites_immune_lightning: true
+
 disabled_recipes:
   ##must restart to edit this feature
   - SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE

@@ -53,6 +53,9 @@ public class ConfigUtils {
     // Spawner Tweaks
     public boolean disableSpawnerMobItemDrops;
 
+    // Mob Tweaks
+    public boolean endermitesImmuneToLightning;
+
     // Cooldowns
     public long cooldownDeathMessageSeconds;
 
@@ -196,6 +199,9 @@ public class ConfigUtils {
 
         // Spawner Tweaks
         disableSpawnerMobItemDrops = config.getBoolean("spawner_tweaks.disable_spawner_mob_item_drops");
+
+        // Mob Tweaks
+        endermitesImmuneToLightning = config.getBoolean("mob_tweaks.endermites_immune_to_lightning");
 
         //Cooldowns
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
