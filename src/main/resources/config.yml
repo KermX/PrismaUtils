@@ -22,7 +22,7 @@ spawner_tweaks:
   disable_spawner_mob_item_drops: true
 
 mob_tweaks:
-  endermites_immune_lightning: true
+  endermites_immune_to_lightning: true
 
 disabled_recipes:
   ##must restart to edit this feature

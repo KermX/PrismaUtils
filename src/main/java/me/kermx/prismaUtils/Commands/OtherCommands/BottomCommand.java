@@ -30,7 +30,8 @@ public class BottomCommand implements CommandExecutor {
             Location aboveBlock2 = blockLocation.clone().add(0, 2, 0);
 
             if (blockLocation.getBlock().getType().isSolid() // Ensure it's a solid block
-                    && (aboveBlock1.getBlock().getType() == Material.AIR || aboveBlock1.getBlock().getType() == Material.CAVE_AIR) && (aboveBlock2.getBlock().getType() == Material.AIR || aboveBlock2.getBlock().getType() == Material.CAVE_AIR)) {
+                    && (aboveBlock1.getBlock().getType() == Material.AIR || aboveBlock1.getBlock().getType() == Material.CAVE_AIR)
+                    && (aboveBlock2.getBlock().getType() == Material.AIR || aboveBlock2.getBlock().getType() == Material.CAVE_AIR)) {
 
                 player.teleport(blockLocation.add(0.5, 1, 0.5));
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().bottomMessage));

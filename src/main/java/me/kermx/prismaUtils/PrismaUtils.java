@@ -20,6 +20,8 @@ public final class PrismaUtils extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         loadConfigurations();
 
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();

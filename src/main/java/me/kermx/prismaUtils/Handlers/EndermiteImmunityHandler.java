@@ -10,10 +10,12 @@ public class EndermiteImmunityHandler implements Listener {
     @EventHandler
     public void onEndermiteDamage(EntityDamageEvent event) {
         if (event.getEntityType() == EntityType.ENDERMITE
-                && event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING
+                && (event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING
                 || event.getCause() == EntityDamageEvent.DamageCause.FIRE
-                || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+                || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK)) {
+
             event.setCancelled(true);
+            event.getEntity().setFireTicks(0);
         }
     }
 }
