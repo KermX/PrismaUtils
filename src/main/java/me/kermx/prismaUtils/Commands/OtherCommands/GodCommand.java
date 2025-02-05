@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
@@ -10,28 +11,25 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
-public class GodCommand implements CommandExecutor, Listener {
+public class GodCommand extends BaseCommand implements Listener {
 
     private final HashSet<UUID> godPlayers = new HashSet<>();
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
-        }
+    public GodCommand(){
+        super("prismautils.command.god", false, "/god");
+    }
 
+    @Override
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
 
-        if (!player.hasPermission("prismautils.command.god")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
-        if (godPlayers.contains(playerUUID)) {
+        if (godPlayers.contains(playerUUID)){
             godPlayers.remove(playerUUID);
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().godDisabledMessage));
         } else {
@@ -39,6 +37,11 @@ public class GodCommand implements CommandExecutor, Listener {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().godEnabledMessage));
         }
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 
     @EventHandler

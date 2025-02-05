@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -17,33 +18,24 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepairCommand implements CommandExecutor, TabCompleter {
+public class RepairCommand extends BaseCommand {
+
+    public RepairCommand(){
+        super("prismautils.command.repair", false, "/repair");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
-        }
-
-        if (!player.hasPermission("prismautils.command.repair")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
         if (args.length != 1 || (!args[0].equalsIgnoreCase("hand") && !args[0].equalsIgnoreCase("all"))) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
-                    Placeholder.component("usage", Component.text(command.getUsage()))));
-            return true;
+            return false;
         }
 
-        if (args[0].equalsIgnoreCase("hand")) {
-            repairHand(player);
+        if (args[0].equalsIgnoreCase("hand")){
+            repairHand((Player) sender);
         } else if (args[0].equalsIgnoreCase("all")) {
-            repairAll(player);
+            repairAll((Player) sender);
         } else {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
-                    Placeholder.component("usage", Component.text(command.getUsage()))));
+            return false;
         }
         return true;
     }
@@ -82,17 +74,11 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
         List<String> completions = new ArrayList<>();
-
         if (args.length == 1) {
-            String partialArg = args[0].toLowerCase(); // The partially typed argument
-            if ("hand".startsWith(partialArg)) {
-                completions.add("hand");
-            }
-            if ("all".startsWith(partialArg)) {
-                completions.add("all");
-            }
+            completions.add("hand");
+            completions.add("all");
         }
         return completions;
     }

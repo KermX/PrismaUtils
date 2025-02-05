@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.Commands.CraftingStationCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -8,22 +9,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CraftingTableCommand implements CommandExecutor {
+import java.util.List;
+
+public class CraftingTableCommand extends BaseCommand {
+
+
+    public CraftingTableCommand(){
+        super("prismautils.command.craftingtable", false, "/craftingtable");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length > 0){
+            return false;
         }
-
-        if (!player.hasPermission("prismautils.command.craftingtable")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+        Player player = (Player) sender;
         Location location = player.getLocation();
         player.openWorkbench(location, true);
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 }

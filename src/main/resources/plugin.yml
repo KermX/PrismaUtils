@@ -82,11 +82,11 @@ commands:
     permission: prismautils.command.near
   ptime:
     description: Sets the player's time.
-    usage: /ptime <day/night>
+    usage: /ptime [time|reset]
     permission: prismautils.command.ptime
   pweather:
     description: Sets the player's weather.
-    usage: /pweather <clear/rain/thunder>
+    usage: /pweather [weather|reset]
     permission: prismautils.command.pweather
   repair:
     description: Repairs the item in the player's hand.

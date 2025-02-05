@@ -1,7 +1,9 @@
 package me.kermx.prismaUtils.Commands.AdminCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -9,19 +11,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class BlockInfoCommand implements CommandExecutor {
+import java.util.List;
+
+public class BlockInfoCommand extends BaseCommand {
+
+    public BlockInfoCommand(){
+        super("prismautils.command.blockinfo", false, "/blockinfo");
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length > 0){
+            return false;
         }
-
-        if (!player.hasPermission("prismautils.command.blockinfo")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+        Player player = (Player) sender;
         Block targetBlock = player.getTargetBlockExact(5);
         if (targetBlock != null && targetBlock.getType() != Material.AIR) {
             player.sendMessage("Block Info:");
@@ -33,7 +36,11 @@ public class BlockInfoCommand implements CommandExecutor {
         } else {
             player.sendMessage("You must be looking at a block to use this command!");
         }
-
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 }

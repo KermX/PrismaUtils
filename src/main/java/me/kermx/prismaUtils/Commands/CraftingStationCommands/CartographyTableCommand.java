@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.Commands.CraftingStationCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -8,22 +9,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CartographyTableCommand implements CommandExecutor {
+import java.util.List;
+
+public class CartographyTableCommand extends BaseCommand {
+
+
+    public CartographyTableCommand(){
+        super("prismautils.command.cartographytable", false, "/cartographytable");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length > 0){
+            return false;
         }
-
-        if (!player.hasPermission("prismautils.command.cartographytable")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+        Player player = (Player) sender;
         Location location = player.getLocation();
         player.openCartographyTable(location, true);
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 }

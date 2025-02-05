@@ -1,46 +1,39 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class pTimeCommand implements CommandExecutor, TabCompleter {
+public class pTimeCommand extends BaseCommand {
+
+    public pTimeCommand(){
+        super("prismautils.command.ptime", false, "/ptime [time|reset]");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
-        }
-
-        if (!player.hasPermission("prismautils.command.ptime")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
-            player.resetPlayerTime();
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeResetMessage));
+            ((Player) sender).resetPlayerTime();
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeResetMessage));
             return true;
         }
 
         try {
             long time = parseTime(args[0]);
-            player.setPlayerTime(time, false);
+            ((Player) sender).setPlayerTime(time, false);
 
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeSetMessage,
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeSetMessage,
                     Placeholder.component("time", Component.text(time))));
         } catch (IllegalArgumentException e) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeInvalidTimeMessage));
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeInvalidTimeMessage));
+            return false;
         }
         return true;
     }
@@ -71,7 +64,7 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             completions.add("day");

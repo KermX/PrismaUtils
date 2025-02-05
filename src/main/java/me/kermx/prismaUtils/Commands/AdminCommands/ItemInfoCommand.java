@@ -1,7 +1,9 @@
 package me.kermx.prismaUtils.Commands.AdminCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,22 +14,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.List;
 import java.util.Map;
 
-public class ItemInfoCommand implements CommandExecutor {
+public class ItemInfoCommand extends BaseCommand {
+
+    public ItemInfoCommand(){
+        super("prismautils.command.iteminfo", false, "/iteminfo");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length > 0){
+            return false;
         }
-
-        if (!player.hasPermission("prismautils.command.iteminfo")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
+        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item != null && item.getType() != Material.AIR) {
@@ -66,7 +67,11 @@ public class ItemInfoCommand implements CommandExecutor {
         } else {
             player.sendMessage("You must be holding an item to use this command!");
         }
-
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 }

@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Managers.SeenManager;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
@@ -12,27 +13,23 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SeenCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SeenCommand extends BaseCommand {
 
     private final SeenManager seenManager;
 
-    public SeenCommand(SeenManager seenManager) {
+    public SeenCommand(SeenManager seenManager){
+        super("prismautils.command.seen", true, "/seen <player>");
         this.seenManager = seenManager;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
-                    Placeholder.component("usage", Component.text(command.getUsage()))));
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length < 1){
+            return false;
         }
-
-        if (!sender.hasPermission("prismautils.command.seen")) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
         String targetName = args[0];
         Player onlinePlayer = Bukkit.getPlayerExact(targetName);
 
@@ -41,33 +38,57 @@ public class SeenCommand implements CommandExecutor {
             if (loginTime != null) {
                 long sessionMillis = System.currentTimeMillis() - loginTime;
                 String duration = seenManager.formatDuration(sessionMillis);
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenOnlineMessage,
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                        ConfigUtils.getInstance().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text(duration))));
+                        Placeholder.component("time", Component.text(duration))
+                ));
             } else {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenOnlineMessage,
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                        ConfigUtils.getInstance().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text("Unknown"))));
+                        Placeholder.component("time", Component.text("Unknown"))
+                ));
             }
         } else {
             OfflinePlayer offlinePlayer = seenManager.getOfflinePlayer(targetName);
-            if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenNeverJoinedMessage,
-                        Placeholder.component("target", Component.text(targetName))));
+            if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                        ConfigUtils.getInstance().seenNeverJoinedMessage,
+                        Placeholder.component("target", Component.text(targetName))
+                ));
             } else {
                 long lastSeen = offlinePlayer.getLastSeen();
                 if (lastSeen <= 0) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenNeverJoinedMessage,
-                            Placeholder.component("target", Component.text(targetName))));
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                            ConfigUtils.getInstance().seenNeverJoinedMessage,
+                            Placeholder.component("target", Component.text(targetName))
+                    ));
                 } else {
                     long timeSinceLastPlayed = System.currentTimeMillis() - lastSeen;
                     String duration = seenManager.formatDuration(timeSinceLastPlayed);
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenOfflineMessage,
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                            ConfigUtils.getInstance().seenOfflineMessage,
                             Placeholder.component("target", Component.text(targetName)),
-                            Placeholder.component("time", Component.text(duration))));
+                            Placeholder.component("time", Component.text(duration))
+                    ));
                 }
             }
         }
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            String partial = args[0].toLowerCase();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getName().toLowerCase().startsWith(partial)) {
+                    completions.add(player.getName());
+                }
+            }
+        }
+        return completions;
     }
 }

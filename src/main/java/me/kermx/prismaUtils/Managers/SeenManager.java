@@ -19,7 +19,7 @@ public class SeenManager {
         loginTimes.remove(uuid);
     }
 
-    public long getLoginTime(UUID uuid) {
+    public Long getLoginTime(UUID uuid) {
         return loginTimes.get(uuid);
     }
 

@@ -15,7 +15,6 @@ public final class PrismaUtils extends JavaPlugin {
 
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
-    GodCommand godCommand = new GodCommand();
 
     @Override
     public void onEnable() {
@@ -31,7 +30,6 @@ public final class PrismaUtils extends JavaPlugin {
         doStartupOperations();
         registerPlaceholders();
         registerCommands();
-        registerTabCompletions();
         registerEvents();
         startTasks();
     }
@@ -47,44 +45,114 @@ public final class PrismaUtils extends JavaPlugin {
     }
 
     public void registerCommands(){
-        getCommand("craftingtable").setExecutor(new CraftingTableCommand());
-        getCommand("anvil").setExecutor(new AnvilCommand());
-        getCommand("enchantingtable").setExecutor(new EnchantingTableCommand());
-        getCommand("stonecutter").setExecutor(new StonecutterCommand());
-        getCommand("smithingtable").setExecutor(new SmithingTableCommand());
-        getCommand("loom").setExecutor(new LoomCommand());
-        getCommand("grindstone").setExecutor(new GrindstoneCommand());
-        getCommand("cartographytable").setExecutor(new CartographyTableCommand());
-        getCommand("enderchest").setExecutor(new EnderChestCommand());
+        // Crafting Station Commands
+        AnvilCommand anvilCommand = new AnvilCommand();
+        getCommand("anvil").setExecutor(anvilCommand);
+        getCommand("anvil").setTabCompleter(anvilCommand);
 
-        getCommand("feed").setExecutor(new FeedCommand());
-        getCommand("heal").setExecutor(new HealCommand());
-        getCommand("itemname").setExecutor(new ItemNameCommand());
-        getCommand("near").setExecutor(new NearCommand());
-        getCommand("ptime").setExecutor(new pTimeCommand());
-        getCommand("pweather").setExecutor(new pWeatherCommand());
-        getCommand("repair").setExecutor(new RepairCommand());
-        getCommand("flyspeed").setExecutor(new FlySpeedCommand());
-        getCommand("top").setExecutor(new TopCommand());
-        getCommand("bottom").setExecutor(new BottomCommand());
+        CartographyTableCommand cartographyTableCommand = new CartographyTableCommand();
+        getCommand("cartographytable").setExecutor(cartographyTableCommand);
+        getCommand("cartographytable").setTabCompleter(cartographyTableCommand);
+
+        CraftingTableCommand craftingTableCommand = new CraftingTableCommand();
+        getCommand("craftingtable").setExecutor(craftingTableCommand);
+        getCommand("craftingtable").setTabCompleter(craftingTableCommand);
+
+        EnchantingTableCommand enchantingTableCommand = new EnchantingTableCommand();
+        getCommand("enchantingtable").setExecutor(enchantingTableCommand);
+        getCommand("enchantingtable").setTabCompleter(enchantingTableCommand);
+
+        EnderChestCommand enderChestCommand = new EnderChestCommand();
+        getCommand("enderchest").setExecutor(enderChestCommand);
+        getCommand("enderchest").setTabCompleter(enderChestCommand);
+
+        GrindstoneCommand grindstoneCommand = new GrindstoneCommand();
+        getCommand("grindstone").setExecutor(grindstoneCommand);
+        getCommand("grindstone").setTabCompleter(grindstoneCommand);
+
+        LoomCommand loomCommand = new LoomCommand();
+        getCommand("loom").setExecutor(loomCommand);
+        getCommand("loom").setTabCompleter(loomCommand);
+
+        SmithingTableCommand smithingTableCommand = new SmithingTableCommand();
+        getCommand("smithingtable").setExecutor(smithingTableCommand);
+        getCommand("smithingtable").setTabCompleter(smithingTableCommand);
+
+        StonecutterCommand stonecutterCommand = new StonecutterCommand();
+        getCommand("stonecutter").setExecutor(stonecutterCommand);
+        getCommand("stonecutter").setTabCompleter(stonecutterCommand);
+
+        // Admin Commands
+        BlockInfoCommand blockInfoCommand = new BlockInfoCommand();
+        getCommand("blockinfo").setExecutor(blockInfoCommand);
+        getCommand("blockinfo").setTabCompleter(blockInfoCommand);
+
+        EntityInfoCommand entityInfoCommand = new EntityInfoCommand();
+        getCommand("entityinfo").setExecutor(entityInfoCommand);
+        getCommand("entityinfo").setTabCompleter(entityInfoCommand);
+
+        ItemInfoCommand itemInfoCommand = new ItemInfoCommand();
+        getCommand("iteminfo").setExecutor(itemInfoCommand);
+        getCommand("iteminfo").setTabCompleter(itemInfoCommand);
+
+        ReloadConfigCommand reloadConfigCommand = new ReloadConfigCommand(this);
+        getCommand("prismautilsreload").setExecutor(reloadConfigCommand);
+        getCommand("prismautilsreload").setTabCompleter(reloadConfigCommand);
+
+        SetModelDataCommand setModelDataCommand = new SetModelDataCommand();
+        getCommand("setmodeldata").setExecutor(setModelDataCommand);
+        getCommand("setmodeldata").setTabCompleter(setModelDataCommand);
+
+        // Other Commands
+        BottomCommand bottomCommand = new BottomCommand();
+        getCommand("bottom").setExecutor(bottomCommand);
+        getCommand("bottom").setTabCompleter(bottomCommand);
+
+        FeedCommand feedCommand = new FeedCommand();
+        getCommand("feed").setExecutor(feedCommand);
+        getCommand("feed").setTabCompleter(feedCommand);
+
+        FlySpeedCommand flySpeedCommand = new FlySpeedCommand();
+        getCommand("flyspeed").setExecutor(flySpeedCommand);
+        getCommand("flyspeed").setTabCompleter(flySpeedCommand);
+
+        GodCommand godCommand = new GodCommand();
         getCommand("god").setExecutor(godCommand);
-        getCommand("seen").setExecutor(new SeenCommand(seenManager));
+        getCommand("god").setTabCompleter(godCommand);
+        getServer().getPluginManager().registerEvents(godCommand, this);
 
-        getCommand("prismautilsreload").setExecutor(new ReloadConfigCommand(this));
-        getCommand("setmodeldata").setExecutor(new SetModelDataCommand());
-        getCommand("blockinfo").setExecutor(new BlockInfoCommand());
-        getCommand("entityinfo").setExecutor( new EntityInfoCommand());
-        getCommand("iteminfo").setExecutor(new ItemInfoCommand());
-        getCommand("ping").setExecutor(new PingCommand());
-    }
+        HealCommand healCommand = new HealCommand();
+        getCommand("heal").setExecutor(healCommand);
+        getCommand("heal").setTabCompleter(healCommand);
 
-    public void registerTabCompletions(){
-        getCommand("feed").setTabCompleter(new FeedCommand());
-        getCommand("heal").setTabCompleter(new HealCommand());
-        getCommand("repair").setTabCompleter(new RepairCommand());
-        getCommand("flyspeed").setTabCompleter(new FlySpeedCommand());
-        getCommand("ptime").setTabCompleter(new pTimeCommand());
-        getCommand("pweather").setTabCompleter(new pWeatherCommand());
+        ItemNameCommand itemNameCommand = new ItemNameCommand();
+        getCommand("itemname").setExecutor(itemNameCommand);
+        getCommand("itemname").setTabCompleter(itemNameCommand);
+
+        NearCommand nearCommand = new NearCommand();
+        getCommand("near").setExecutor(nearCommand);
+        getCommand("near").setTabCompleter(nearCommand);
+
+        pTimeCommand pTimeCommand = new pTimeCommand();
+        getCommand("ptime").setExecutor(pTimeCommand);
+        getCommand("ptime").setTabCompleter(pTimeCommand);
+
+        pWeatherCommand pWeatherCommand = new pWeatherCommand();
+        getCommand("pweather").setExecutor(pWeatherCommand);
+        getCommand("pweather").setTabCompleter(pWeatherCommand);
+
+        RepairCommand repairCommand = new RepairCommand();
+        getCommand("repair").setExecutor(repairCommand);
+        getCommand("repair").setTabCompleter(repairCommand);
+
+        TopCommand topCommand = new TopCommand();
+        getCommand("top").setExecutor(topCommand);
+        getCommand("top").setTabCompleter(topCommand);
+
+        SeenManager seenManager = new SeenManager();
+        SeenCommand seenCommand = new SeenCommand(seenManager);
+        getCommand("seen").setExecutor(seenCommand);
+        getCommand("seen").setTabCompleter(seenCommand);
     }
 
     public void registerEvents(){
@@ -92,7 +160,7 @@ public final class PrismaUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
         getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
         getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
-        getServer().getPluginManager().registerEvents(godCommand, this);
+//        getServer().getPluginManager().registerEvents(godCommand, this);
         getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
         getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
         getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);

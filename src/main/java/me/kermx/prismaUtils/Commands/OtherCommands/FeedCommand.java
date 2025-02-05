@@ -1,89 +1,87 @@
 package me.kermx.prismaUtils.Commands.OtherCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedCommand implements CommandExecutor, TabCompleter {
+public class FeedCommand extends BaseCommand {
+
+    public FeedCommand(){
+        super("prismautils.command.feed", true, "/feed [player|all]");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player) && args.length == 0) {
-            sender.sendMessage("You must specify a player name or use \"all\" when using this command from the console!");
-            return true;
-        }
-
-        Player playerSender = (Player) sender;
-        if (args.length == 0) {
-            if (!playerSender.hasPermission("prismautils.command.feed")) {
-                playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length == 0){
+            if (!(sender instanceof Player player)){
+                sender.sendMessage("You must specify a player name or use \"all\" from the console!");
                 return true;
             }
-            feedPlayer(playerSender);
-            playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedMessage));
+            feedPlayer(player);
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedMessage));
             return true;
         }
-
-        if (args.length == 1) {
+        if (args.length == 1){
             String targetName = args[0];
-            if (targetName.equalsIgnoreCase("all")) {
-                if (!sender.hasPermission("prismautils.command.feed.all")) {
-                    playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
+            if (targetName.equalsIgnoreCase("all")){
+                if (!sender.hasPermission("prismautils.command.feed.all")){
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
                     return true;
                 }
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    feedPlayer(player);
+                for (Player online : Bukkit.getOnlinePlayers()){
+                    feedPlayer(online);
                 }
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedAllMessage));
-            } else {
-                Player target = Bukkit.getPlayerExact(targetName);
-                if (target == null) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().playerNotFoundMessage));
-                    return true;
-                }
-                if (!sender.hasPermission("prismautils.command.feed.others")) {
-                    playerSender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-                    return true;
-                }
-                feedPlayer(target);
-
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedOtherMessage,
-                        Placeholder.component("target", target.displayName())));
-                target.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().feedFedByOtherMessage,
-                        Placeholder.component("source", sender.name())));
+                return true;
             }
+            Player target = Bukkit.getPlayerExact(targetName);
+            if (target == null){
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().playerNotFoundMessage));
+                return true;
+            }
+            if (!sender.hasPermission("prismautils.command.feed.others")){
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
+                return true;
+            }
+            feedPlayer(target);
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                    ConfigUtils.getInstance().feedOtherMessage,
+                    Placeholder.component("target", target.displayName())
+            ));
+            target.sendMessage(MiniMessage.miniMessage().deserialize(
+                    ConfigUtils.getInstance().feedFedByOtherMessage,
+                    Placeholder.component("source", sender.name())
+            ));
             return true;
         }
-
-        sender.sendMessage("Usage: /feed [player|all]");
-        return true;
+        return false;
     }
 
     private void feedPlayer(Player player) {
         player.setFoodLevel(20);
-        player.setSaturation(20.0F); // Max saturation
+        player.setSaturation(20.0F);
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {
-            String partialArg = args[0].toLowerCase(); // The partially typed argument
+            String partialArg = args[0].toLowerCase();
+
             if ("all".startsWith(partialArg)) {
                 completions.add("all");
             }
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.getName().toLowerCase().startsWith(partialArg)) {
+                String name = player.getName().toLowerCase();
+                if (name.startsWith(partialArg)) {
                     completions.add(player.getName());
                 }
             }

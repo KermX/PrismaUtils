@@ -1,7 +1,9 @@
 package me.kermx.prismaUtils.Commands.AdminCommands;
 
+import me.kermx.prismaUtils.Commands.base.BaseCommand;
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,32 +12,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SetModelDataCommand implements CommandExecutor {
+import java.util.List;
+
+public class SetModelDataCommand extends BaseCommand {
+
+    public SetModelDataCommand(){
+        super("prismautils.command.setmodeldata", false, "/setmodeldata <modeldata>");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
-            return true;
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+        if (args.length > 0){
+            return false;
         }
-
+        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (!sender.hasPermission("prismautils.command.setmodeldata")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
-            return true;
-        }
-
         if (item == null || item.getType() == Material.AIR) {
             player.sendMessage("You must hold an item in your hand to use this command!");
             return true;
         }
-
-        if (args.length != 1) {
-            player.sendMessage("Usage: /setmodeldata <modeldata>");
-            return true;
-        }
-
         try {
             int modelData = Integer.parseInt(args[0]);
 
@@ -53,5 +48,10 @@ public class SetModelDataCommand implements CommandExecutor {
             player.sendMessage("Invalid model data! Must be a number!");
         }
         return true;
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+        return super.onTabCompleteExecute(sender, args);
     }
 }
