@@ -18,11 +18,10 @@ public class ItemInfoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.iteminfo")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
@@ -58,8 +57,7 @@ public class ItemInfoCommand implements CommandExecutor {
                 if (meta.hasAttributeModifiers()) {
                     player.sendMessage("Attributes: " + meta.getAttributeModifiers().toString());
                 }
-                if (meta instanceof org.bukkit.inventory.meta.PotionMeta) {
-                    org.bukkit.inventory.meta.PotionMeta potionMeta = (org.bukkit.inventory.meta.PotionMeta) meta;
+                if (meta instanceof org.bukkit.inventory.meta.PotionMeta potionMeta) {
                     for (PotionEffect effect : potionMeta.getCustomEffects()) {
                         player.sendMessage("Potion Effect: " + effect.getType().getName() + " Duration: " + effect.getDuration() + " Amplifier: " + effect.getAmplifier());
                     }

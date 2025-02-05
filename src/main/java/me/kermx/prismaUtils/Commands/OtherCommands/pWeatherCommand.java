@@ -18,25 +18,23 @@ public class pWeatherCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
-
-        if (!player.hasPermission("prismautils.command.pweather")){
+        if (!player.hasPermission("prismautils.command.pweather")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
-        if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")){
+        if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
             player.resetPlayerWeather();
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherResetMessage));
             return true;
         }
 
-        switch (args[0].toLowerCase()){
+        switch (args[0].toLowerCase()) {
             case "clear":
                 player.setPlayerWeather(WeatherType.CLEAR);
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pWeatherSetMessage,
@@ -57,7 +55,7 @@ public class pWeatherCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1){
+        if (args.length == 1) {
             completions.add("clear");
             completions.add("rain");
             completions.add("reset");

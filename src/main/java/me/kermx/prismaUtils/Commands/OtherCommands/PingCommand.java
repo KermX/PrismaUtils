@@ -15,13 +15,13 @@ public class PingCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!sender.hasPermission("prismautils.command.ping")){
+        if (!sender.hasPermission("prismautils.command.ping")) {
             sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
-        if (args.length == 0){
-            if (sender instanceof Player player){
+        if (args.length == 0) {
+            if (sender instanceof Player player) {
                 int ping = player.getPing();
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pingMessage,
@@ -31,7 +31,7 @@ public class PingCommand implements CommandExecutor {
                 sender.sendMessage("Only players can use this command!");
             }
         } else if (args.length == 1) {
-            if (sender.hasPermission("prismautils.command.ping.others")){
+            if (sender.hasPermission("prismautils.command.ping.others")) {
                 Player target = Bukkit.getPlayer(args[0]);
 
                 if (target != null && target.isOnline()) {

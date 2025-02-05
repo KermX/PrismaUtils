@@ -22,22 +22,23 @@ public class SeenCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1){
+        if (args.length < 1) {
             sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
                     Placeholder.component("usage", Component.text(command.getUsage()))));
             return true;
         }
 
-        if (!sender.hasPermission("prismautils.command.seen")){
+        if (!sender.hasPermission("prismautils.command.seen")) {
             sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
         String targetName = args[0];
         Player onlinePlayer = Bukkit.getPlayerExact(targetName);
-        if (onlinePlayer != null && onlinePlayer.isOnline()){
+
+        if (onlinePlayer != null && onlinePlayer.isOnline()) {
             Long loginTime = seenManager.getLoginTime(onlinePlayer.getUniqueId());
-            if (loginTime != null){
+            if (loginTime != null) {
                 long sessionMillis = System.currentTimeMillis() - loginTime;
                 String duration = seenManager.formatDuration(sessionMillis);
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenOnlineMessage,
@@ -50,12 +51,12 @@ public class SeenCommand implements CommandExecutor {
             }
         } else {
             OfflinePlayer offlinePlayer = seenManager.getOfflinePlayer(targetName);
-            if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()){
+            if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenNeverJoinedMessage,
                         Placeholder.component("target", Component.text(targetName))));
             } else {
                 long lastSeen = offlinePlayer.getLastSeen();
-                if (lastSeen <= 0){
+                if (lastSeen <= 0) {
                     sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().seenNeverJoinedMessage,
                             Placeholder.component("target", Component.text(targetName))));
                 } else {

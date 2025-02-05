@@ -14,12 +14,11 @@ public class SetModelDataCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
 
-        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!sender.hasPermission("prismautils.command.setmodeldata")) {
@@ -27,12 +26,12 @@ public class SetModelDataCommand implements CommandExecutor {
             return true;
         }
 
-        if (item == null || item.getType() == Material.AIR){
+        if (item == null || item.getType() == Material.AIR) {
             player.sendMessage("You must hold an item in your hand to use this command!");
             return true;
         }
 
-        if (args.length != 1){
+        if (args.length != 1) {
             player.sendMessage("Usage: /setmodeldata <modeldata>");
             return true;
         }
@@ -41,7 +40,7 @@ public class SetModelDataCommand implements CommandExecutor {
             int modelData = Integer.parseInt(args[0]);
 
             ItemMeta meta = item.getItemMeta();
-            if (meta == null){
+            if (meta == null) {
                 player.sendMessage("This item does not have metadata!");
                 return true;
             }
@@ -50,7 +49,7 @@ public class SetModelDataCommand implements CommandExecutor {
             item.setItemMeta(meta);
 
             player.sendMessage("Model data set to " + modelData + "!");
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             player.sendMessage("Invalid model data! Must be a number!");
         }
         return true;

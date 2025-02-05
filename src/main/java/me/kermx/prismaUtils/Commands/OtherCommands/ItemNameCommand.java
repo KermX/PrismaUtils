@@ -12,28 +12,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemNameCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
 
-        Player player = (Player) sender;
-
-        if (!player.hasPermission("prismautils.command.itemname")){
+        if (!player.hasPermission("prismautils.command.itemname")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
-        if (args.length == 0){
+        if (args.length == 0) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().incorrectUsageMessage,
                     Placeholder.component("usage", Component.text(command.getUsage()))));
             return true;
         }
 
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType() == Material.AIR){
+        if (item.getType() == Material.AIR) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().itemNameInvalidItemMessage));
             return true;
         }

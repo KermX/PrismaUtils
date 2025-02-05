@@ -4,7 +4,6 @@ import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,12 +17,11 @@ public class FlySpeedCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
 
-        Player player = (Player) sender;
         if (!player.hasPermission("prismautils.command.flyspeed")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
@@ -43,7 +41,7 @@ public class FlySpeedCommand implements CommandExecutor, TabCompleter {
 
         try {
             float speed = Float.parseFloat(args[0]);
-            if (speed < 0 || speed > 10){
+            if (speed < 0 || speed > 10) {
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().flyspeedInvalidSpeedMessage));
                 return true;
             }
