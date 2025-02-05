@@ -4,14 +4,18 @@ import me.kermx.prismaUtils.Commands.admin.*;
 import me.kermx.prismaUtils.Commands.crafting.*;
 import me.kermx.prismaUtils.Commands.player.*;
 import me.kermx.prismaUtils.Commands.utility.*;
-import me.kermx.prismaUtils.managers.CommandManager;
-import me.kermx.prismaUtils.managers.EventManager;
-import me.kermx.prismaUtils.managers.DisabledCraftingRecipesManager;
-import me.kermx.prismaUtils.managers.SeenManager;
-import me.kermx.prismaUtils.handlers.*;
+import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
+import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
+import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
+import me.kermx.prismaUtils.handlers.mob.*;
+import me.kermx.prismaUtils.handlers.player.*;
+import me.kermx.prismaUtils.managers.general.CommandManager;
+import me.kermx.prismaUtils.managers.general.EventManager;
+import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
+import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
-import me.kermx.prismaUtils.managers.ConfigManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
@@ -27,9 +31,8 @@ public final class PrismaUtils extends JavaPlugin {
         saveConfig();
         loadConfigurations();
 
-        // Initialize managers / handlers
+        // Initialize specific managers / handlers
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
-        seedAndShearBlocksHandler.registerTransformations();
         seenManager = new SeenManager();
 
         doStartupOperations();
@@ -156,7 +159,6 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void doStartupOperations() {
         new DisabledCraftingRecipesManager().removeConfiguredRecipes();
-        new SeedAndShearBlocksHandler().registerTransformations();
     }
 
     private void registerPlaceholders() {

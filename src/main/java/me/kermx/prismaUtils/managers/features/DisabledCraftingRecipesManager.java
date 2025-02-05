@@ -1,5 +1,6 @@
-package me.kermx.prismaUtils.managers;
+package me.kermx.prismaUtils.managers.features;
 
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

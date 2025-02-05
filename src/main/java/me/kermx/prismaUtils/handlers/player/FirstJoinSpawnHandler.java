@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.player;
 
-import me.kermx.prismaUtils.managers.ConfigManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

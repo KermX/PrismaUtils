@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.block;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,6 +23,10 @@ public class SeedAndShearBlocksHandler implements Listener {
 
     private final Map<Material, Material> seedTransformMap = new HashMap<>();
     private final Map<Material, Material> shearTransformMap = new HashMap<>();
+
+    public SeedAndShearBlocksHandler() {
+        registerTransformations();
+    }
 
     public void registerTransformations(){
         seedTransformMap.put(Material.DIRT, Material.GRASS_BLOCK);
@@ -49,7 +53,6 @@ public class SeedAndShearBlocksHandler implements Listener {
     @EventHandler
     public void onBlockRightClick(PlayerInteractEvent event){
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         Block block = event.getClickedBlock();

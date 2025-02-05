@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.managers;
+package me.kermx.prismaUtils.managers.features;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

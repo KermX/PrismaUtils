@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.managers.ConfigManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;

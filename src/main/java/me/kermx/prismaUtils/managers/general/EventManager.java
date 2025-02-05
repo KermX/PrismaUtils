@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.managers;
+package me.kermx.prismaUtils.managers.general;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import org.bukkit.event.Listener;

@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.player;
 
-import me.kermx.prismaUtils.managers.SeenManager;
+import me.kermx.prismaUtils.managers.features.SeenManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

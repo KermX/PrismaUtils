@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.mob;
 
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;

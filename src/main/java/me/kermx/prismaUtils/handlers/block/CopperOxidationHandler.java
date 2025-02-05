@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.block;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

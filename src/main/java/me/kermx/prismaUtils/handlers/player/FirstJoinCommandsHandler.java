@@ -1,8 +1,8 @@
-package me.kermx.prismaUtils.handlers;
+package me.kermx.prismaUtils.handlers.player;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.managers.ConfigManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.managers;
+package me.kermx.prismaUtils.managers.general;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,7 +25,7 @@ public class ConfigManager {
 
     public static ConfigManager getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("ConfigUtils is not initialized!");
+            throw new IllegalStateException("ConfigManager is not initialized!");
         }
         return instance;
     }
