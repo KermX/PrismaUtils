@@ -1,14 +1,17 @@
 package me.kermx.prismaUtils;
 
-import me.kermx.prismaUtils.Commands.AdminCommands.*;
-import me.kermx.prismaUtils.Commands.CraftingStationCommands.*;
-import me.kermx.prismaUtils.Commands.OtherCommands.*;
-import me.kermx.prismaUtils.Handlers.*;
-import me.kermx.prismaUtils.Managers.DisabledCraftingRecipesManager;
-import me.kermx.prismaUtils.Managers.SeenManager;
-import me.kermx.prismaUtils.Placeholders.MiniMessagePlaceholderExpansion;
-import me.kermx.prismaUtils.Placeholders.UnixLocalTimeExpansion;
-import me.kermx.prismaUtils.Utils.ConfigUtils;
+import me.kermx.prismaUtils.Commands.admin.*;
+import me.kermx.prismaUtils.Commands.crafting.*;
+import me.kermx.prismaUtils.Commands.player.*;
+import me.kermx.prismaUtils.Commands.utility.*;
+import me.kermx.prismaUtils.managers.CommandManager;
+import me.kermx.prismaUtils.managers.EventManager;
+import me.kermx.prismaUtils.managers.DisabledCraftingRecipesManager;
+import me.kermx.prismaUtils.managers.SeenManager;
+import me.kermx.prismaUtils.handlers.*;
+import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
+import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
+import me.kermx.prismaUtils.managers.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
@@ -23,14 +26,21 @@ public final class PrismaUtils extends JavaPlugin {
         saveConfig();
         loadConfigurations();
 
+        // Initialize managers / handlers
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
         seedAndShearBlocksHandler.registerTransformations();
         seenManager = new SeenManager();
 
         doStartupOperations();
         registerPlaceholders();
-        registerCommands();
-        registerEvents();
+
+        // Use CommandManager and EventManager to register commands and events.
+        CommandManager commandManager = new CommandManager(this);
+        registerCommands(commandManager);
+
+        EventManager eventManager = new EventManager(this);
+        registerEvents(eventManager);
+
         startTasks();
     }
 
@@ -39,153 +49,115 @@ public final class PrismaUtils extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    private void loadConfigurations(){
-        ConfigUtils.initialize(this);
-        ConfigUtils.getInstance().loadConfig();
+    private void loadConfigurations() {
+        ConfigManager.initialize(this);
+        ConfigManager.getInstance().loadConfig();
     }
 
-    public void registerCommands(){
+    private void registerCommands(CommandManager commandManager) {
         // Crafting Station Commands
         AnvilCommand anvilCommand = new AnvilCommand();
-        getCommand("anvil").setExecutor(anvilCommand);
-        getCommand("anvil").setTabCompleter(anvilCommand);
-
+        commandManager.registerCommand("anvil", anvilCommand, anvilCommand);
         CartographyTableCommand cartographyTableCommand = new CartographyTableCommand();
-        getCommand("cartographytable").setExecutor(cartographyTableCommand);
-        getCommand("cartographytable").setTabCompleter(cartographyTableCommand);
-
+        commandManager.registerCommand("cartographytable", cartographyTableCommand, cartographyTableCommand);
         CraftingTableCommand craftingTableCommand = new CraftingTableCommand();
-        getCommand("craftingtable").setExecutor(craftingTableCommand);
-        getCommand("craftingtable").setTabCompleter(craftingTableCommand);
-
+        commandManager.registerCommand("craftingtable", craftingTableCommand, craftingTableCommand);
         EnchantingTableCommand enchantingTableCommand = new EnchantingTableCommand();
-        getCommand("enchantingtable").setExecutor(enchantingTableCommand);
-        getCommand("enchantingtable").setTabCompleter(enchantingTableCommand);
-
+        commandManager.registerCommand("enchantingtable", enchantingTableCommand, enchantingTableCommand);
         EnderChestCommand enderChestCommand = new EnderChestCommand();
-        getCommand("enderchest").setExecutor(enderChestCommand);
-        getCommand("enderchest").setTabCompleter(enderChestCommand);
-
+        commandManager.registerCommand("enderchest", enderChestCommand, enderChestCommand);
         GrindstoneCommand grindstoneCommand = new GrindstoneCommand();
-        getCommand("grindstone").setExecutor(grindstoneCommand);
-        getCommand("grindstone").setTabCompleter(grindstoneCommand);
-
+        commandManager.registerCommand("grindstone", grindstoneCommand, grindstoneCommand);
         LoomCommand loomCommand = new LoomCommand();
-        getCommand("loom").setExecutor(loomCommand);
-        getCommand("loom").setTabCompleter(loomCommand);
-
+        commandManager.registerCommand("loom", loomCommand, loomCommand);
         SmithingTableCommand smithingTableCommand = new SmithingTableCommand();
-        getCommand("smithingtable").setExecutor(smithingTableCommand);
-        getCommand("smithingtable").setTabCompleter(smithingTableCommand);
-
+        commandManager.registerCommand("smithingtable", smithingTableCommand, smithingTableCommand);
         StonecutterCommand stonecutterCommand = new StonecutterCommand();
-        getCommand("stonecutter").setExecutor(stonecutterCommand);
-        getCommand("stonecutter").setTabCompleter(stonecutterCommand);
+        commandManager.registerCommand("stonecutter", stonecutterCommand, stonecutterCommand);
 
         // Admin Commands
         BlockInfoCommand blockInfoCommand = new BlockInfoCommand();
-        getCommand("blockinfo").setExecutor(blockInfoCommand);
-        getCommand("blockinfo").setTabCompleter(blockInfoCommand);
-
+        commandManager.registerCommand("blockinfo", blockInfoCommand, blockInfoCommand);
         EntityInfoCommand entityInfoCommand = new EntityInfoCommand();
-        getCommand("entityinfo").setExecutor(entityInfoCommand);
-        getCommand("entityinfo").setTabCompleter(entityInfoCommand);
-
+        commandManager.registerCommand("entityinfo", entityInfoCommand, entityInfoCommand);
         ItemInfoCommand itemInfoCommand = new ItemInfoCommand();
-        getCommand("iteminfo").setExecutor(itemInfoCommand);
-        getCommand("iteminfo").setTabCompleter(itemInfoCommand);
-
+        commandManager.registerCommand("iteminfo", itemInfoCommand, itemInfoCommand);
         ReloadConfigCommand reloadConfigCommand = new ReloadConfigCommand(this);
-        getCommand("prismautilsreload").setExecutor(reloadConfigCommand);
-        getCommand("prismautilsreload").setTabCompleter(reloadConfigCommand);
-
+        commandManager.registerCommand("prismautilsreload", reloadConfigCommand, reloadConfigCommand);
         SetModelDataCommand setModelDataCommand = new SetModelDataCommand();
-        getCommand("setmodeldata").setExecutor(setModelDataCommand);
-        getCommand("setmodeldata").setTabCompleter(setModelDataCommand);
+        commandManager.registerCommand("setmodeldata", setModelDataCommand, setModelDataCommand);
 
-        // Other Commands
+        // Player Commands
         BottomCommand bottomCommand = new BottomCommand();
-        getCommand("bottom").setExecutor(bottomCommand);
-        getCommand("bottom").setTabCompleter(bottomCommand);
-
+        commandManager.registerCommand("bottom", bottomCommand, bottomCommand);
         FeedCommand feedCommand = new FeedCommand();
-        getCommand("feed").setExecutor(feedCommand);
-        getCommand("feed").setTabCompleter(feedCommand);
-
+        commandManager.registerCommand("feed", feedCommand, feedCommand);
         FlySpeedCommand flySpeedCommand = new FlySpeedCommand();
-        getCommand("flyspeed").setExecutor(flySpeedCommand);
-        getCommand("flyspeed").setTabCompleter(flySpeedCommand);
-
+        commandManager.registerCommand("flyspeed", flySpeedCommand, flySpeedCommand);
         GodCommand godCommand = new GodCommand();
-        getCommand("god").setExecutor(godCommand);
-        getCommand("god").setTabCompleter(godCommand);
-        getServer().getPluginManager().registerEvents(godCommand, this);
-
+        commandManager.registerCommand("god", godCommand, godCommand);
         HealCommand healCommand = new HealCommand();
-        getCommand("heal").setExecutor(healCommand);
-        getCommand("heal").setTabCompleter(healCommand);
-
-        ItemNameCommand itemNameCommand = new ItemNameCommand();
-        getCommand("itemname").setExecutor(itemNameCommand);
-        getCommand("itemname").setTabCompleter(itemNameCommand);
-
-        NearCommand nearCommand = new NearCommand();
-        getCommand("near").setExecutor(nearCommand);
-        getCommand("near").setTabCompleter(nearCommand);
-
+        commandManager.registerCommand("heal", healCommand, healCommand);
         pTimeCommand pTimeCommand = new pTimeCommand();
-        getCommand("ptime").setExecutor(pTimeCommand);
-        getCommand("ptime").setTabCompleter(pTimeCommand);
-
+        commandManager.registerCommand("ptime", pTimeCommand, pTimeCommand);
         pWeatherCommand pWeatherCommand = new pWeatherCommand();
-        getCommand("pweather").setExecutor(pWeatherCommand);
-        getCommand("pweather").setTabCompleter(pWeatherCommand);
-
-        RepairCommand repairCommand = new RepairCommand();
-        getCommand("repair").setExecutor(repairCommand);
-        getCommand("repair").setTabCompleter(repairCommand);
-
+        commandManager.registerCommand("pweather", pWeatherCommand, pWeatherCommand);
         TopCommand topCommand = new TopCommand();
-        getCommand("top").setExecutor(topCommand);
-        getCommand("top").setTabCompleter(topCommand);
+        commandManager.registerCommand("top", topCommand, topCommand);
 
-        SeenManager seenManager = new SeenManager();
+        // Utility Commands
+        ItemNameCommand itemNameCommand = new ItemNameCommand();
+        commandManager.registerCommand("itemname", itemNameCommand, itemNameCommand);
+        NearCommand nearCommand = new NearCommand();
+        commandManager.registerCommand("near", nearCommand, nearCommand);
+        PingCommand pingCommand = new PingCommand();
+        commandManager.registerCommand("ping", pingCommand, pingCommand);
+        RepairCommand repairCommand = new RepairCommand();
+        commandManager.registerCommand("repair", repairCommand, repairCommand);
         SeenCommand seenCommand = new SeenCommand(seenManager);
-        getCommand("seen").setExecutor(seenCommand);
-        getCommand("seen").setTabCompleter(seenCommand);
+        commandManager.registerCommand("seen", seenCommand, seenCommand);
     }
 
-    public void registerEvents(){
-        getServer().getPluginManager().registerEvents(new RemoveDropsHandler(), this);
-        getServer().getPluginManager().registerEvents(new NetherMobZombificationHandler(), this);
-        getServer().getPluginManager().registerEvents(new SlimeSplitHandler(), this);
-        getServer().getPluginManager().registerEvents(new CustomDeathMessageHandler(), this);
-//        getServer().getPluginManager().registerEvents(godCommand, this);
-        getServer().getPluginManager().registerEvents(new HealthScaleHandler(), this);
-        getServer().getPluginManager().registerEvents(new FirstJoinCommandsHandler(this), this);
-        getServer().getPluginManager().registerEvents(new FirstJoinSpawnHandler(), this);
-        getServer().getPluginManager().registerEvents(new SilkSpawnerHandler(), this);
-        getServer().getPluginManager().registerEvents(seedAndShearBlocksHandler, this);
-        getServer().getPluginManager().registerEvents(new CopperOxidationHandler(), this);
-        getServer().getPluginManager().registerEvents(new SeenEventsHandler(seenManager), this);
-        registerConfigConditionalEvents();
+    private void registerEvents(EventManager eventManager) {
+        eventManager.registerListeners(
+                new RemoveDropsHandler(),
+                new NetherMobZombificationHandler(),
+                new SlimeSplitHandler(),
+                new CustomDeathMessageHandler(),
+                new HealthScaleHandler(),
+                new FirstJoinCommandsHandler(this),
+                new FirstJoinSpawnHandler(),
+                new SilkSpawnerHandler(),
+                seedAndShearBlocksHandler,
+                new CopperOxidationHandler()
+        );
+
+        // Register config conditional events
+        registerConfigConditionalEvents(eventManager);
+
+        // Register seen event
+        eventManager.registerListeners(new SeenEventsHandler(seenManager));
+
+        // Register god event
+        GodCommand godCommand = new GodCommand();
+        eventManager.registerListeners(godCommand);
     }
 
-    public void registerConfigConditionalEvents(){
-        if (ConfigUtils.getInstance().disableSpawnerMobItemDrops){
-            getServer().getPluginManager().registerEvents(new SpawnerMobItemDropsHandler(this), this);
+    private void registerConfigConditionalEvents(EventManager eventManager) {
+        if (ConfigManager.getInstance().disableSpawnerMobItemDrops) {
+            eventManager.registerListeners(new SpawnerMobItemDropsHandler(this));
         }
-        if (ConfigUtils.getInstance().endermitesImmuneToLightning){
-            getServer().getPluginManager().registerEvents(new EndermiteImmunityHandler(), this);
+        if (ConfigManager.getInstance().endermitesImmuneToLightning) {
+            eventManager.registerListeners(new EndermiteImmunityHandler());
         }
     }
 
-    public void doStartupOperations(){
+    private void doStartupOperations() {
         new DisabledCraftingRecipesManager().removeConfiguredRecipes();
         new SeedAndShearBlocksHandler().registerTransformations();
     }
 
-    public void registerPlaceholders(){
+    private void registerPlaceholders() {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MiniMessagePlaceholderExpansion().register();
             new UnixLocalTimeExpansion().register();
@@ -194,7 +166,7 @@ public final class PrismaUtils extends JavaPlugin {
         }
     }
 
-    public void startTasks(){
+    private void startTasks() {
         new AfkTitlesHandler().runTaskTimer(this, 0, 40);
     }
 }
