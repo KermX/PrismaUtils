@@ -18,6 +18,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
+    private GodCommand godCommand;
 
     @Override
     public void onEnable() {
@@ -33,6 +34,8 @@ public final class PrismaUtils extends JavaPlugin {
 
         doStartupOperations();
         registerPlaceholders();
+
+        godCommand = new GodCommand();
 
         // Use CommandManager and EventManager to register commands and events.
         CommandManager commandManager = new CommandManager(this);
@@ -94,7 +97,7 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("feed", feedCommand, feedCommand);
         FlySpeedCommand flySpeedCommand = new FlySpeedCommand();
         commandManager.registerCommand("flyspeed", flySpeedCommand, flySpeedCommand);
-        GodCommand godCommand = new GodCommand();
+        // special case for god command, includes event listener
         commandManager.registerCommand("god", godCommand, godCommand);
         HealCommand healCommand = new HealCommand();
         commandManager.registerCommand("heal", healCommand, healCommand);
@@ -138,8 +141,7 @@ public final class PrismaUtils extends JavaPlugin {
         // Register seen event
         eventManager.registerListeners(new SeenEventsHandler(seenManager));
 
-        // Register god event
-        GodCommand godCommand = new GodCommand();
+        // Register the GodCommand as an event listener using the same instance
         eventManager.registerListeners(godCommand);
     }
 
