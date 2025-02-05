@@ -15,14 +15,12 @@ import java.util.List;
 
 public class FeedCommand implements CommandExecutor, TabCompleter {
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) && args.length == 0) {
             sender.sendMessage("You must specify a player name or use \"all\" when using this command from the console!");
             return true;
         }
-
 
         Player playerSender = (Player) sender;
         if (args.length == 0) {

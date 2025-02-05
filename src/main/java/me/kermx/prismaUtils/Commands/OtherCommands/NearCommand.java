@@ -14,13 +14,12 @@ public class NearCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
-        if (!player.hasPermission("prismautils.command.near")){
+        if (!player.hasPermission("prismautils.command.near")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
@@ -28,10 +27,10 @@ public class NearCommand implements CommandExecutor {
         Location location = player.getLocation();
         double radius = 100;
 
-        if (args.length > 0){
+        if (args.length > 0) {
             try {
                 radius = Double.parseDouble(args[0]);
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearInvalidRadiusMessage));
                 return true;
             }
@@ -40,8 +39,8 @@ public class NearCommand implements CommandExecutor {
         Component radiusComponent = Component.text(radius);
         player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNearPlayersMessage, Placeholder.component("radius", radiusComponent)));
         boolean found = false;
-        for (Player onlinePlayer : player.getWorld().getPlayers()){
-            if (onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != player){
+        for (Player onlinePlayer : player.getWorld().getPlayers()) {
+            if (onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != player) {
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNearbyPlayersMessage,
                         Placeholder.component("player", onlinePlayer.displayName()),
@@ -50,7 +49,7 @@ public class NearCommand implements CommandExecutor {
             }
         }
 
-        if (!found){
+        if (!found) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().nearNoPlayersMessage,
                     Placeholder.component("radius", radiusComponent)));
         }

@@ -10,16 +10,14 @@ import org.bukkit.entity.Player;
 
 public class EnchantingTableCommand implements CommandExecutor {
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
-        if (!player.hasPermission("prismautils.command.enchantingtable")){
+        if (!player.hasPermission("prismautils.command.enchantingtable")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }

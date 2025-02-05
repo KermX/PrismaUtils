@@ -1,6 +1,5 @@
 package me.kermx.prismaUtils.Commands.CraftingStationCommands;
 
-
 import me.kermx.prismaUtils.Utils.ConfigUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -11,16 +10,14 @@ import org.bukkit.entity.Player;
 
 public class AnvilCommand implements CommandExecutor {
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
-        if (!player.hasPermission("prismautils.command.anvil")){
+        if (!player.hasPermission("prismautils.command.anvil")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }

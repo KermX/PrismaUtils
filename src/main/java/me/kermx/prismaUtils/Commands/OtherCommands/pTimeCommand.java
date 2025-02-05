@@ -17,18 +17,17 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)){
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-        Player player = (Player) sender;
 
-        if (!player.hasPermission("prismautils.command.ptime")){
+        if (!player.hasPermission("prismautils.command.ptime")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
             return true;
         }
 
-        if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")){
+        if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
             player.resetPlayerTime();
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeResetMessage));
             return true;
@@ -40,14 +39,14 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
 
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeSetMessage,
                     Placeholder.component("time", Component.text(time))));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().pTimeInvalidTimeMessage));
         }
         return true;
     }
 
-    private long parseTime(String input){
-        switch(input.toLowerCase()){
+    private long parseTime(String input) {
+        switch (input.toLowerCase()) {
             case "day", "noon", "midday":
                 return 6000L;
             case "night":
@@ -64,7 +63,7 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
                 return 18000L;
             default:
                 long time = Long.parseLong(input);
-                if (time < 0 || time > 24000){
+                if (time < 0 || time > 24000) {
                     throw new IllegalArgumentException("Invalid time! Must be between 0 and 24000.");
                 }
                 return time;
@@ -74,7 +73,7 @@ public class pTimeCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1){
+        if (args.length == 1) {
             completions.add("day");
             completions.add("noon");
             completions.add("midday");

@@ -21,12 +21,10 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
-
-        Player player = (Player) sender;
 
         if (!player.hasPermission("prismautils.command.repair")) {
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().noPermissionMessage));
@@ -59,7 +57,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
         }
 
         ItemMeta meta = itemInHand.getItemMeta();
-        if (meta instanceof Damageable damageable){
+        if (meta instanceof Damageable damageable) {
             damageable.setDamage(0);
             itemInHand.setItemMeta(meta);
             player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().repairRepairedMessage));
@@ -75,7 +73,7 @@ public class RepairCommand implements CommandExecutor, TabCompleter {
             }
 
             ItemMeta meta = item.getItemMeta();
-            if (meta instanceof Damageable damageable){
+            if (meta instanceof Damageable damageable) {
                 damageable.setDamage(0);
                 item.setItemMeta(meta);
             }

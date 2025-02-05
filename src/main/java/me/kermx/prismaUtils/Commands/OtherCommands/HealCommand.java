@@ -61,7 +61,7 @@ public class HealCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().healOtherMessage,
                         Placeholder.component("target", target.displayName())));
                 target.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().healHealedByOtherMessage,
-                        Placeholder.component("source", sender.name())));;
+                        Placeholder.component("source", sender.name())));
             }
             return true;
         }

@@ -19,12 +19,11 @@ public class GodCommand implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command!");
             return true;
         }
 
-        Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
 
         if (!player.hasPermission("prismautils.command.god")) {
@@ -44,8 +43,7 @@ public class GodCommand implements CommandExecutor, Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             if (godPlayers.contains(player.getUniqueId())) {
                 event.setCancelled(true);
             }
