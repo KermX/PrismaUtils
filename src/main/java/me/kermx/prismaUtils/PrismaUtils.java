@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.Commands.admin.*;
 import me.kermx.prismaUtils.Commands.crafting.*;
 import me.kermx.prismaUtils.Commands.player.*;
 import me.kermx.prismaUtils.Commands.utility.*;
+import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
 import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
 import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
@@ -159,6 +160,9 @@ public final class PrismaUtils extends JavaPlugin {
         }
         if (ConfigManager.getInstance().endermitesImmuneToLightning) {
             eventManager.registerListeners(new EndermiteImmunityHandler());
+        }
+        if (ConfigManager.getInstance().chainsAreClimbable){
+            eventManager.registerListeners(new ClimbableChainsHandler());
         }
     }
 

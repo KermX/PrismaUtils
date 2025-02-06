@@ -17,6 +17,10 @@ health_scale:
   enabled: true
   value: 20
 
+block_tweaks:
+  ##must restart to toggle this feature
+  chains_are_climbable: true
+
 spawner_tweaks:
   ##must restart to toggle this feature
   disable_spawner_mob_item_drops: true

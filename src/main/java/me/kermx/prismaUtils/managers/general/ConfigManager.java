@@ -53,6 +53,9 @@ public class ConfigManager {
     // Spawner Tweaks
     public boolean disableSpawnerMobItemDrops;
 
+    // Block Tweaks
+    public boolean chainsAreClimbable;
+
     // Mob Tweaks
     public boolean endermitesImmuneToLightning;
 
@@ -199,6 +202,9 @@ public class ConfigManager {
 
         // Spawner Tweaks
         disableSpawnerMobItemDrops = config.getBoolean("spawner_tweaks.disable_spawner_mob_item_drops");
+
+        // Block Tweaks
+        chainsAreClimbable = config.getBoolean("block_tweaks.chains_are_climbable");
 
         // Mob Tweaks
         endermitesImmuneToLightning = config.getBoolean("mob_tweaks.endermites_immune_to_lightning");
