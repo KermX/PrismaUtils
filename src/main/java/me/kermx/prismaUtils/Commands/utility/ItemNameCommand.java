@@ -26,7 +26,7 @@ public class ItemNameCommand extends BaseCommand {
 
         ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().itemNameInvalidItemMessage));
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().itemNameInvalidItemMessage));
             return false;
         }
 
@@ -34,7 +34,7 @@ public class ItemNameCommand extends BaseCommand {
         Component displayName = MiniMessage.miniMessage().deserialize(newName);
 
         item.editMeta(meta -> meta.displayName(displayName));
-        sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().itemNameMessage,
+        sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().itemNameMessage,
                 Placeholder.component("name", displayName)));
 
         return true;

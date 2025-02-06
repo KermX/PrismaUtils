@@ -38,7 +38,7 @@ public class BottomCommand extends BaseCommand {
                     && (aboveBlock2.getBlock().getType() == Material.AIR || aboveBlock2.getBlock().getType() == Material.CAVE_AIR)) {
 
                 player.teleport(blockLocation.add(0.5, 1, 0.5));
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().bottomMessage));
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessage));
                 return true;
             }
         }

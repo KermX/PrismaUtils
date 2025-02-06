@@ -22,25 +22,25 @@ public class FlySpeedCommand extends BaseCommand {
         if (args.length == 0 || args[0].equalsIgnoreCase("reset")) {
             if (sender instanceof Player player) {
                 player.setFlySpeed(0.1f);
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().flyspeedResetMessage));
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().flyspeedResetMessage));
                 return true;
             }
         }
         try {
             float speed = Float.parseFloat(args[0]);
             if (speed < 0 || speed > 10) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().flyspeedInvalidSpeedMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().flyspeedInvalidSpeedMessage));
                 return true;
             }
             float adjustedSpeed = speed / 10.0f;
             ((Player) sender).setFlySpeed(adjustedSpeed);
 
             Component speedComponent = Component.text(speed);
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().flyspeedSetMessage,
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().flyspeedSetMessage,
                     Placeholder.component("speed", speedComponent)));
 
         } catch (NumberFormatException e) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().flyspeedInvalidSpeedMessage));
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().flyspeedInvalidSpeedMessage));
         }
         return true;
     }

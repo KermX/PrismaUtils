@@ -25,25 +25,25 @@ public class NearCommand extends BaseCommand {
             try {
                 radius = Double.parseDouble(args[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().nearInvalidRadiusMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().nearInvalidRadiusMessage));
                 return false;
             }
         }
         Component radiusComponent = Component.text(radius);
-        sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().nearNearPlayersMessage,
+        sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().nearNearPlayersMessage,
                 Placeholder.component("radius", radiusComponent)));
         boolean found = false;
 
         for( Player onlinePlayer : ((Player) sender).getWorld().getPlayers() ){
             if( onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != sender ){
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().nearNearbyPlayersMessage,
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().nearNearbyPlayersMessage,
                         Placeholder.component("player", onlinePlayer.displayName()),
                         Placeholder.component("distance", Component.text(onlinePlayer.getLocation().distance(location)))));
                 found = true;
             }
         }
         if (!found) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().nearNoPlayersMessage,
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().nearNoPlayersMessage,
                     Placeholder.component("radius", radiusComponent)));
         }
         return true;

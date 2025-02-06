@@ -39,16 +39,16 @@ public class AfkTitlesHandler extends BukkitRunnable {
     }
 
     private boolean isPlayerAfk(Player player){
-        String afkStatus = PlaceholderAPI.setPlaceholders(player, ConfigManager.getInstance().afkPlaceholder);
+        String afkStatus = PlaceholderAPI.setPlaceholders(player, ConfigManager.getInstance().getMessagesConfig().afkPlaceholder);
         return afkStatus.equalsIgnoreCase("true");
     }
 
     private String getRandomTitle(){
-        return ConfigManager.getInstance().afkTitles.get((int) (Math.random() * ConfigManager.getInstance().afkTitles.size()));
+        return ConfigManager.getInstance().getMessagesConfig().afkTitles.get((int) (Math.random() * ConfigManager.getInstance().getMessagesConfig().afkTitles.size()));
     }
 
     private String getRandomSubtitle(){
-        return ConfigManager.getInstance().afkSubtitles.get((int) (Math.random() * ConfigManager.getInstance().afkSubtitles.size()));
+        return ConfigManager.getInstance().getMessagesConfig().afkSubtitles.get((int) (Math.random() * ConfigManager.getInstance().getMessagesConfig().afkSubtitles.size()));
     }
 
     private void sendAfkTitle(Player player, String title, String subtitle){

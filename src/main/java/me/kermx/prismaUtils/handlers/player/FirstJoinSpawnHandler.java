@@ -12,17 +12,17 @@ public class FirstJoinSpawnHandler implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!ConfigManager.getInstance().firstJoinSpawnEnabled) return;
+        if (!ConfigManager.getInstance().getMainConfig().firstJoinSpawnEnabled) return;
 
         Player player = event.getPlayer();
         if (player.hasPlayedBefore()) return;
 
-        String worldName = ConfigManager.getInstance().firstJoinSpawnWorld;
-        double x = ConfigManager.getInstance().firstJoinSpawnX;
-        double y = ConfigManager.getInstance().firstJoinSpawnY;
-        double z = ConfigManager.getInstance().firstJoinSpawnZ;
-        float yaw = ConfigManager.getInstance().firstJoinSpawnYaw;
-        float pitch = ConfigManager.getInstance().firstJoinSpawnPitch;
+        String worldName = ConfigManager.getInstance().getMainConfig().firstJoinSpawnWorld;
+        double x = ConfigManager.getInstance().getMainConfig().firstJoinSpawnX;
+        double y = ConfigManager.getInstance().getMainConfig().firstJoinSpawnY;
+        double z = ConfigManager.getInstance().getMainConfig().firstJoinSpawnZ;
+        float yaw = ConfigManager.getInstance().getMainConfig().firstJoinSpawnYaw;
+        float pitch = ConfigManager.getInstance().getMainConfig().firstJoinSpawnPitch;
 
         Location spawnLocation = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
         player.teleport(spawnLocation);

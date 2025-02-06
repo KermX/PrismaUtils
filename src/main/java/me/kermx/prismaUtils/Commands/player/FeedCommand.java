@@ -25,38 +25,38 @@ public class FeedCommand extends BaseCommand {
                 return true;
             }
             feedPlayer(player);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().feedMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().feedMessage));
             return true;
         }
         if (args.length == 1){
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")){
                 if (!sender.hasPermission("prismautils.command.feed.all")){
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
                     return true;
                 }
                 for (Player online : Bukkit.getOnlinePlayers()){
                     feedPlayer(online);
                 }
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().feedAllMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().feedAllMessage));
                 return true;
             }
             Player target = Bukkit.getPlayerExact(targetName);
             if (target == null){
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().playerNotFoundMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
                 return true;
             }
             if (!sender.hasPermission("prismautils.command.feed.others")){
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
                 return true;
             }
             feedPlayer(target);
             sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                    ConfigManager.getInstance().feedOtherMessage,
+                    ConfigManager.getInstance().getMessagesConfig().feedOtherMessage,
                     Placeholder.component("target", target.displayName())
             ));
             target.sendMessage(MiniMessage.miniMessage().deserialize(
-                    ConfigManager.getInstance().feedFedByOtherMessage,
+                    ConfigManager.getInstance().getMessagesConfig().feedFedByOtherMessage,
                     Placeholder.component("source", sender.name())
             ));
             return true;

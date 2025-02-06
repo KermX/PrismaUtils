@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.Commands.admin;
 
 import me.kermx.prismaUtils.Commands.BaseCommand;
 import me.kermx.prismaUtils.PrismaUtils;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public class ReloadConfigCommand extends BaseCommand {
         if (args.length > 0){
             return false;
         }
-        plugin.reloadConfig();
+        ConfigManager.getInstance().reloadAll();
+
         sender.sendMessage("PrismaUtils config reloaded!");
         return true;
     }

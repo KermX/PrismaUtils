@@ -49,7 +49,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (permission != null && !permission.isEmpty()) {
             if (!sender.hasPermission(permission)) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
                 return true;
             }
         }
@@ -62,7 +62,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
         boolean success = onCommandExecute(sender, label, args);
 
         if (!success && usage != null && !usage.isEmpty()) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().incorrectUsageMessage,
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage,
                     Placeholder.component("usage", Component.text(command.getUsage()))));
         }
 

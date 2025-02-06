@@ -19,11 +19,6 @@ import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// Fix Things:
-// /stemodeldata
- // error when using /heal <player>
-//
-
 public final class PrismaUtils extends JavaPlugin {
 
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
@@ -32,9 +27,6 @@ public final class PrismaUtils extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-        getConfig().options().copyDefaults(true);
-        saveConfig();
         loadConfigurations();
 
         // Initialize specific managers / handlers
@@ -63,7 +55,6 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void loadConfigurations() {
         ConfigManager.initialize(this);
-        ConfigManager.getInstance().loadConfig();
     }
 
     private void registerCommands(CommandManager commandManager) {
@@ -155,16 +146,16 @@ public final class PrismaUtils extends JavaPlugin {
     }
 
     private void registerConfigConditionalEvents(EventManager eventManager) {
-        if (ConfigManager.getInstance().disableSpawnerMobItemDrops) {
+        if (ConfigManager.getInstance().getMainConfig().disableSpawnerMobItemDrops) {
             eventManager.registerListeners(new SpawnerMobItemDropsHandler(this));
         }
-        if (ConfigManager.getInstance().endermitesImmuneToLightning) {
+        if (ConfigManager.getInstance().getMainConfig().endermitesImmuneToLightning) {
             eventManager.registerListeners(new EndermiteImmunityHandler());
         }
-        if (ConfigManager.getInstance().chainsAreClimbable){
+        if (ConfigManager.getInstance().getMainConfig().chainsAreClimbable){
             eventManager.registerListeners(new ClimbableChainsHandler());
         }
-        if (ConfigManager.getInstance().enableNonLevelBasedEnchanting){
+        if (ConfigManager.getInstance().getMainConfig().enableNonLevelBasedEnchanting){
             eventManager.registerListeners(new NonLevelBasedEnchantingHandler());
         }
     }

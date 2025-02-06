@@ -11,9 +11,9 @@ public class HealthScaleHandler implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (ConfigManager.getInstance().healthScaleEnabled) {
+        if (ConfigManager.getInstance().getMainConfig().healthScaleEnabled) {
             player.setHealthScaled(true);
-            player.setHealthScale(ConfigManager.getInstance().healthScaleValue);
+            player.setHealthScale(ConfigManager.getInstance().getMainConfig().healthScaleValue);
         } else {
             player.setHealthScaled(false);
         }

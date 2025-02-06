@@ -28,10 +28,10 @@ public class GodCommand extends BaseCommand implements Listener {
 
         if (godPlayers.contains(playerUUID)){
             godPlayers.remove(playerUUID);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().godDisabledMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().godDisabledMessage));
         } else {
             godPlayers.add(playerUUID);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().godEnabledMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().godEnabledMessage));
         }
         return true;
     }

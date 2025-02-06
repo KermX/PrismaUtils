@@ -26,38 +26,38 @@ public class HealCommand extends BaseCommand {
                 return true;
             }
             healPlayer(player);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().healMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().healMessage));
             return true;
         }
         if (args.length == 1){
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")){
                 if (!sender.hasPermission("prismautils.command.heal.all")){
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
                     return true;
                 }
                 for (Player online : Bukkit.getOnlinePlayers()){
                     healPlayer(online);
                 }
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().healAllMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().healAllMessage));
                 return true;
             }
             Player target = Bukkit.getPlayerExact(targetName);
             if (target == null){
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().playerNotFoundMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
                 return true;
             }
             if (!sender.hasPermission("prismautils.command.heal.others")){
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
                 return true;
             }
             healPlayer(target);
             sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                    ConfigManager.getInstance().healOtherMessage,
+                    ConfigManager.getInstance().getMessagesConfig().healOtherMessage,
                     Placeholder.component("target", target.displayName())
             ));
             target.sendMessage(MiniMessage.miniMessage().deserialize(
-                    ConfigManager.getInstance().healHealedByOtherMessage,
+                    ConfigManager.getInstance().getMessagesConfig().healHealedByOtherMessage,
                     Placeholder.component("source", sender.name())
             ));
             return true;

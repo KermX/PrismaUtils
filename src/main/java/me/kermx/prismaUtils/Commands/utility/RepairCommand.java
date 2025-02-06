@@ -39,7 +39,7 @@ public class RepairCommand extends BaseCommand {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if (itemInHand.getType() == Material.AIR) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().repairNoItemInHandMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairNoItemInHandMessage));
             return;
         }
 
@@ -47,9 +47,9 @@ public class RepairCommand extends BaseCommand {
         if (meta instanceof Damageable damageable) {
             damageable.setDamage(0);
             itemInHand.setItemMeta(meta);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().repairRepairedMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairRepairedMessage));
         } else {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().repairInvalidItemMessage));
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairInvalidItemMessage));
         }
     }
 
@@ -65,7 +65,7 @@ public class RepairCommand extends BaseCommand {
                 item.setItemMeta(meta);
             }
         }
-        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().repairAllRepairedMessage));
+        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairAllRepairedMessage));
     }
 
     @Override

@@ -15,7 +15,7 @@ public class DisabledCraftingRecipesManager {
     public void removeConfiguredRecipes(){
         List<Material> materialsToRemove = new ArrayList<>();
 
-        for (String material : ConfigManager.getInstance().disabledCraftingRecipes){
+        for (String material : ConfigManager.getInstance().getMainConfig().disabledCraftingRecipes){
             Material mat = Material.getMaterial(material);
             if (mat != null){
                 materialsToRemove.add(mat);

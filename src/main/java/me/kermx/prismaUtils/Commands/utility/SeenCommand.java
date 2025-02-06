@@ -37,13 +37,13 @@ public class SeenCommand extends BaseCommand {
                 long sessionMillis = System.currentTimeMillis() - loginTime;
                 String duration = seenManager.formatDuration(sessionMillis);
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().seenOnlineMessage,
+                        ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
                         Placeholder.component("time", Component.text(duration))
                 ));
             } else {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().seenOnlineMessage,
+                        ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
                         Placeholder.component("time", Component.text("Unknown"))
                 ));
@@ -52,21 +52,21 @@ public class SeenCommand extends BaseCommand {
             OfflinePlayer offlinePlayer = seenManager.getOfflinePlayer(targetName);
             if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().seenNeverJoinedMessage,
+                        ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
                         Placeholder.component("target", Component.text(targetName))
                 ));
             } else {
                 long lastSeen = offlinePlayer.getLastSeen();
                 if (lastSeen <= 0) {
                     sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                            ConfigManager.getInstance().seenNeverJoinedMessage,
+                            ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
                             Placeholder.component("target", Component.text(targetName))
                     ));
                 } else {
                     long timeSinceLastPlayed = System.currentTimeMillis() - lastSeen;
                     String duration = seenManager.formatDuration(timeSinceLastPlayed);
                     sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                            ConfigManager.getInstance().seenOfflineMessage,
+                            ConfigManager.getInstance().getMessagesConfig().seenOfflineMessage,
                             Placeholder.component("target", Component.text(targetName)),
                             Placeholder.component("time", Component.text(duration))
                     ));

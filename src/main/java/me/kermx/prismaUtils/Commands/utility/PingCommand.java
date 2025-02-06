@@ -24,7 +24,7 @@ public class PingCommand extends BaseCommand {
             if (sender instanceof Player player){
                 int ping = player.getPing();
 
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().pingMessage,
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pingMessage,
                         Placeholder.component("ping", Component.text(ping))));
 
             } else {
@@ -37,14 +37,14 @@ public class PingCommand extends BaseCommand {
                 if (target != null && target.isOnline()){
                     int ping = target.getPing();
 
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().pingOtherMessage,
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pingOtherMessage,
                             Placeholder.component("target", target.displayName()),
                             Placeholder.component("ping", Component.text(ping))));
                 } else {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().playerNotFoundMessage));
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
                 }
             } else {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().noPermissionMessage));
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
             }
         } else {
             return false;

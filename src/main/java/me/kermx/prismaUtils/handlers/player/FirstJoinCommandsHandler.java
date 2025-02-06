@@ -19,14 +19,14 @@ public class FirstJoinCommandsHandler implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!ConfigManager.getInstance().firstJoinCommandsEnabled) return;
+        if (!ConfigManager.getInstance().getMainConfig().firstJoinCommandsEnabled) return;
 
         Player player = event.getPlayer();
         if (player.hasPlayedBefore()) return;
 
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (String command : ConfigManager.getInstance().firstJoinCommands) {
+            for (String command : ConfigManager.getInstance().getMainConfig().firstJoinCommands) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
             }
         }, 20L);

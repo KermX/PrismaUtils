@@ -37,7 +37,7 @@ public class SilkSpawnerHandler implements Listener {
                 if (!isSneaking) {
                     event.setCancelled(true);
                     event.getPlayer().sendMessage(
-                            MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().spawnerNoSilkWarningMessage));
+                            MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().spawnerNoSilkWarningMessage));
                 }
                 // If they are sneaking but don't have Silk Touch, the event proceeds normally,
                 // meaning the spawner is destroyed (no special drop).
@@ -106,7 +106,7 @@ public class SilkSpawnerHandler implements Listener {
             blockStateMeta.setBlockState(creatureSpawner);
 
             // Optional: set a custom display name
-            blockStateMeta.displayName(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().spawnerName,
+            blockStateMeta.displayName(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().spawnerName,
                     Placeholder.component("entitytype", Component.translatable(spawnedType.translationKey()))));
 
             spawnerItem.setItemMeta(blockStateMeta);

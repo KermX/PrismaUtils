@@ -21,7 +21,7 @@ public class pTimeCommand extends BaseCommand {
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
             ((Player) sender).resetPlayerTime();
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().pTimeResetMessage));
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeResetMessage));
             return true;
         }
 
@@ -29,10 +29,10 @@ public class pTimeCommand extends BaseCommand {
             long time = parseTime(args[0]);
             ((Player) sender).setPlayerTime(time, false);
 
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().pTimeSetMessage,
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeSetMessage,
                     Placeholder.component("time", Component.text(time))));
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().pTimeInvalidTimeMessage));
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeInvalidTimeMessage));
             return false;
         }
         return true;

@@ -24,7 +24,7 @@ public class TopCommand extends BaseCommand {
         Location currentLocation = player.getLocation();
         Location topLocation = currentLocation.getWorld().getHighestBlockAt(currentLocation).getLocation().add(0.5, 1, 0.5);
         player.teleport(topLocation);
-        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().topMessage));
+        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessage));
         return true;
     }
 
