@@ -50,14 +50,11 @@ public class ConfigManager {
     // Remove Crafting Recipes
     public List<String> disabledCraftingRecipes;
 
-    // Spawner Tweaks
+    // Tweaks
     public boolean disableSpawnerMobItemDrops;
-
-    // Block Tweaks
     public boolean chainsAreClimbable;
-
-    // Mob Tweaks
     public boolean endermitesImmuneToLightning;
+    public boolean enableNonLevelBasedEnchanting;
 
     // Cooldowns
     public long cooldownDeathMessageSeconds;
@@ -200,14 +197,11 @@ public class ConfigManager {
         // Remove Crafting Recipes
         disabledCraftingRecipes = config.getStringList("disabled_recipes");
 
-        // Spawner Tweaks
-        disableSpawnerMobItemDrops = config.getBoolean("spawner_tweaks.disable_spawner_mob_item_drops");
-
-        // Block Tweaks
-        chainsAreClimbable = config.getBoolean("block_tweaks.chains_are_climbable");
-
-        // Mob Tweaks
-        endermitesImmuneToLightning = config.getBoolean("mob_tweaks.endermites_immune_to_lightning");
+        // Tweaks
+        disableSpawnerMobItemDrops = config.getBoolean("tweaks.disable_spawner_mob_item_drops");
+        chainsAreClimbable = config.getBoolean("tweaks.chains_are_climbable");
+        endermitesImmuneToLightning = config.getBoolean("tweaks.endermites_immune_to_lightning");
+        enableNonLevelBasedEnchanting = config.getBoolean("tweaks.non_level_based_enchanting");
 
         //Cooldowns
         cooldownDeathMessageSeconds = config.getLong("cooldowns.death_message_cooldown_seconds");
