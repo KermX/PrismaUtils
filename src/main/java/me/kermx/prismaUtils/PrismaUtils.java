@@ -18,6 +18,11 @@ import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// Fix Things:
+// /stemodeldata
+ // error when using /heal <player>
+//
+
 public final class PrismaUtils extends JavaPlugin {
 
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;

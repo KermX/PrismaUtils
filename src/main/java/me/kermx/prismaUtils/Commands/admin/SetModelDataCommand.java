@@ -17,7 +17,7 @@ public class SetModelDataCommand extends BaseCommand {
 
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+        if (args.length != 1) {
             return false;
         }
         Player player = (Player) sender;

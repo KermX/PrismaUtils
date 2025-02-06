@@ -94,7 +94,7 @@ commands:
     permission: prismautils.command.repair
   flyspeed:
     description: Sets the player's fly speed.
-    usage: /flyspeed <speed>
+    usage: /flyspeed [speed]
     permission: prismautils.command.flyspeed
   top:
     description: Teleports the player to the top.

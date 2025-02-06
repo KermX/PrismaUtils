@@ -78,7 +78,7 @@ heal_messages:
   heal_message: '<green>You have been healed!'
   heal_all_message: '<green>Everyone has been healed!'
   heal_other_message: '<green>You have healed <target>!'
-  heal_heal_by_other_message: '<green>You were healed by <source>!'
+  heal_healed_by_other_message: '<green>You were healed by <source>!'
 
 itemname_messages:
   itemname_no_item_message: '<red>You must be holding an item to rename it!'
