@@ -3,6 +3,8 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.Commands.admin.*;
 import me.kermx.prismaUtils.Commands.crafting.*;
 import me.kermx.prismaUtils.Commands.player.*;
+import me.kermx.prismaUtils.Commands.player.restore.RestoreHungerCommand;
+import me.kermx.prismaUtils.Commands.player.restore.RestoreHealthCommand;
 import me.kermx.prismaUtils.Commands.utility.*;
 import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
 import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
@@ -93,13 +95,13 @@ public final class PrismaUtils extends JavaPlugin {
         // Player Commands
         BottomCommand bottomCommand = new BottomCommand();
         commandManager.registerCommand("bottom", bottomCommand, bottomCommand);
-        FeedCommand feedCommand = new FeedCommand();
-        commandManager.registerCommand("feed", feedCommand, feedCommand);
+        RestoreHungerCommand restoreHungerCommand = new RestoreHungerCommand();
+        commandManager.registerCommand("feed", restoreHungerCommand, restoreHungerCommand);
         FlySpeedCommand flySpeedCommand = new FlySpeedCommand();
         commandManager.registerCommand("flyspeed", flySpeedCommand, flySpeedCommand);
         // special case for god command, includes event listener
         commandManager.registerCommand("god", godCommand, godCommand);
-        HealCommand healCommand = new HealCommand();
+        RestoreHealthCommand healCommand = new RestoreHealthCommand();
         commandManager.registerCommand("heal", healCommand, healCommand);
         pTimeCommand pTimeCommand = new pTimeCommand();
         commandManager.registerCommand("ptime", pTimeCommand, pTimeCommand);
