@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.Commands.admin;
+package me.kermx.prismaUtils.commands.admin;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;

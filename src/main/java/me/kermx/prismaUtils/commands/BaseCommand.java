@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.Commands;
+package me.kermx.prismaUtils.commands;
 
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import net.kyori.adventure.text.Component;

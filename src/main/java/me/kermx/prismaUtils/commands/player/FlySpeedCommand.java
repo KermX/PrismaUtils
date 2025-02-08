@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.Commands.player;
+package me.kermx.prismaUtils.commands.player;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

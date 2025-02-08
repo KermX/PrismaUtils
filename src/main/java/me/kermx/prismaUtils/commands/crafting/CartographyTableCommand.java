@@ -1,16 +1,17 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SmithingTableCommand extends BaseCommand {
+public class CartographyTableCommand extends BaseCommand {
 
-    public SmithingTableCommand(){
-        super("prismautils.command.smithingtable", false, "/smithingtable");
+
+    public CartographyTableCommand(){
+        super("prismautils.command.cartographytable", false, "/cartographytable");
     }
 
     @Override
@@ -20,7 +21,7 @@ public class SmithingTableCommand extends BaseCommand {
         }
         Player player = (Player) sender;
         Location location = player.getLocation();
-        player.openSmithingTable(location, true);
+        player.openCartographyTable(location, true);
         return true;
     }
 

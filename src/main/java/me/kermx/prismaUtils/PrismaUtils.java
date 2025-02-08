@@ -3,8 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.Commands.admin.*;
 import me.kermx.prismaUtils.Commands.crafting.*;
 import me.kermx.prismaUtils.Commands.player.*;
-import me.kermx.prismaUtils.Commands.player.restore.RestoreHungerCommand;
-import me.kermx.prismaUtils.Commands.player.restore.RestoreHealthCommand;
+import me.kermx.prismaUtils.Commands.player.restore.*
 import me.kermx.prismaUtils.Commands.utility.*;
 import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
 import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;

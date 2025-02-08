@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

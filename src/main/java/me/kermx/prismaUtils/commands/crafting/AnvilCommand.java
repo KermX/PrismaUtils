@@ -1,17 +1,16 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class CraftingTableCommand extends BaseCommand {
+public class AnvilCommand extends BaseCommand {
 
-
-    public CraftingTableCommand(){
-        super("prismautils.command.craftingtable", false, "/craftingtable");
+    public AnvilCommand(){
+        super("prismautils.command.anvil", false, "/anvil");
     }
 
     @Override
@@ -21,7 +20,7 @@ public class CraftingTableCommand extends BaseCommand {
         }
         Player player = (Player) sender;
         Location location = player.getLocation();
-        player.openWorkbench(location, true);
+        player.openAnvil(location, true);
         return true;
     }
 

@@ -1,16 +1,17 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
-public class EnderChestCommand extends BaseCommand {
+public class CraftingTableCommand extends BaseCommand {
 
-    public EnderChestCommand(){
-        super("prismautils.command.enderchest", false, "/enderchest");
+
+    public CraftingTableCommand(){
+        super("prismautils.command.craftingtable", false, "/craftingtable");
     }
 
     @Override
@@ -19,8 +20,8 @@ public class EnderChestCommand extends BaseCommand {
             return false;
         }
         Player player = (Player) sender;
-        Inventory enderChest = player.getEnderChest();
-        player.openInventory(enderChest);
+        Location location = player.getLocation();
+        player.openWorkbench(location, true);
         return true;
     }
 

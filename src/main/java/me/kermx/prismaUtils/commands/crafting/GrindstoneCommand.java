@@ -1,16 +1,16 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class StonecutterCommand extends BaseCommand {
+public class GrindstoneCommand extends BaseCommand {
 
-    public StonecutterCommand(){
-        super("prismautils.command.stonecutter", false, "/stonecutter");
+    public GrindstoneCommand(){
+        super("prismautils.command.grindstone", false, "/grindstone");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class StonecutterCommand extends BaseCommand {
         }
         Player player = (Player) sender;
         Location location = player.getLocation();
-        player.openStonecutter(location, true);
+        player.openGrindstone(location, true);
         return true;
     }
 

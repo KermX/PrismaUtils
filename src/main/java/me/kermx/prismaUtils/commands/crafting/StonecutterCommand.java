@@ -1,17 +1,16 @@
-package me.kermx.prismaUtils.Commands.crafting;
+package me.kermx.prismaUtils.commands.crafting;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class CartographyTableCommand extends BaseCommand {
+public class StonecutterCommand extends BaseCommand {
 
-
-    public CartographyTableCommand(){
-        super("prismautils.command.cartographytable", false, "/cartographytable");
+    public StonecutterCommand(){
+        super("prismautils.command.stonecutter", false, "/stonecutter");
     }
 
     @Override
@@ -21,7 +20,7 @@ public class CartographyTableCommand extends BaseCommand {
         }
         Player player = (Player) sender;
         Location location = player.getLocation();
-        player.openCartographyTable(location, true);
+        player.openStonecutter(location, true);
         return true;
     }
 
