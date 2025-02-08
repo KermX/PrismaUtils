@@ -92,6 +92,8 @@ commands:
     description: Repairs the item in the player's hand.
     usage: /repair <hand/all>
     permission: prismautils.command.repair
+    aliases:
+      - fix
   flyspeed:
     description: Sets the player's fly speed.
     usage: /flyspeed [speed]
