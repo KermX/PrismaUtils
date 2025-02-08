@@ -12,21 +12,25 @@ import java.util.List;
 
 public class BottomCommand extends BaseCommand {
 
-    public BottomCommand(){
+    public BottomCommand() {
         super("prismautils.command.bottom", false, "/bottom");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
+
         Player player = (Player) sender;
         Location currentLocation = player.getLocation();
         int x = currentLocation.getBlockX();
         int z = currentLocation.getBlockZ();
         int minY = currentLocation.getWorld().getMinHeight();
         int maxY = currentLocation.getWorld().getMaxHeight();
+
+        boolean foundSafeLocation = false;
+        Location targetLocation = null;
 
         for (int y = minY; y < maxY - 1; y++) {
             Location blockLocation = new Location(currentLocation.getWorld(), x, y, z);
@@ -37,21 +41,31 @@ public class BottomCommand extends BaseCommand {
                     && (aboveBlock1.getBlock().getType() == Material.AIR || aboveBlock1.getBlock().getType() == Material.CAVE_AIR)
                     && (aboveBlock2.getBlock().getType() == Material.AIR || aboveBlock2.getBlock().getType() == Material.CAVE_AIR)) {
 
-                player.teleport(blockLocation.add(0.5, 1, 0.5));
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessage));
-                return true;
+                targetLocation = blockLocation.add(0.5, 1, 0.5); // Calculate target teleport location
+                targetLocation.setPitch(player.getPitch());
+                targetLocation.setYaw(player.getYaw());
+                foundSafeLocation = true;
+                break;
             }
         }
+
+        if (foundSafeLocation) {
+            // Check if player is already at the target location
+            if (currentLocation.getBlockX() == targetLocation.getBlockX() && currentLocation.getBlockZ() == targetLocation.getBlockZ() && currentLocation.getBlockY() == targetLocation.getBlockY()) {
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock));
+            } else {
+                player.teleport(targetLocation);
+                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessage));
+            }
+        } else {
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock));
+        }
+
         return true;
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
-
-// Add to show when the player does not have a valid block below them
-//        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigUtils.getInstance().bottomMessageInvalidBlock));
-//        return true;
-
 }

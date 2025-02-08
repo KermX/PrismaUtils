@@ -79,6 +79,7 @@ public class MessagesConfigManager {
 
     // Top Bottom Messages
     public String topMessage;
+    public String topMessageAlreadyAtTop;
     public String bottomMessage;
     public String bottomMessageInvalidBlock;
 
@@ -95,7 +96,7 @@ public class MessagesConfigManager {
         this.plugin = plugin;
     }
 
-    public void loadConfig(){
+    public void loadConfig() {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();
         }
@@ -187,6 +188,7 @@ public class MessagesConfigManager {
 
         // Top Bottom Messages
         topMessage = messages.getString("top_messages.top_message");
+        topMessageAlreadyAtTop = messages.getString("top_messages.top_message_already_at_top");
         bottomMessage = messages.getString("bottom_messages.bottom_message");
         bottomMessageInvalidBlock = messages.getString("bottom_messages.bottom_message_invalid_block");
 

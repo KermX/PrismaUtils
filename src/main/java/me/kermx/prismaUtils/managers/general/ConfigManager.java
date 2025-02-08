@@ -5,8 +5,6 @@ import me.kermx.prismaUtils.managers.general.configs.DeathMessagesConfigManager;
 import me.kermx.prismaUtils.managers.general.configs.MainConfigManager;
 import me.kermx.prismaUtils.managers.general.configs.MessagesConfigManager;
 
-import java.util.List;
-
 public class ConfigManager {
 
     private static ConfigManager instance;
