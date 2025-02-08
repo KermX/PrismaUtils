@@ -1,6 +1,6 @@
-package me.kermx.prismaUtils.Commands.player.restore;
+package me.kermx.prismaUtils.commands.player.restore;
 
-import me.kermx.prismaUtils.Commands.BaseCommand;
+import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;

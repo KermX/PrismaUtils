@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.Commands.player.restore;
+package me.kermx.prismaUtils.commands.player.restore;
 
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.attribute.Attribute;
