@@ -72,12 +72,3 @@ bottom_messages:
 god_messages:
   god_enabled_message: '<green>God mode enabled!'
   god_disabled_message: '<red>God mode disabled!'
-
-afk_title_feature:
-  afk_placeholder: '%essentials_afk%'
-  afk_titles:
-    - '<red> Test'
-    - '<red> Test2'
-  afk_subtitle:
-    - '<red> Test'
-    - '<red> Test2'
