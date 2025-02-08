@@ -11,25 +11,34 @@ import java.util.List;
 
 public class TopCommand extends BaseCommand {
 
-    public TopCommand(){
+    public TopCommand() {
         super("prismautils.command.top", false, "/top");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
+
         Player player = (Player) sender;
         Location currentLocation = player.getLocation();
         Location topLocation = currentLocation.getWorld().getHighestBlockAt(currentLocation).getLocation().add(0.5, 1, 0.5);
-        player.teleport(topLocation);
-        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessage));
+        topLocation.setPitch(player.getPitch());
+        topLocation.setYaw(player.getYaw());
+
+        if (currentLocation.getY() >= topLocation.getY() - 1) { // Already at the top
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessageAlreadyAtTop));
+        } else {
+            player.teleport(topLocation);
+            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessage));
+        }
+
         return true;
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }
