@@ -1,10 +1,10 @@
 package me.kermx.prismaUtils;
 
-import me.kermx.prismaUtils.Commands.admin.*;
-import me.kermx.prismaUtils.Commands.crafting.*;
-import me.kermx.prismaUtils.Commands.player.*;
-import me.kermx.prismaUtils.Commands.player.restore.*
-import me.kermx.prismaUtils.Commands.utility.*;
+import me.kermx.prismaUtils.commands.admin.*;
+import me.kermx.prismaUtils.commands.crafting.*;
+import me.kermx.prismaUtils.commands.player.*;
+import me.kermx.prismaUtils.commands.player.restore.*;
+import me.kermx.prismaUtils.commands.utility.*;
 import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
 import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
 import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
@@ -100,8 +100,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("flyspeed", flySpeedCommand, flySpeedCommand);
         // special case for god command, includes event listener
         commandManager.registerCommand("god", godCommand, godCommand);
-        RestoreHealthCommand healCommand = new RestoreHealthCommand();
-        commandManager.registerCommand("heal", healCommand, healCommand);
+        RestoreHealthCommand restoreHealthCommand = new RestoreHealthCommand();
+        commandManager.registerCommand("heal", restoreHealthCommand, restoreHealthCommand);
         pTimeCommand pTimeCommand = new pTimeCommand();
         commandManager.registerCommand("ptime", pTimeCommand, pTimeCommand);
         pWeatherCommand pWeatherCommand = new pWeatherCommand();
