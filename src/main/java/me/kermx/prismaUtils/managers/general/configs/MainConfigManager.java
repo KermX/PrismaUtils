@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class MainConfigManager {
@@ -54,6 +56,24 @@ public class MainConfigManager {
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
+
+        InputStream defaultStream = plugin.getResource("config.yml");
+        if (defaultStream == null) {
+            plugin.getLogger().warning("Default config.yml not found in the JAR. No defaults to merge!");
+        } else {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            config.setDefaults(defaultConfig);
+            config.options().copyDefaults(true);
+
+            try {
+                config.save(configFile);
+                plugin.getLogger().info("Merged any missing keys into config.yml (if needed).");
+            } catch (IOException e) {
+                plugin.getLogger().severe("Could not save merged config.yml!");
+                e.printStackTrace();
+            }
+        }
+
         // First Join Spawn
         firstJoinSpawnEnabled = config.getBoolean("first_join_spawn.enabled");
         firstJoinSpawnWorld = config.getString("first_join_spawn.world");

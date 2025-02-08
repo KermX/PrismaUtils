@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class MessagesConfigManager {
@@ -103,6 +105,23 @@ public class MessagesConfigManager {
             plugin.saveResource("messages.yml", false);
         }
         messages = YamlConfiguration.loadConfiguration(messagesFile);
+
+        InputStream defaultStream = plugin.getResource("messages.yml");
+        if (defaultStream == null) {
+            plugin.getLogger().warning("Default messages.yml not found in the JAR. No defaults to merge!");
+        } else {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            messages.setDefaults(defaultConfig);
+            messages.options().copyDefaults(true);
+
+            try {
+                messages.save(messagesFile);
+                plugin.getLogger().info("Merged any missing keys into messages.yml (if needed).");
+            } catch (IOException e) {
+                plugin.getLogger().severe("Could not save merged messages.yml!");
+                e.printStackTrace();
+            }
+        }
 
         // General Messages
         noPermissionMessage = messages.getString("general_messages.no_permission");

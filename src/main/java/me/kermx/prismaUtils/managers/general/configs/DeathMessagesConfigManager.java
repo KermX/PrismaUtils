@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class DeathMessagesConfigManager {
@@ -70,6 +72,23 @@ public class DeathMessagesConfigManager {
             plugin.saveResource("death_messages.yml", false);
         }
         deathMessages = YamlConfiguration.loadConfiguration(deathMessagesFile);
+
+        InputStream defaultStream = plugin.getResource("death_messages.yml");
+        if (defaultStream == null) {
+            plugin.getLogger().warning("Default death_messages.yml not found in the JAR. No defaults to merge!");
+        } else {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            deathMessages.setDefaults(defaultConfig);
+            deathMessages.options().copyDefaults(true);
+
+            try {
+                deathMessages.save(deathMessagesFile);
+                plugin.getLogger().info("Merged any missing keys into death_messages.yml (if needed).");
+            } catch (IOException e) {
+                plugin.getLogger().severe("Could not save merged death_messages.yml!");
+                e.printStackTrace();
+            }
+        }
 
         deathMessageCooldownSeconds = deathMessages.getInt("cooldown_seconds");
 
