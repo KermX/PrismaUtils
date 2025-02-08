@@ -3,7 +3,6 @@ general_messages:
   must_specify_player: '<red>You must specify a player!'
   player_not_found: '<red>Player not found!'
   incorrect_usage: '<red>Usage: <white><usage>'
-  afkPlaceholder: '<green>What the Frog!'
 
 seen_messages:
   seen_offline_message: '<green><target> was last seen <time> ago!'
