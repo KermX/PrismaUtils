@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.commands.player;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -21,7 +22,9 @@ public class pTimeCommand extends BaseCommand {
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
             ((Player) sender).resetPlayerTime();
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeResetMessage));
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().pTimeResetMessage)
+            );
             return true;
         }
 
@@ -29,10 +32,14 @@ public class pTimeCommand extends BaseCommand {
             long time = parseTime(args[0]);
             ((Player) sender).setPlayerTime(time, false);
 
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeSetMessage,
-                    Placeholder.component("time", Component.text(time))));
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().pTimeSetMessage,
+                    Placeholder.component("time", Component.text(time)))
+            );
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().pTimeInvalidTimeMessage));
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().pTimeInvalidTimeMessage)
+            );
             return false;
         }
         return true;

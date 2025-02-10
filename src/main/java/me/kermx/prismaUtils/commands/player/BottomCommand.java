@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.commands.player;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,13 +53,19 @@ public class BottomCommand extends BaseCommand {
         if (foundSafeLocation) {
             // Check if player is already at the target location
             if (currentLocation.getBlockX() == targetLocation.getBlockX() && currentLocation.getBlockZ() == targetLocation.getBlockZ() && currentLocation.getBlockY() == targetLocation.getBlockY()) {
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock));
+                player.sendMessage(TextUtils.deserializeString(
+                        ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock)
+                );
             } else {
                 player.teleport(targetLocation);
-                player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessage));
+                player.sendMessage(TextUtils.deserializeString(
+                        ConfigManager.getInstance().getMessagesConfig().bottomMessage)
+                );
             }
         } else {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock));
+            player.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock)
+            );
         }
 
         return true;

@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.commands.player;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -28,10 +29,14 @@ public class TopCommand extends BaseCommand {
         topLocation.setYaw(player.getYaw());
 
         if (currentLocation.getY() >= topLocation.getY() - 1) { // Already at the top
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessageAlreadyAtTop));
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().topMessageAlreadyAtTop)
+            );
         } else {
             player.teleport(topLocation);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().topMessage));
+            player.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().topMessage)
+            );
         }
 
         return true;

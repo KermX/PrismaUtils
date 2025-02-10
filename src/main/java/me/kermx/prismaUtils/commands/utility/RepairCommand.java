@@ -2,7 +2,7 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,7 +39,10 @@ public class RepairCommand extends BaseCommand {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if (itemInHand.getType() == Material.AIR) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairNoItemInHandMessage));
+
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().repairNoItemInHandMessage)
+            );
             return;
         }
 
@@ -47,9 +50,13 @@ public class RepairCommand extends BaseCommand {
         if (meta instanceof Damageable damageable) {
             damageable.setDamage(0);
             itemInHand.setItemMeta(meta);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairRepairedMessage));
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().repairRepairedMessage)
+            );
         } else {
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairInvalidItemMessage));
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().repairInvalidItemMessage)
+            );
         }
     }
 
@@ -65,7 +72,9 @@ public class RepairCommand extends BaseCommand {
                 item.setItemMeta(meta);
             }
         }
-        player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().repairAllRepairedMessage));
+        player.sendMessage(
+                TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().repairAllRepairedMessage)
+        );
     }
 
     @Override

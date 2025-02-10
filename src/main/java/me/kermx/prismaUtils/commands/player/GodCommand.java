@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.commands.player;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,10 +29,14 @@ public class GodCommand extends BaseCommand implements Listener {
 
         if (godPlayers.contains(playerUUID)){
             godPlayers.remove(playerUUID);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().godDisabledMessage));
+            player.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().godDisabledMessage)
+            );
         } else {
             godPlayers.add(playerUUID);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().godEnabledMessage));
+            player.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().godEnabledMessage)
+            );
         }
         return true;
     }

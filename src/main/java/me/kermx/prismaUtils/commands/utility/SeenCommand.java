@@ -3,8 +3,9 @@ package me.kermx.prismaUtils.commands.utility;
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.PlayerUtils;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -35,41 +36,48 @@ public class SeenCommand extends BaseCommand {
             Long loginTime = seenManager.getLoginTime(onlinePlayer.getUniqueId());
             if (loginTime != null) {
                 long sessionMillis = System.currentTimeMillis() - loginTime;
-                String duration = seenManager.formatDuration(sessionMillis);
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
+                String duration = TextUtils.formatDuration(sessionMillis);
+
+                sender.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text(duration))
-                ));
+                        Placeholder.component("time", Component.text(duration)))
+                );
             } else {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
+
+                sender.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
                         Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text("Unknown"))
-                ));
+                        Placeholder.component("time", Component.text("Unknown")))
+                );
             }
         } else {
-            OfflinePlayer offlinePlayer = seenManager.getOfflinePlayer(targetName);
+            OfflinePlayer offlinePlayer = PlayerUtils.getOfflinePlayer(targetName);
             if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
-                        Placeholder.component("target", Component.text(targetName))
-                ));
+
+                sender.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
+                        Placeholder.component("target", Component.text(targetName)))
+                );
+
             } else {
                 long lastSeen = offlinePlayer.getLastSeen();
                 if (lastSeen <= 0) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                            ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
-                            Placeholder.component("target", Component.text(targetName))
-                    ));
+
+                    sender.sendMessage(
+                            TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
+                            Placeholder.component("target", Component.text(targetName)))
+                    );
+
                 } else {
                     long timeSinceLastPlayed = System.currentTimeMillis() - lastSeen;
-                    String duration = seenManager.formatDuration(timeSinceLastPlayed);
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                            ConfigManager.getInstance().getMessagesConfig().seenOfflineMessage,
+                    String duration = TextUtils.formatDuration(timeSinceLastPlayed);
+
+                    sender.sendMessage(
+                            TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOfflineMessage,
                             Placeholder.component("target", Component.text(targetName)),
-                            Placeholder.component("time", Component.text(duration))
-                    ));
+                            Placeholder.component("time", Component.text(duration)))
+                    );
                 }
             }
         }

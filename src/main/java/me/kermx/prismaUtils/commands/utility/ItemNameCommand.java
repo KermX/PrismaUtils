@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -26,7 +27,11 @@ public class ItemNameCommand extends BaseCommand {
 
         ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
         if (item.getType() == Material.AIR) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().itemNameInvalidItemMessage));
+
+            sender.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().itemNameInvalidItemMessage)
+            );
+
             return false;
         }
 
@@ -34,8 +39,11 @@ public class ItemNameCommand extends BaseCommand {
         Component displayName = MiniMessage.miniMessage().deserialize(newName);
 
         item.editMeta(meta -> meta.displayName(displayName));
-        sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().itemNameMessage,
-                Placeholder.component("name", displayName)));
+
+        sender.sendMessage(
+                TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().itemNameMessage,
+                Placeholder.component("name", displayName))
+        );
 
         return true;
     }

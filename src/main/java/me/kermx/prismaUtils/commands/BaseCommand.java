@@ -1,6 +1,7 @@
 package me.kermx.prismaUtils.commands;
 
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -49,7 +50,9 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (permission != null && !permission.isEmpty()) {
             if (!sender.hasPermission(permission)) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
+                sender.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage
+                        ));
                 return true;
             }
         }
@@ -62,8 +65,10 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
         boolean success = onCommandExecute(sender, label, args);
 
         if (!success && usage != null && !usage.isEmpty()) {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage,
-                    Placeholder.component("usage", Component.text(command.getUsage()))));
+            sender.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage,
+                    Placeholder.component("usage", Component.text(command.getUsage()))
+                    ));
         }
 
         return true;

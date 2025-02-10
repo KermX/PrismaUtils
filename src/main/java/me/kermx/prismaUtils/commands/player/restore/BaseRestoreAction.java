@@ -2,7 +2,7 @@ package me.kermx.prismaUtils.commands.player.restore;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -44,7 +44,7 @@ public abstract class BaseRestoreAction extends BaseCommand {
                 return true;
             }
             performAction(player);
-            player.sendMessage(MiniMessage.miniMessage().deserialize(actionMessage));
+            player.sendMessage(TextUtils.deserializeString(actionMessage));
             return true;
         }
 
@@ -52,27 +52,37 @@ public abstract class BaseRestoreAction extends BaseCommand {
             String targetName = args[0];
             if (targetName.equalsIgnoreCase("all")) {
                 if (!sender.hasPermission(permissionNodeAll)) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
+                    sender.sendMessage(TextUtils.deserializeString(
+                            ConfigManager.getInstance().getMessagesConfig().noPermissionMessage)
+                    );
                     return true;
                 }
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     performAction(online);
                 }
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(actionAllMessage));
+                sender.sendMessage(TextUtils.deserializeString(actionAllMessage));
                 return true;
             }
             Player target = Bukkit.getPlayerExact(targetName);
             if (target == null) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
+                sender.sendMessage(TextUtils.deserializeString(
+                        ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage)
+                );
                 return true;
             }
             if (!sender.hasPermission(permissionNodeOthers)) {
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage));
+                sender.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().noPermissionMessage)
+                );
                 return true;
             }
             performAction(target);
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(actionOtherMessage, Placeholder.component("target", target.displayName())));
-            target.sendMessage(MiniMessage.miniMessage().deserialize(actionByOtherMessage, Placeholder.component("source", sender.name())));
+            sender.sendMessage(TextUtils.deserializeString(
+                    actionOtherMessage, Placeholder.component("target", target.displayName()))
+            );
+            target.sendMessage(TextUtils.deserializeString(
+                    actionByOtherMessage, Placeholder.component("source", sender.name()))
+            );
             return true;
         }
         return false;
