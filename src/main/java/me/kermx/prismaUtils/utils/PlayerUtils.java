@@ -3,8 +3,10 @@ package me.kermx.prismaUtils.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-public class PlayerUtils {
-    private PlayerUtils(){}
+public final class PlayerUtils {
+    private PlayerUtils(){
+        throw new UnsupportedOperationException("Utility class (PlayerUtils) - cannot be instantiated");
+    }
 
     /**
      * Get an offline player by their name
