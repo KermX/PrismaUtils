@@ -72,6 +72,11 @@ god_messages:
   god_enabled_message: '<green>God mode enabled!'
   god_disabled_message: '<red>God mode disabled!'
 
+condense_uncondense:
+  condense_message: '<green>Condensed <from> into <to>!'
+  uncondense_message: '<green>Uncondensed <from> into <to>!'
+  not_holding_any_item: '<green>You are not holding any item.'
+
 afk_title_feature:
   afk_placeholder: '%essentials_afk%'
   afk_titles:

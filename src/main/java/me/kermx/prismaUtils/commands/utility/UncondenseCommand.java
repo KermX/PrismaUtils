@@ -2,16 +2,20 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.features.CondenseMaterialsManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.ItemUtils;
-import me.kermx.prismaUtils.utils.PlayerUtils;
-import org.bukkit.Bukkit;
+import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UncondenseCommand extends BaseCommand {
 
@@ -24,123 +28,111 @@ public class UncondenseCommand extends BaseCommand {
 
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+
         Player player = (Player) sender;
-        if (args.length == 0) {
+        PlayerInventory inventory = player.getInventory();
+
+        if (args.length == 0 || args[0].equalsIgnoreCase("all")) {
             uncondenseInventory(player);
-            player.sendMessage("Uncondense all reversible recipes items inventory.");
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().uncondenseMessage,
+                            Placeholder.component("from", Component.text("all reversible items")),
+                            Placeholder.component("to", Component.text("their base materials")))
+            );
             return true;
         }
 
-        // TODO handle argument for specific item uncondense
-        Material inputMaterial = Material.matchMaterial(args[0]);
-        if (inputMaterial == null || !condenseMaterialsManager.getRecipes().containsKey(inputMaterial)) {
-            player.sendMessage("Invalid item or no condensing recipe available for this item.");
-            return true;
-        }
-
-        // Check for special NBT tags on the input item
-        ItemStack inputItem = new ItemStack(inputMaterial);
-        if (!ItemUtils.itemHasSpecialMeta(inputItem)) {
-            // amount (i.e 9) to get condensed
-            int inputAmount = condenseMaterialsManager.getRecipes().get(inputMaterial);
-            // amount in player's inventory total
-            int inputCount = ItemUtils.countItems(player.getInventory().getStorageContents(), inputMaterial);
-
-            if (inputCount >= inputAmount) {
-                int condensedBlocks = inputCount / inputAmount;
-                int remainingItems = inputCount % inputAmount;
-
-                ItemStack inputStack = new ItemStack(inputMaterial, inputCount);
-                player.getInventory().removeItem(inputStack);
-
-                Material resultMaterial = condenseMaterialsManager.getResultMaterial(inputMaterial, false);
-                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
-                ItemUtils.giveItems(player, inputMaterial, remainingItems);
-                // player.sendMessage("Condensed " + condensedBlocks + " " + resultMaterial + " blocks.");
-            } else {
-                player.sendMessage("You don't have enough to condense.");
+        if (args[0].equalsIgnoreCase("hand")) {
+            ItemStack itemInHand = inventory.getItemInMainHand();
+            if (itemInHand.getType().isAir()) {
+                player.sendMessage(ConfigManager.getInstance().getMessagesConfig().notHoldingAnyItemMessage);
+                return true;
             }
-        } else {
-            player.sendMessage("Item cannot be condensed.");
+            uncondenseItem(player, itemInHand.getType());
+            return true;
         }
+
+        Material material = Material.matchMaterial(args[0]);
+        if (material == null) {
+            player.sendMessage(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage);
+            return true;
+        }
+
+        uncondenseItem(player, material);
         return true;
     }
 
     private void uncondenseInventory(Player player) {
-        PlayerInventory playerInventory = player.getInventory();
-        ItemStack[] contents = PlayerUtils.getMainInventory(player);
-
-        Map<Material, Material> reversibleMaterialMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
-        Map<Material, Integer> reversibleRecipes = condenseMaterialsManager.getReversibleRecipes();
-
-        for (Material material : reversibleMaterialMappings.keySet()) {
-            Material resultMaterial = reversibleMaterialMappings.get(material);
-
-            // Check if the resultMaterial exists in reversibleRecipes
-            if (resultMaterial != null && reversibleRecipes.containsKey(resultMaterial)) {
-                int outputAmount = reversibleRecipes.get(resultMaterial);
-                int count = 0;
-
-                for (ItemStack item : contents) {
-                    if (item != null && item.getType() == material && !ItemUtils.itemHasSpecialMeta(item)) {
-                        count += item.getAmount();
-                    }
-                }
-
-                if (count >= 1) {
-                    int totalUncondensedItems = count * outputAmount;
-                    int stacks = (int) Math.round((double) totalUncondensedItems / 64 - 0.5);
-                    int leftovers = totalUncondensedItems % 64;
-                    ArrayList<ItemStack> stacksToAddList = new ArrayList<>();
-
-                    ItemStack inputStack = new ItemStack(material, count);
-                    playerInventory.removeItem(inputStack);
-
-                    for (int i = 0; i < stacks; i++) {
-                        stacksToAddList.add(new ItemStack(resultMaterial, 64));
-                    }
-                    if (leftovers > 0) {
-                        stacksToAddList.add(new ItemStack(resultMaterial, leftovers));
-                    }
-
-                    for (int i = 0; i < stacksToAddList.size(); i++) {
-                        ItemUtils.giveItems(player, stacksToAddList.get(i));
-                    }
-
-                }
-            } else {
-                // Log or handle the case where the resultMaterial is not found in reversibleRecipes
-                Bukkit.getLogger().warning("Material " + material + " does not have a corresponding recipe.");
+        Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
+        for (Material blockMaterial : reversibleMappings.keySet()) {
+            int uncondensedItemCount = uncondenseItem(player, blockMaterial);
+            if (uncondensedItemCount > 0) {
+                player.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                                Placeholder.component("from", Component.text(condenseMaterialsManager.normalizeMaterialName(blockMaterial.name()))),
+                                Placeholder.component("to", Component.text(condenseMaterialsManager.normalizeMaterialName(condenseMaterialsManager.getReversibleMaterialMappings(false).get(blockMaterial).name()))))
+                );
             }
         }
     }
 
-    private int emptyInventorySpaces(ItemStack[] contents) {
-        int emptySpaces = 0;
-        for (ItemStack item : contents) {
-            if (item == null || item.getType() == Material.AIR) {
-                emptySpaces++;
-            }
+    private int uncondenseItem(Player player, Material material) {
+        PlayerInventory inventory = player.getInventory();
+        Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
+        Map<Material, Integer> reversibleRecipes = condenseMaterialsManager.getReversibleRecipes();
+
+        if (!reversibleMappings.containsKey(material) || !reversibleRecipes.containsKey(reversibleMappings.get(material))) {
+            return 0; // No message, return 0 to indicate no uncondensing occurred
         }
-        return emptySpaces;
+
+        Material resultMaterial = reversibleMappings.get(material);
+        int outputAmount = reversibleRecipes.get(resultMaterial);
+        int count = ItemUtils.countItems(inventory.getStorageContents(), material);
+
+        if (count < 1) {
+            return 0; // No message, return 0 to indicate no uncondensing occurred
+        }
+
+        int totalUncondensedItems = count * outputAmount;
+        int stacks = totalUncondensedItems / 64;
+        int leftovers = totalUncondensedItems % 64;
+        List<ItemStack> itemsToGive = new ArrayList<>();
+
+        inventory.removeItem(new ItemStack(material, count));
+
+        for (int i = 0; i < stacks; i++) {
+            itemsToGive.add(new ItemStack(resultMaterial, 64));
+        }
+        if (leftovers > 0) {
+            itemsToGive.add(new ItemStack(resultMaterial, leftovers));
+        }
+
+        for (ItemStack itemStack : itemsToGive) {
+            ItemUtils.giveItems(player, itemStack);
+        }
+
+        player.sendMessage(
+                TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                        Placeholder.component("from", Component.text(condenseMaterialsManager.normalizeMaterialName(material.name()))),
+                        Placeholder.component("to", Component.text(condenseMaterialsManager.normalizeMaterialName(resultMaterial.name()))))
+        );
+
+        return totalUncondensedItems; // Return the number of uncondensed items
     }
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        // TODO Fix tab completer
         if (args.length == 1) {
             String input = args[0].toLowerCase();
             List<String> suggestions = new ArrayList<>();
 
-            for (Material material : condenseMaterialsManager.getRecipes().keySet()) {
+            for (Material material : condenseMaterialsManager.getReversibleMaterialMappings(true).keySet()) {
                 if (material.name().toLowerCase().startsWith(input)) {
-                    suggestions.add("all");
-                    suggestions.add("reversible");
                     suggestions.add(material.name());
                 }
             }
             return suggestions;
         }
-        return null; // Return null for default behavior
+        return null;
     }
 }
