@@ -45,7 +45,9 @@ public class UncondenseCommand extends BaseCommand {
         if (args[0].equalsIgnoreCase("hand")) {
             ItemStack itemInHand = inventory.getItemInMainHand();
             if (itemInHand.getType().isAir()) {
-                player.sendMessage(ConfigManager.getInstance().getMessagesConfig().notHoldingAnyItemMessage);
+                player.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().notHoldingAnyItemMessage)
+                );
                 return true;
             }
             uncondenseItem(player, itemInHand.getType());
@@ -54,7 +56,9 @@ public class UncondenseCommand extends BaseCommand {
 
         Material material = Material.matchMaterial(args[0]);
         if (material == null) {
-            player.sendMessage(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage);
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage)
+            );
             return true;
         }
 

@@ -18,13 +18,12 @@ public final class ItemUtils {
     }
 
     /**
-     * Gives an item to the player. If the player's inventory is full,
-     * any leftover items will be dropped at the player's location.
+     * Gives the player a specified amount of items.
      *
-     * @param player the player to receive the item; must not be null
-     * @param material the material of the item to give; must not be null
-     * @param amount the amount of the item to give
-     * @throws NullPointerException if player or material is null
+     * @param player  the player to receive the item; must not be null
+     * @param material    the item to give; must not be null
+     * @param amount  the amount of items to give
+     * @throws NullPointerException if player or item is null
      */
     public static void giveItems(Player player, Material material, int amount) {
         if (amount <= 0) {

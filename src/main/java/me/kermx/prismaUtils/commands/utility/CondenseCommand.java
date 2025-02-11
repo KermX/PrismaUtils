@@ -36,7 +36,9 @@ public class CondenseCommand extends BaseCommand {
         if (args.length == 1 && !args[0].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("inventory")) {
             Material material = Material.matchMaterial(args[0]);
             if (material == null || !recipes.containsKey(material)) {
-                player.sendMessage(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage);
+                player.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage)
+                );
                 return true;
             }
             int condensedItems = condenseSpecificItem(player, material);
@@ -65,6 +67,7 @@ public class CondenseCommand extends BaseCommand {
     private int condenseSpecificItem(Player player, Material material) {
         if (!cmm.getRecipes().containsKey(material)) return 0;
 
+        // Maybe make use of PlayerUtils.getMainInventory(player) here to exclude offhand & armor slots
         PlayerInventory playerInventory = player.getInventory();
         int inputAmount = cmm.getRecipes().get(material);
         int count = ItemUtils.countItems(playerInventory.getContents(), material);
