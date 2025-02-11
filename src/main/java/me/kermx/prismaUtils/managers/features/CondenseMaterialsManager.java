@@ -158,7 +158,7 @@ public class CondenseMaterialsManager {
      * Given an input material, returns the corresponding result material.
      *
      * @param inputMaterial the material to condense
-     * @param uncondense whether to get the inverse mapping (not implemented)
+     * @param uncondense    whether to get the inverse mapping (not implemented)
      * @return the resulting material, or AIR if none is defined
      */
     public Material getResultMaterial(Material inputMaterial, boolean uncondense) {
@@ -166,5 +166,15 @@ public class CondenseMaterialsManager {
             throw new UnsupportedOperationException("Uncondense is not implemented yet.");
         }
         return materialMappings.getOrDefault(inputMaterial, Material.AIR);
+    }
+
+    public String normalizeMaterialName(String materialName) {
+        // Replace underscores with spaces and capitalize each word
+        String[] words = materialName.toLowerCase().split("_");
+        StringBuilder normalized = new StringBuilder();
+        for (String word : words) {
+            normalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        return normalized.toString().trim();
     }
 }

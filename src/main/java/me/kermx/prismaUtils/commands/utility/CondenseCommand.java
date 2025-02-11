@@ -2,8 +2,11 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.features.CondenseMaterialsManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.ItemUtils;
-import me.kermx.prismaUtils.utils.PlayerUtils;
+import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,120 +17,84 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CondenseCommand extends BaseCommand{
+public class CondenseCommand extends BaseCommand {
 
-    private final CondenseMaterialsManager condenseMaterialsManager;
+    private final CondenseMaterialsManager cmm;
 
     public CondenseCommand() {
         super("prismautils.command.condense", false, "/condense [all|hand|item]");
-        this.condenseMaterialsManager = new CondenseMaterialsManager();
+        this.cmm = new CondenseMaterialsManager();
     }
 
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
-
         Player player = (Player) sender;
-        if (args.length == 0) {
-            condenseReversibleItems(player);
-            player.sendMessage("Condensed all reversible recipes items inventory.");
-            return true;
-        }
-        if (args.length == 1) {
-            String argument = args[0].toLowerCase();
+        Map<Material, Integer> recipes = args.length == 0 || args[0].equalsIgnoreCase("reversible")
+                ? cmm.getReversibleRecipes()
+                : cmm.getRecipes();
 
-            if ((argument.equals("inventory") || argument.equals("all") || argument.equals("inv"))) {
-                condenseInventory(player);
-                player.sendMessage("Condensed all eligible items in your inventory.");
+        if (args.length == 1 && !args[0].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("inventory")) {
+            Material material = Material.matchMaterial(args[0]);
+            if (material == null || !recipes.containsKey(material)) {
+                player.sendMessage(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage);
                 return true;
-            } else {
-                Material inputMaterial = Material.matchMaterial(args[0]);
-                if (inputMaterial == null || !condenseMaterialsManager.getRecipes().containsKey(inputMaterial)) {
-                    player.sendMessage("Invalid item or no condensing recipe available for this item.");
-                    return true;
-                }
-
-                // Check for special NBT tags on the input item
-                ItemStack inputItem = new ItemStack(inputMaterial);
-                if (!ItemUtils.itemHasSpecialMeta(inputItem)) {
-                    int inputAmount = condenseMaterialsManager.getRecipes().get(inputMaterial);
-                    int inputCount = ItemUtils.countItems(player.getInventory().getContents(), inputMaterial);
-
-                    if (inputCount >= inputAmount) {
-                        int condensedBlocks = inputCount / inputAmount;
-                        int remainingItems = inputCount % inputAmount;
-
-                        ItemStack inputStack = new ItemStack(inputMaterial, inputCount);
-                        player.getInventory().removeItem(inputStack);
-
-                        Material resultMaterial = condenseMaterialsManager.getResultMaterial(inputMaterial, false);
-                        ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
-                        ItemUtils.giveItems(player, inputMaterial, remainingItems);
-                        // player.sendMessage("Condensed " + condensedBlocks + " " + resultMaterial + " blocks.");
-                    } else {
-                        player.sendMessage("You don't have enough to condense.");
-                    }
-                } else {
-                    player.sendMessage("Item cannot be condensed.");
-                }
             }
+            int condensedItems = condenseSpecificItem(player, material);
+            if (condensedItems > 0) {
+                player.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                                Placeholder.component("from", Component.text(cmm.normalizeMaterialName(material.name()))),
+                                Placeholder.component("to", Component.text(cmm.normalizeMaterialName(cmm.getResultMaterial(material, false).name()))))
+                );
+            }
+        } else {
+            recipes.keySet().forEach(material -> {
+                int condensedItems = condenseSpecificItem(player, material);
+                if (condensedItems > 0) {
+                    player.sendMessage(
+                            TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                                    Placeholder.component("from", Component.text(cmm.normalizeMaterialName(material.name()))),
+                                    Placeholder.component("to", Component.text(cmm.normalizeMaterialName(cmm.getResultMaterial(material, false).name()))))
+                    );
+                }
+            });
         }
         return true;
     }
 
-    private void condenseItems(Player player, Map<Material, Integer> recipes, boolean handleEmptyItems) {
+    private int condenseSpecificItem(Player player, Material material) {
+        if (!cmm.getRecipes().containsKey(material)) return 0;
+
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack[] contents = PlayerUtils.getMainInventory(player);
+        int inputAmount = cmm.getRecipes().get(material);
+        int count = ItemUtils.countItems(playerInventory.getContents(), material);
+        if (count < inputAmount) return 0;
 
-        for (Map.Entry<Material, Integer> entry : recipes.entrySet()) {
-            Material material = entry.getKey();
-            int inputAmount = entry.getValue();
-            int count = 0;
+        int condensedBlocks = count / inputAmount;
+        int remainingItems = count % inputAmount;
 
-            for (ItemStack item : contents) {
-                if (item != null && item.getType() == material && !ItemUtils.itemHasSpecialMeta(item)) {
-                    count += item.getAmount();
-                }
-            }
+        playerInventory.removeItem(new ItemStack(material, count));
+        ItemUtils.giveItems(player, cmm.getResultMaterial(material, false), condensedBlocks);
+        ItemUtils.giveItems(player, material, remainingItems);
 
-            if (count >= inputAmount) {
-                int condensedBlocks = count / inputAmount;
-                int remainingItems = count % inputAmount;
-
-                playerInventory.removeItem(new ItemStack(material, count));
-                ItemUtils.giveItems(player, condenseMaterialsManager.getResultMaterial(material, false), condensedBlocks);
-                ItemUtils.giveItems(player, material, remainingItems);
-
-                if (handleEmptyItems && condenseMaterialsManager.getGiveBackEmptyMappings().containsKey(material)) {
-                    ItemUtils.giveItems(player, condenseMaterialsManager.getGiveBackEmptyMappings().get(material), count - remainingItems);
-                }
-            }
+        if (cmm.getGiveBackEmptyMappings().containsKey(material)) {
+            Material emptyMaterial = cmm.getGiveBackEmptyMappings().get(material);
+            ItemUtils.giveItems(player, emptyMaterial, count - remainingItems);
         }
-    }
 
-    private void condenseInventory(Player player) {
-        condenseItems(player, condenseMaterialsManager.getRecipes(), true);
-    }
-
-    private void condenseReversibleItems(Player player) {
-        condenseItems(player, condenseMaterialsManager.getReversibleRecipes(), false);
+        return count; // Return the number of condensed items
     }
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            String input = args[0].toLowerCase();
-            List<String> suggestions = new ArrayList<>();
-
-            for (Material material : condenseMaterialsManager.getRecipes().keySet()) {
-                if (material.name().toLowerCase().startsWith(input)) {
-                    suggestions.add("all");
-                    suggestions.add("reversible");
-                    suggestions.add(material.name());
-                }
-            }
+            List<String> suggestions = new ArrayList<>(List.of("all", "reversible"));
+            suggestions.addAll(cmm.getRecipes().keySet().stream()
+                    .map(Enum::name)
+                    .filter(name -> name.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .toList());
             return suggestions;
         }
-        return null; // Return null for default behavior
+        return null;
     }
-
 }

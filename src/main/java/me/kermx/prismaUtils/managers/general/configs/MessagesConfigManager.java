@@ -87,6 +87,12 @@ public class MessagesConfigManager {
     public String godEnabledMessage;
     public String godDisabledMessage;
 
+    // Condense and Uncondense Messages
+    public String condenseMessage;
+    public String uncondenseMessage;
+    public String notHoldingAnyItemMessage;
+    public String invalidMaterialMessage;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -195,6 +201,12 @@ public class MessagesConfigManager {
         // God Messages
         godEnabledMessage = messages.getString("god_messages.god_enabled_message");
         godDisabledMessage = messages.getString("god_messages.god_disabled_message");
+
+        // Condense and Uncondense Messages
+        condenseMessage = messages.getString("condense_uncondense.condense_message");
+        uncondenseMessage = messages.getString("condense_uncondense.uncondense_message");
+        notHoldingAnyItemMessage = messages.getString("condense_uncondense.not_holding_any_item");
+        invalidMaterialMessage = messages.getString("condense_uncondense.invalid_material");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
