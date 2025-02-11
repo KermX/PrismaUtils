@@ -161,4 +161,30 @@ public final class ItemUtils {
         }
         return count;
     }
+
+    /**
+     * Merges multiple ItemStacks of the same type into a single stack (up to the maximum stack size).
+     *
+     * @param stacks the ItemStacks to merge; must not be null
+     * @return a new ItemStack representing the merged items, or null if the input array is empty
+     */
+    public static ItemStack mergeItemStacks(ItemStack... stacks) {
+        if (stacks == null || stacks.length == 0) return null;
+        ItemStack base = null;
+        int totalAmount = 0;
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            if (base == null) {
+                base = stack.clone();
+            } else if (!stack.isSimilar(base)) {
+                continue; // Skip items that are not similar.
+            }
+            totalAmount += stack.getAmount();
+        }
+        if (base != null) {
+            int maxStack = base.getMaxStackSize();
+            base.setAmount(Math.min(totalAmount, maxStack));
+        }
+        return base;
+    }
 }
