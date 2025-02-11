@@ -120,6 +120,10 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("repair", repairCommand, repairCommand);
         SeenCommand seenCommand = new SeenCommand(seenManager);
         commandManager.registerCommand("seen", seenCommand, seenCommand);
+        CondenseCommand condenseCommand = new CondenseCommand();
+        commandManager.registerCommand("condense", condenseCommand, condenseCommand);
+        UncondenseCommand uncondenseCommand = new UncondenseCommand();
+        commandManager.registerCommand("uncondense", uncondenseCommand, uncondenseCommand);
     }
 
     private void registerEvents(EventManager eventManager) {

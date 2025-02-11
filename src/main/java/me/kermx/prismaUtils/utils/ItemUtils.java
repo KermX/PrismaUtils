@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -126,5 +127,24 @@ public final class ItemUtils {
             return false;
         }
         return tag.isTagged(item.getType());
+    }
+
+    /**
+     * Counts items in an array that match a certain material.
+     *
+     * @param items the array of items to count; must not be null
+     * @param material the material to count; must not be null
+     * @return the number of items that match the material
+     */
+    public static int countItems(ItemStack[] items, Material material) {
+        int count = 0;
+        for (ItemStack item : items) {
+            if (item != null && item.getType() == material) {
+                if (!itemHasSpecialMeta(item)) {
+                    count += item.getAmount();
+                }
+            }
+        }
+        return count;
     }
 }

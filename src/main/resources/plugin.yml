@@ -110,6 +110,22 @@ commands:
     description: Shows the last time a player was online.
     usage: /seen <player>
     permission: prismautils.command.seen
+  condense:
+    description: Condenses items into their block form.
+    usage: /condense <item/all>
+    permission: prismautils.command.condense
+    aliases:
+      - cond
+      - smush
+      - c
+  uncondense:
+    description: Uncondenses items into their item form, from block.
+    usage: /uncondense <item/all>
+    permission: prismautils.command.uncondense
+    aliases:
+      - uncond
+      - unsmush
+      - uc
   ping:
     description: Shows the player's ping.
     usage: /ping [player]
