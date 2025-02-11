@@ -163,7 +163,6 @@ public class CondenseMaterialsManager {
      */
     public Material getResultMaterial(Material inputMaterial, boolean uncondense) {
         if (uncondense) {
-            // Implement uncondensing if needed.
             throw new UnsupportedOperationException("Uncondense is not implemented yet.");
         }
         return materialMappings.getOrDefault(inputMaterial, Material.AIR);
