@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
+import me.kermx.prismaUtils.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,6 +10,7 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,20 +25,23 @@ public class CopperOxidationHandler implements Listener {
     private static final double TRANSFORM_PROBABILITY = 0.5;
     private final Random random = new Random();
 
-    @EventHandler //MAYBE COME BACK and add area effect clouds continually oxidizing copper
+    @EventHandler
     public void onProjectileHit(ProjectileHitEvent event){
         if (event.getEntityType() == EntityType.POTION){
             ThrownPotion potion = (ThrownPotion) event.getEntity();
 
             if (potion.getEffects().stream().anyMatch(effect -> effect.getType().equals(PotionEffectType.SPEED))){
                 Block middle = event.getHitBlock();
-
                 if (middle == null) return;
+
+                Player thrower = (potion.getShooter() instanceof Player) ? (Player) potion.getShooter() : null;
 
                 for (int x = -TRANSFORM_RADIUS; x <= TRANSFORM_RADIUS; x++){
                     for (int y = -TRANSFORM_RADIUS; y <= TRANSFORM_RADIUS; y++){
                         for (int z = -TRANSFORM_RADIUS; z <= TRANSFORM_RADIUS; z++){
                             Block currentBlock = middle.getRelative(x, y, z);
+
+                            if (thrower != null && BlockUtils.blockIsProtected(thrower, currentBlock)) continue;
 
                             if (random.nextDouble() < TRANSFORM_PROBABILITY){
                                 transformCopperBlock(currentBlock);

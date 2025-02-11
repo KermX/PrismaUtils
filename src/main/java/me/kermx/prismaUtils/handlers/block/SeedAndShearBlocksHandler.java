@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
+import me.kermx.prismaUtils.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,6 +9,7 @@ import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Wall;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -58,7 +60,14 @@ public class SeedAndShearBlocksHandler implements Listener {
         Block block = event.getClickedBlock();
         if (block == null) return;
 
-        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        Player player = event.getPlayer();
+
+        if (BlockUtils.blockIsProtected(player, block)){
+            event.setCancelled(true);
+            return;
+        }
+
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Material itemType = itemInHand.getType();
 
         if (itemType == Material.WHEAT_SEEDS){
