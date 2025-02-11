@@ -105,7 +105,6 @@ public class UncondenseCommand extends BaseCommand {
 
                     for (int i = 0; i < stacksToAddList.size(); i++) {
                         ItemUtils.giveItems(player, stacksToAddList.get(i));
-                        Bukkit.getLogger().info("add to inv: " + stacksToAddList.get(i).toString());
                     }
 
                 }

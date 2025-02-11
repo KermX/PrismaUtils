@@ -12,6 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CondenseCommand extends BaseCommand{
 
@@ -73,13 +74,13 @@ public class CondenseCommand extends BaseCommand{
         return true;
     }
 
-    private void condenseInventory(Player player) {
+    private void condenseItems(Player player, Map<Material, Integer> recipes, boolean handleEmptyItems) {
         PlayerInventory playerInventory = player.getInventory();
         ItemStack[] contents = PlayerUtils.getMainInventory(player);
 
-
-        for (Material material : condenseMaterialsManager.getRecipes().keySet()) {
-            int inputAmount = condenseMaterialsManager.getRecipes().get(material);
+        for (Map.Entry<Material, Integer> entry : recipes.entrySet()) {
+            Material material = entry.getKey();
+            int inputAmount = entry.getValue();
             int count = 0;
 
             for (ItemStack item : contents) {
@@ -92,50 +93,23 @@ public class CondenseCommand extends BaseCommand{
                 int condensedBlocks = count / inputAmount;
                 int remainingItems = count % inputAmount;
 
-                ItemStack inputStack = new ItemStack(material, count);
-                playerInventory.removeItem(inputStack);
-
-                Material resultMaterial = condenseMaterialsManager.getResultMaterial(material, false);
-
-                // Check if the condensed item has a corresponding empty bottle
-                if (condenseMaterialsManager.getGiveBackEmptyMappings().containsKey(material)) {
-                    Material emptyItemMaterial = condenseMaterialsManager.getGiveBackEmptyMappings().get(material);
-                    int emptyItemAmount = count - remainingItems;
-                    ItemUtils.giveItems(player, emptyItemMaterial, emptyItemAmount);
-                }
-
-                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
+                playerInventory.removeItem(new ItemStack(material, count));
+                ItemUtils.giveItems(player, condenseMaterialsManager.getResultMaterial(material, false), condensedBlocks);
                 ItemUtils.giveItems(player, material, remainingItems);
+
+                if (handleEmptyItems && condenseMaterialsManager.getGiveBackEmptyMappings().containsKey(material)) {
+                    ItemUtils.giveItems(player, condenseMaterialsManager.getGiveBackEmptyMappings().get(material), count - remainingItems);
+                }
             }
         }
     }
 
+    private void condenseInventory(Player player) {
+        condenseItems(player, condenseMaterialsManager.getRecipes(), true);
+    }
+
     private void condenseReversibleItems(Player player) {
-        PlayerInventory playerInventory = player.getInventory();
-        ItemStack[] contents = PlayerUtils.getMainInventory(player);
-
-        for (Material material : condenseMaterialsManager.getReversibleRecipes().keySet()) {
-            int requiredAmount = condenseMaterialsManager.getReversibleRecipes().get(material);
-            int amountInInventory = 0;
-
-            for (ItemStack item : contents) {
-                if (item != null && item.getType() == material && !ItemUtils.itemHasSpecialMeta(item)) {
-                    amountInInventory += item.getAmount();
-                }
-            }
-
-            if (amountInInventory >= requiredAmount) {
-                int condensedBlocks = amountInInventory / requiredAmount;
-                int remainingItems = amountInInventory % requiredAmount;
-
-                ItemStack inputStack = new ItemStack(material, amountInInventory);
-                playerInventory.removeItem(inputStack);
-
-                Material resultMaterial = condenseMaterialsManager.getResultMaterial(material, false);
-                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
-                ItemUtils.giveItems(player, material, remainingItems);
-            }
-        }
+        condenseItems(player, condenseMaterialsManager.getReversibleRecipes(), false);
     }
 
     @Override
