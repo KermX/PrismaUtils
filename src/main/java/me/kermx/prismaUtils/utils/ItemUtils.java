@@ -9,13 +9,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
 public final class ItemUtils {
     private ItemUtils() {
         throw new UnsupportedOperationException("Utility class (ItemUtils) - cannot be instantiated");
+    }
+
+    /**
+     * Gives an item to the player. If the player's inventory is full,
+     * any leftover items will be dropped at the player's location.
+     *
+     * @param player the player to receive the item; must not be null
+     * @param material the material of the item to give; must not be null
+     * @param amount the amount of the item to give
+     * @throws NullPointerException if player or material is null
+     */
+    public static void giveItems(Player player, Material material, int amount) {
+        if (amount <= 0) {
+            return;
+        }
+        giveItems(player, new ItemStack(material, amount));
     }
 
     /**

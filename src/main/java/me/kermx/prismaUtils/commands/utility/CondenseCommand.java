@@ -5,7 +5,6 @@ import me.kermx.prismaUtils.managers.features.CondenseMaterialsManager;
 import me.kermx.prismaUtils.utils.ItemUtils;
 import me.kermx.prismaUtils.utils.PlayerUtils;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,8 +59,8 @@ public class CondenseCommand extends BaseCommand{
                         player.getInventory().removeItem(inputStack);
 
                         Material resultMaterial = condenseMaterialsManager.getResultMaterial(inputMaterial, false);
-                        ItemUtils.giveItems(player, new ItemStack(resultMaterial, condensedBlocks));
-                        ItemUtils.giveItems(player, new ItemStack(inputMaterial, remainingItems));
+                        ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
+                        ItemUtils.giveItems(player, inputMaterial, remainingItems);
                         // player.sendMessage("Condensed " + condensedBlocks + " " + resultMaterial + " blocks.");
                     } else {
                         player.sendMessage("You don't have enough to condense.");
@@ -97,18 +96,16 @@ public class CondenseCommand extends BaseCommand{
                 playerInventory.removeItem(inputStack);
 
                 Material resultMaterial = condenseMaterialsManager.getResultMaterial(material, false);
-                ItemStack resultStack = new ItemStack(resultMaterial, condensedBlocks);
 
                 // Check if the condensed item has a corresponding empty bottle
                 if (condenseMaterialsManager.getGiveBackEmptyMappings().containsKey(material)) {
                     Material emptyItemMaterial = condenseMaterialsManager.getGiveBackEmptyMappings().get(material);
                     int emptyItemAmount = count - remainingItems;
-                    ItemStack emptyItemStack = new ItemStack(emptyItemMaterial, emptyItemAmount);
-                    ItemUtils.giveItems(player, emptyItemStack);
+                    ItemUtils.giveItems(player, emptyItemMaterial, emptyItemAmount);
                 }
 
-                ItemUtils.giveItems(player, resultStack);
-                ItemUtils.giveItems(player, new ItemStack(material, remainingItems));
+                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
+                ItemUtils.giveItems(player, material, remainingItems);
             }
         }
     }
@@ -135,8 +132,8 @@ public class CondenseCommand extends BaseCommand{
                 playerInventory.removeItem(inputStack);
 
                 Material resultMaterial = condenseMaterialsManager.getResultMaterial(material, false);
-                ItemUtils.giveItems(player, new ItemStack(resultMaterial, condensedBlocks));
-                ItemUtils.giveItems(player, new ItemStack(material, remainingItems));
+                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
+                ItemUtils.giveItems(player, material, remainingItems);
             }
         }
     }

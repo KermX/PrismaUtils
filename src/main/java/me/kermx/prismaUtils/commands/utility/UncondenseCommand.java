@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -41,11 +40,11 @@ public class UncondenseCommand extends BaseCommand {
 
         // Check for special NBT tags on the input item
         ItemStack inputItem = new ItemStack(inputMaterial);
-        if (!hasTags(inputItem)) {
+        if (!ItemUtils.itemHasSpecialMeta(inputItem)) {
             // amount (i.e 9) to get condensed
             int inputAmount = condenseMaterialsManager.getRecipes().get(inputMaterial);
             // amount in player's inventory total
-            int inputCount = countItems(player.getInventory().getStorageContents(), inputMaterial);
+            int inputCount = ItemUtils.countItems(player.getInventory().getStorageContents(), inputMaterial);
 
             if (inputCount >= inputAmount) {
                 int condensedBlocks = inputCount / inputAmount;
@@ -55,8 +54,8 @@ public class UncondenseCommand extends BaseCommand {
                 player.getInventory().removeItem(inputStack);
 
                 Material resultMaterial = condenseMaterialsManager.getResultMaterial(inputMaterial, false);
-                ItemUtils.giveItems(player, new ItemStack(resultMaterial, condensedBlocks));
-                ItemUtils.giveItems(player, new ItemStack(inputMaterial, remainingItems));
+                ItemUtils.giveItems(player, resultMaterial, condensedBlocks);
+                ItemUtils.giveItems(player, inputMaterial, remainingItems);
                 // player.sendMessage("Condensed " + condensedBlocks + " " + resultMaterial + " blocks.");
             } else {
                 player.sendMessage("You don't have enough to condense.");
@@ -65,18 +64,6 @@ public class UncondenseCommand extends BaseCommand {
             player.sendMessage("Item cannot be condensed.");
         }
         return true;
-    }
-
-    private int countItems(ItemStack[] items, Material material) {
-        int count = 0;
-        for (ItemStack item : items) {
-            if (item != null && item.getType() == material) {
-                if (!hasTags(item)) {
-                    count += item.getAmount();
-                }
-            }
-        }
-        return count;
     }
 
     private void uncondenseInventory(Player player) {
@@ -95,7 +82,7 @@ public class UncondenseCommand extends BaseCommand {
                 int count = 0;
 
                 for (ItemStack item : contents) {
-                    if (item != null && item.getType() == material && !hasTags(item)) {
+                    if (item != null && item.getType() == material && !ItemUtils.itemHasSpecialMeta(item)) {
                         count += item.getAmount();
                     }
                 }
@@ -137,11 +124,6 @@ public class UncondenseCommand extends BaseCommand {
             }
         }
         return emptySpaces;
-    }
-
-    private boolean hasTags(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        return meta != null && (meta.hasDisplayName() || meta.hasLore());
     }
 
     @Override
