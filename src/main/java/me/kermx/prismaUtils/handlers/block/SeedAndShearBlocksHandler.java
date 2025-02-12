@@ -62,10 +62,10 @@ public class SeedAndShearBlocksHandler implements Listener {
 
         Player player = event.getPlayer();
 
-        if (BlockUtils.blockIsProtected(player, block)){
-            event.setCancelled(true);
-            return;
-        }
+//        if (BlockUtils.blockIsProtected(player, block)){
+//            event.setCancelled(true);
+//            return;
+//        }
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Material itemType = itemInHand.getType();

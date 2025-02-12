@@ -41,7 +41,7 @@ public class CopperOxidationHandler implements Listener {
                         for (int z = -TRANSFORM_RADIUS; z <= TRANSFORM_RADIUS; z++){
                             Block currentBlock = middle.getRelative(x, y, z);
 
-                            if (thrower != null && BlockUtils.blockIsProtected(thrower, currentBlock)) continue;
+//                            if (thrower != null && BlockUtils.blockIsProtected(thrower, currentBlock)) continue;
 
                             if (random.nextDouble() < TRANSFORM_PROBABILITY){
                                 transformCopperBlock(currentBlock);

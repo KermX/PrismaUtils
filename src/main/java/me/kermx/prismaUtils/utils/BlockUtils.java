@@ -27,13 +27,16 @@ public final class BlockUtils {
      * @param block  The block to be checked.
      * @return True if the block break event is cancelled, false otherwise.
      */
+    // Need to re-evaluate this method, may lead to other plugins acting on the event before we cancel it.
     public static boolean blockIsProtected(Player player, Block block) {
         Objects.requireNonNull(player, "player cannot be null");
         Objects.requireNonNull(block, "block cannot be null");
 
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
         Bukkit.getPluginManager().callEvent(breakEvent);
-        return breakEvent.isCancelled();
+        boolean cancelledByProtection = breakEvent.isCancelled();
+        breakEvent.setCancelled(true);
+        return cancelledByProtection;
     }
 
     /**
