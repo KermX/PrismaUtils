@@ -46,7 +46,7 @@ public class UncondenseCommand extends BaseCommand {
             ItemStack itemInHand = inventory.getItemInMainHand();
             if (itemInHand.getType().isAir()) {
                 player.sendMessage(
-                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().notHoldingAnyItemMessage)
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseUncondenseNotHoldingAnyItemMessage)
                 );
                 return true;
             }

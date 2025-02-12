@@ -44,3 +44,5 @@ disabled_recipes: []
 #  - SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
 #  - FLOW_ARMOR_TRIM_SMITHING_TEMPLATE
 #  - BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
+
+disenchant_command_exp_per_enchantment: 0

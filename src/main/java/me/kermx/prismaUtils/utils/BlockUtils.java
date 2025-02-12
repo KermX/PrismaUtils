@@ -5,6 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.Objects;
 
@@ -50,5 +52,10 @@ public final class BlockUtils {
                 block.getRelative(BlockFace.UP),
                 block.getRelative(BlockFace.DOWN)
         };
+    }
+
+    public static Inventory getInventoryFromBlock(Block block) {
+        Objects.requireNonNull(block, "block cannot be null");
+        return block.getState() instanceof InventoryHolder ? ((InventoryHolder) block.getState()).getInventory() : null;
     }
 }

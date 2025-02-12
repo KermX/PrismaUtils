@@ -126,6 +126,23 @@ commands:
       - uncond
       - unsmush
       - uc
+  trash:
+    description: Opens a trash interface.
+    usage: /trash
+    permission: prismautils.command.trash
+    aliases:
+      - bin
+      - disposal
+  measure:
+    description: Measures the distance between two points.
+    usage: /measure pos1|pos2 [x] [y] [z]
+    permission: prismautils.command.measure
+    aliases:
+      - ruler
+  disenchant:
+    description: Disenchants the item in the player's hand.
+    usage: /disenchant <item>
+    permission: prismautils.command.disenchant
   ping:
     description: Shows the player's ping.
     usage: /ping [player]
@@ -146,6 +163,12 @@ commands:
     description: Shows information about the item in the player's hand.
     usage: /iteminfo
     permission: prismautils.command.iteminfo
+  playerhead:
+    description: Gives the player a player head.
+    usage: /playerhead <player>
+    permission: prismautils.command.playerhead
+    aliases:
+      - skull
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

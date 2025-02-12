@@ -20,6 +20,8 @@ public class MessagesConfigManager {
     public String mustSpecifyPlayerMessage;
     public String playerNotFoundMessage;
     public String incorrectUsageMessage;
+    public String invalidMaterialMessage;
+    public String blockProtectedMessage;
 
     // Seen Messages
     public String seenOfflineMessage;
@@ -90,8 +92,22 @@ public class MessagesConfigManager {
     // Condense and Uncondense Messages
     public String condenseMessage;
     public String uncondenseMessage;
-    public String notHoldingAnyItemMessage;
-    public String invalidMaterialMessage;
+    public String condenseUncondenseNotHoldingAnyItemMessage;
+//    public String invalidMaterialMessage;
+
+    // Disenchant Messages
+    public String disenchantNoBlockMessage;
+    public String disenchantSuccessMessage;
+    public String disenchantNoEnchantmentsMessage;
+
+    // Measure Messages
+    public String measureFirstPositionSetMessage;
+    public String measureSecondPositionSetMessage;
+    public String measureNoFirstPositionSetMessage;
+    public String measureDifferentWorldsMessage;
+    public String measureDistanceMessage;
+    public String measureDifferenceMessage;
+    public String measureInvalidCoordinatesMessage;
 
     // AFK Title Messages
     public String afkPlaceholder;
@@ -205,8 +221,22 @@ public class MessagesConfigManager {
         // Condense and Uncondense Messages
         condenseMessage = messages.getString("condense_uncondense.condense_message");
         uncondenseMessage = messages.getString("condense_uncondense.uncondense_message");
-        notHoldingAnyItemMessage = messages.getString("condense_uncondense.not_holding_any_item");
-        invalidMaterialMessage = messages.getString("condense_uncondense.invalid_material");
+        condenseUncondenseNotHoldingAnyItemMessage = messages.getString("condense_uncondense.condense_uncondense_not_holding_any_item");
+//        invalidMaterialMessage = messages.getString("condense_uncondense.invalid_material");
+
+        // Disenchant Messages
+        disenchantNoBlockMessage = messages.getString("disenchant_messages.disenchant_no_block");
+        disenchantSuccessMessage = messages.getString("disenchant_messages.disenchant_success");
+        disenchantNoEnchantmentsMessage = messages.getString("disenchant_messages.disenchant_no_enchantments");
+
+        // Measure Messages
+        measureFirstPositionSetMessage = messages.getString("measure_messages.measure_first_position_set");
+        measureSecondPositionSetMessage = messages.getString("measure_messages.measure_second_position_set");
+        measureNoFirstPositionSetMessage = messages.getString("measure_messages.measure_no_first_position_set");
+        measureDifferentWorldsMessage = messages.getString("measure_messages.measure_different_worlds");
+        measureDistanceMessage = messages.getString("measure_messages.measure_distance");
+        measureDifferenceMessage = messages.getString("measure_messages.measure_difference");
+        measureInvalidCoordinatesMessage = messages.getString("measure_messages.measure_invalid_coordinates");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");

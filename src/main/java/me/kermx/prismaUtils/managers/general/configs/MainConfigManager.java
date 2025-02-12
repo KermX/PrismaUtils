@@ -42,6 +42,8 @@ public class MainConfigManager {
     public boolean endermitesImmuneToLightning;
     public boolean enableNonLevelBasedEnchanting;
 
+    public int disenchantCommandExpPerEnchantment;
+
     public MainConfigManager(PrismaUtils plugin){
         this.plugin = plugin;
     }
@@ -99,6 +101,9 @@ public class MainConfigManager {
         chainsAreClimbable = config.getBoolean("tweaks.chains_are_climbable");
         endermitesImmuneToLightning = config.getBoolean("tweaks.endermites_immune_to_lightning");
         enableNonLevelBasedEnchanting = config.getBoolean("tweaks.non_level_based_enchanting");
+
+        // Disenchant Command
+        disenchantCommandExpPerEnchantment = config.getInt("disenchant_command_exp_per_enchantment");
     }
 
     public void reload(){

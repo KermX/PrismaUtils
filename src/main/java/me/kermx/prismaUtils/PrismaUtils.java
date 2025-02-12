@@ -90,6 +90,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("prismautilsreload", reloadConfigCommand, reloadConfigCommand);
         SetModelDataCommand setModelDataCommand = new SetModelDataCommand();
         commandManager.registerCommand("setmodeldata", setModelDataCommand, setModelDataCommand);
+        PlayerHeadCommand playerHeadCommand = new PlayerHeadCommand();
+        commandManager.registerCommand("playerhead", playerHeadCommand, playerHeadCommand);
 
         // Player Commands
         BottomCommand bottomCommand = new BottomCommand();
@@ -124,6 +126,12 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("condense", condenseCommand, condenseCommand);
         UncondenseCommand uncondenseCommand = new UncondenseCommand();
         commandManager.registerCommand("uncondense", uncondenseCommand, uncondenseCommand);
+        TrashCommand trashCommand = new TrashCommand();
+        commandManager.registerCommand("trash", trashCommand, trashCommand);
+        MeasureDistanceCommand measureDistanceCommand = new MeasureDistanceCommand();
+        commandManager.registerCommand("measure", measureDistanceCommand, measureDistanceCommand);
+        MassDisenchantCommand massDisenchantCommand = new MassDisenchantCommand();
+        commandManager.registerCommand("disenchant", massDisenchantCommand, massDisenchantCommand);
     }
 
     private void registerEvents(EventManager eventManager) {

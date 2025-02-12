@@ -6,10 +6,13 @@ import org.bukkit.Tag;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public final class ItemUtils {
@@ -128,6 +131,33 @@ public final class ItemUtils {
     }
 
     /**
+     * Removes all enchantments from the given ItemStack.
+     *
+     * @param item the item to remove enchantments from; may be null
+     * @return the number of enchantments removed
+     */
+    public static int removeAllEnchantments(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) {
+            return 0;
+        }
+        int removedCount = 0;
+
+        if (item.getType() == Material.ENCHANTED_BOOK) {
+            if (item.getItemMeta() instanceof EnchantmentStorageMeta meta) {
+                removedCount = meta.getStoredEnchants().size();
+            }
+            item.setType(Material.BOOK);
+        } else {
+            Map<Enchantment, Integer> currentEnchants = new HashMap<>(item.getEnchantments());
+            for (Enchantment ench : currentEnchants.keySet()) {
+                item.removeEnchantment(ench);
+                removedCount++;
+            }
+        }
+        return removedCount;
+    }
+
+    /**
      * Checks if the given ItemStack is tagged with the specified tag.
      *
      * @param item the item to check; may be null
@@ -141,6 +171,23 @@ public final class ItemUtils {
             return false;
         }
         return tag.isTagged(item.getType());
+    }
+
+    /**
+     * Checks if the given ItemStack has the specified ItemFlag.
+     *
+     * @param item the item to check; may be null
+     * @param flag the ItemFlag to check for; must not be null
+     * @return true if the item has the specified flag, false otherwise
+     * @throws NullPointerException if flag is null
+     */
+    public static boolean itemHasFlag(ItemStack item, ItemFlag flag) {
+        Objects.requireNonNull(flag, "ItemFlag cannot be null");
+        if (item == null) {
+            return false;
+        }
+        ItemMeta meta = item.getItemMeta();
+        return meta != null && meta.hasItemFlag(flag);
     }
 
     /**
