@@ -22,12 +22,13 @@ public final class BlockUtils {
      * <p>
      * Note: This method fires an event, which may have side effects
      * such as triggering other plugins' event handlers.
+     * Note: This method should only be used for blocks that likely will not
+     * affect other plugins' event handlers.
      *
      * @param player The player attempting to break the block.
      * @param block  The block to be checked.
      * @return True if the block break event is cancelled, false otherwise.
      */
-    // Need to re-evaluate this method, may lead to other plugins acting on the event before we cancel it.
     public static boolean blockIsProtected(Player player, Block block) {
         Objects.requireNonNull(player, "player cannot be null");
         Objects.requireNonNull(block, "block cannot be null");

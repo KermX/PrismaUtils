@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
+import me.kermx.prismaUtils.hooks.ProtectionHandler;
 import me.kermx.prismaUtils.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,10 +24,13 @@ import java.util.Map;
 
 public class SeedAndShearBlocksHandler implements Listener {
 
+    private final ProtectionHandler protectionHandler;
+
     private final Map<Material, Material> seedTransformMap = new HashMap<>();
     private final Map<Material, Material> shearTransformMap = new HashMap<>();
 
-    public SeedAndShearBlocksHandler() {
+    public SeedAndShearBlocksHandler(ProtectionHandler protectionHandler) {
+        this.protectionHandler = protectionHandler;
         registerTransformations();
     }
 
@@ -62,10 +66,11 @@ public class SeedAndShearBlocksHandler implements Listener {
 
         Player player = event.getPlayer();
 
-//        if (BlockUtils.blockIsProtected(player, block)){
-//            event.setCancelled(true);
-//            return;
-//        }
+        if (protectionHandler != null &&
+        protectionHandler.blockIsProtectedByPlugin(player, block.getLocation())) {
+            event.setCancelled(true);
+            return;
+        }
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Material itemType = itemInHand.getType();

@@ -11,6 +11,7 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
+import me.kermx.prismaUtils.hooks.ProtectionHandler;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
+    private ProtectionHandler protectionHandler;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
@@ -30,8 +32,11 @@ public final class PrismaUtils extends JavaPlugin {
     public void onEnable() {
         loadConfigurations();
 
+        // Load hooks
+        protectionHandler = new ProtectionHandler(getServer().getPluginManager());
+
         // Initialize specific managers / handlers
-        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler();
+        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionHandler);
         seenManager = new SeenManager();
 
         doStartupOperations();
@@ -145,7 +150,7 @@ public final class PrismaUtils extends JavaPlugin {
                 new FirstJoinSpawnHandler(),
                 new SilkSpawnerHandler(),
                 seedAndShearBlocksHandler,
-                new CopperOxidationHandler()
+                new CopperOxidationHandler(protectionHandler)
         );
 
         // Register config conditional events
@@ -188,5 +193,9 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void startTasks() {
         new AfkTitlesHandler().runTaskTimer(this, 0, 40);
+    }
+
+    public ProtectionHandler getProtectionHandler() {
+        return protectionHandler;
     }
 }
