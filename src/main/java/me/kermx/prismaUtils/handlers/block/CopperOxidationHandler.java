@@ -1,7 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
 import me.kermx.prismaUtils.hooks.ProtectionHandler;
-import me.kermx.prismaUtils.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,32 +27,27 @@ public class CopperOxidationHandler implements Listener {
 
     private final ProtectionHandler protectionHandler;
 
-    public CopperOxidationHandler(ProtectionHandler protectionHandler){
+    public CopperOxidationHandler(ProtectionHandler protectionHandler) {
         this.protectionHandler = protectionHandler;
     }
 
     @EventHandler
-    public void onProjectileHit(ProjectileHitEvent event){
-        if (event.getEntityType() == EntityType.POTION){
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (event.getEntityType() == EntityType.POTION) {
             ThrownPotion potion = (ThrownPotion) event.getEntity();
 
-            if (potion.getEffects().stream().anyMatch(effect -> effect.getType().equals(PotionEffectType.SPEED))){
-                Block middle = event.getHitBlock();
-                if (middle == null) return;
+            if (potion.getEffects().stream().anyMatch(effect -> effect.getType().equals(PotionEffectType.SPEED))) {
 
+                Block middle = event.getHitBlock();
                 Player thrower = (potion.getShooter() instanceof Player) ? (Player) potion.getShooter() : null;
 
-                for (int x = -TRANSFORM_RADIUS; x <= TRANSFORM_RADIUS; x++){
-                    for (int y = -TRANSFORM_RADIUS; y <= TRANSFORM_RADIUS; y++){
-                        for (int z = -TRANSFORM_RADIUS; z <= TRANSFORM_RADIUS; z++){
+                if (middle == null || protectionHandler.blockIsProtectedByPlugin(thrower, middle.getLocation())) return;
+
+                for (int x = -TRANSFORM_RADIUS; x <= TRANSFORM_RADIUS; x++) {
+                    for (int y = -TRANSFORM_RADIUS; y <= TRANSFORM_RADIUS; y++) {
+                        for (int z = -TRANSFORM_RADIUS; z <= TRANSFORM_RADIUS; z++) {
                             Block currentBlock = middle.getRelative(x, y, z);
-
-                            if (thrower != null &&
-                                    protectionHandler.blockIsProtectedByPlugin(thrower, currentBlock.getLocation())){
-                                continue;
-                            }
-
-                            if (random.nextDouble() < TRANSFORM_PROBABILITY){
+                            if (random.nextDouble() < TRANSFORM_PROBABILITY) {
                                 transformCopperBlock(currentBlock);
                             }
                         }
@@ -63,11 +57,11 @@ public class CopperOxidationHandler implements Listener {
         }
     }
 
-    private void transformCopperBlock(Block block){
+    private void transformCopperBlock(Block block) {
         BlockData originalData = block.getBlockData();
         BlockData newData = null;
 
-        switch (block.getType()){
+        switch (block.getType()) {
             case COPPER_BLOCK -> newData = Bukkit.createBlockData(Material.EXPOSED_COPPER);
             case EXPOSED_COPPER -> newData = Bukkit.createBlockData(Material.WEATHERED_COPPER);
             case WEATHERED_COPPER -> newData = Bukkit.createBlockData(Material.OXIDIZED_COPPER);
@@ -104,16 +98,17 @@ public class CopperOxidationHandler implements Listener {
             case EXPOSED_COPPER_TRAPDOOR -> newData = Bukkit.createBlockData(Material.WEATHERED_COPPER_TRAPDOOR);
             case WEATHERED_COPPER_TRAPDOOR -> newData = Bukkit.createBlockData(Material.OXIDIZED_COPPER_TRAPDOOR);
 
-            default -> {}
+            default -> {
+            }
         }
 
-        if (newData != null){
+        if (newData != null) {
             copyOrientationData(originalData, newData);
             block.setBlockData(newData);
         }
     }
 
-    private void copyOrientationData(BlockData originalData, BlockData newData){
+    private void copyOrientationData(BlockData originalData, BlockData newData) {
         if (newData instanceof Directional && originalData instanceof Directional) {
             ((Directional) newData).setFacing(((Directional) originalData).getFacing());
         }
@@ -153,11 +148,11 @@ public class CopperOxidationHandler implements Listener {
             newTrap.setFacing(oldTrap.getFacing());
         }
 
-        if (newData instanceof Powerable newPow && originalData instanceof Powerable oldPow){
+        if (newData instanceof Powerable newPow && originalData instanceof Powerable oldPow) {
             newPow.setPowered(oldPow.isPowered());
         }
 
-        if (newData instanceof Lightable newLight && originalData instanceof Lightable oldLight){
+        if (newData instanceof Lightable newLight && originalData instanceof Lightable oldLight) {
             newLight.setLit(oldLight.isLit());
         }
     }
