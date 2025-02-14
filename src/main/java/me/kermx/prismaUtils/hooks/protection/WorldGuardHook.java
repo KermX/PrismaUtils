@@ -4,7 +4,9 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -35,7 +37,13 @@ public class WorldGuardHook {
      * @return true if the player can build at the location
      */
     public boolean canBuildWorldGuard(Player player, Location location){
+
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        com.sk89q.worldedit.util.Location blockLocation = BukkitAdapter.adapt(location);
         RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
-        return query.testState(BukkitAdapter.adapt(location), (LocalPlayer) BukkitAdapter.adapt(player), Flags.BLOCK_BREAK);
+        ApplicableRegionSet set = query.getApplicableRegions(blockLocation);
+        StateFlag.State state = set.queryState(localPlayer, Flags.BLOCK_BREAK);
+
+       return state != StateFlag.State.DENY;
     }
 }
