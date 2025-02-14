@@ -10,13 +10,13 @@ import java.util.List;
 
 public class EntityInfoCommand extends BaseCommand {
 
-    public EntityInfoCommand(){
+    public EntityInfoCommand() {
         super("prismautils.command.entityinfo", false, "/entityinfo");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -37,7 +37,7 @@ public class EntityInfoCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 

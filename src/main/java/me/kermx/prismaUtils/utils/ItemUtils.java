@@ -23,9 +23,9 @@ public final class ItemUtils {
     /**
      * Gives the player a specified amount of items.
      *
-     * @param player  the player to receive the item; must not be null
-     * @param material    the item to give; must not be null
-     * @param amount  the amount of items to give
+     * @param player   the player to receive the item; must not be null
+     * @param material the item to give; must not be null
+     * @param amount   the amount of items to give
      * @throws NullPointerException if player or item is null
      */
     public static void giveItems(Player player, Material material, int amount) {
@@ -193,7 +193,7 @@ public final class ItemUtils {
     /**
      * Counts items in an array that match a certain material.
      *
-     * @param items the array of items to count; must not be null
+     * @param items    the array of items to count; must not be null
      * @param material the material to count; must not be null
      * @return the number of items that match the material
      */

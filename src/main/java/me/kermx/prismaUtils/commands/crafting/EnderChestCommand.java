@@ -9,13 +9,13 @@ import java.util.List;
 
 public class EnderChestCommand extends BaseCommand {
 
-    public EnderChestCommand(){
+    public EnderChestCommand() {
         super("prismautils.command.enderchest", false, "/enderchest");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -25,7 +25,7 @@ public class EnderChestCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

@@ -9,13 +9,13 @@ import java.util.List;
 
 public class GrindstoneCommand extends BaseCommand {
 
-    public GrindstoneCommand(){
+    public GrindstoneCommand() {
         super("prismautils.command.grindstone", false, "/grindstone");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -25,7 +25,7 @@ public class GrindstoneCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

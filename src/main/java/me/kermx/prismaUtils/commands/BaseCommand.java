@@ -3,7 +3,6 @@ package me.kermx.prismaUtils.commands;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,7 +66,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
         if (!success && usage != null && !usage.isEmpty()) {
             sender.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().incorrectUsageMessage,
-                    Placeholder.component("usage", Component.text(command.getUsage()))
+                            Placeholder.component("usage", Component.text(command.getUsage()))
                     ));
         }
 

@@ -18,10 +18,12 @@ public class MiniMessagePlaceholderExpansion extends PlaceholderExpansion implem
     public @NotNull String getIdentifier() {
         return "minify".toLowerCase(Locale.ROOT);
     }
+
     @Override
     public @NotNull String getAuthor() {
         return "KermX";
     }
+
     @Override
     public @NotNull String getVersion() {
         return "1.0";
@@ -44,7 +46,7 @@ public class MiniMessagePlaceholderExpansion extends PlaceholderExpansion implem
 
     private String convertToMiniMessage(OfflinePlayer one, Player two, String params) {
         LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
-        if (params.toLowerCase(Locale.ROOT).startsWith("section_")){
+        if (params.toLowerCase(Locale.ROOT).startsWith("section_")) {
             serializer = LegacyComponentSerializer.legacySection();
             params = params.substring(8);
         }

@@ -4,7 +4,6 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,12 +13,12 @@ import java.util.List;
 
 public class pTimeCommand extends BaseCommand {
 
-    public pTimeCommand(){
+    public pTimeCommand() {
         super("prismautils.command.ptime", false, "/ptime [time|reset]");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         if (args.length == 0 || args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("sync")) {
             ((Player) sender).resetPlayerTime();
             sender.sendMessage(TextUtils.deserializeString(
@@ -71,7 +70,7 @@ public class pTimeCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             completions.add("day");

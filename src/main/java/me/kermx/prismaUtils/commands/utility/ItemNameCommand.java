@@ -15,13 +15,13 @@ import java.util.List;
 
 public class ItemNameCommand extends BaseCommand {
 
-    public ItemNameCommand(){
+    public ItemNameCommand() {
         super("prismautils.command.itemname", false, "/itemname");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length == 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length == 0) {
             return false;
         }
 
@@ -42,14 +42,14 @@ public class ItemNameCommand extends BaseCommand {
 
         sender.sendMessage(
                 TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().itemNameMessage,
-                Placeholder.component("name", displayName))
+                        Placeholder.component("name", displayName))
         );
 
         return true;
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

@@ -15,17 +15,17 @@ import java.util.List;
 
 public class RepairCommand extends BaseCommand {
 
-    public RepairCommand(){
+    public RepairCommand() {
         super("prismautils.command.repair", false, "/repair");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         if (args.length != 1 || (!args[0].equalsIgnoreCase("hand") && !args[0].equalsIgnoreCase("all"))) {
             return false;
         }
 
-        if (args[0].equalsIgnoreCase("hand")){
+        if (args[0].equalsIgnoreCase("hand")) {
             repairHand((Player) sender);
         } else if (args[0].equalsIgnoreCase("all")) {
             repairAll((Player) sender);
@@ -78,7 +78,7 @@ public class RepairCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             completions.add("hand");

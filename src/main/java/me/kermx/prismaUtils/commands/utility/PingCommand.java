@@ -4,7 +4,6 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -15,36 +14,36 @@ import java.util.List;
 
 public class PingCommand extends BaseCommand {
 
-    public PingCommand(){
+    public PingCommand() {
         super("prismautils.command.ping", true, "/ping");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length == 0){
-            if (sender instanceof Player player){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length == 0) {
+            if (sender instanceof Player player) {
                 int ping = player.getPing();
 
                 player.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().pingMessage,
-                        Placeholder.component("ping", Component.text(ping)))
+                                Placeholder.component("ping", Component.text(ping)))
                 );
 
             } else {
                 sender.sendMessage("You must specify a player name from the console!");
             }
         } else if (args.length == 1) {
-            if (sender.hasPermission("prismautils.command.ping.others")){
+            if (sender.hasPermission("prismautils.command.ping.others")) {
                 Player target = Bukkit.getPlayerExact(args[0]);
 
-                if (target != null && target.isOnline()){
+                if (target != null && target.isOnline()) {
                     int ping = target.getPing();
 
 
                     sender.sendMessage(
                             TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().pingOtherMessage,
-                            Placeholder.component("target", target.displayName()),
-                            Placeholder.component("ping", Component.text(ping)))
+                                    Placeholder.component("target", target.displayName()),
+                                    Placeholder.component("ping", Component.text(ping)))
                     );
                 } else {
                     sender.sendMessage(

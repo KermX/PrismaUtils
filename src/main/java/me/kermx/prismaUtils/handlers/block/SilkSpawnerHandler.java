@@ -81,7 +81,7 @@ public class SilkSpawnerHandler implements Listener {
 
             blockStateMeta.displayName(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().spawnerName,
-                    Placeholder.component("entitytype", Component.translatable(spawnedType.translationKey())))
+                            Placeholder.component("entitytype", Component.translatable(spawnedType.translationKey())))
             );
 
             spawnerItem.setItemMeta(blockStateMeta);

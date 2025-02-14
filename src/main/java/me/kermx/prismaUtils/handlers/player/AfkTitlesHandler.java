@@ -19,12 +19,12 @@ public class AfkTitlesHandler extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (Player player : Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
             boolean isAfk = isPlayerAfk(player);
             UUID uuid = player.getUniqueId();
 
-            if (isAfk){
-                if (!playerTitles.containsKey(uuid)){
+            if (isAfk) {
+                if (!playerTitles.containsKey(uuid)) {
                     playerTitles.put(uuid, new String[]{getRandomTitle(), getRandomSubtitle()});
                 }
 
@@ -38,20 +38,20 @@ public class AfkTitlesHandler extends BukkitRunnable {
         }
     }
 
-    private boolean isPlayerAfk(Player player){
+    private boolean isPlayerAfk(Player player) {
         String afkStatus = PlaceholderAPI.setPlaceholders(player, ConfigManager.getInstance().getMessagesConfig().afkPlaceholder);
         return afkStatus.equalsIgnoreCase("true");
     }
 
-    private String getRandomTitle(){
+    private String getRandomTitle() {
         return ConfigManager.getInstance().getMessagesConfig().afkTitles.get((int) (Math.random() * ConfigManager.getInstance().getMessagesConfig().afkTitles.size()));
     }
 
-    private String getRandomSubtitle(){
+    private String getRandomSubtitle() {
         return ConfigManager.getInstance().getMessagesConfig().afkSubtitles.get((int) (Math.random() * ConfigManager.getInstance().getMessagesConfig().afkSubtitles.size()));
     }
 
-    private void sendAfkTitle(Player player, String title, String subtitle){
+    private void sendAfkTitle(Player player, String title, String subtitle) {
         Title formattedTitle = Title.title(
                 MiniMessage.miniMessage().deserialize(title),
                 MiniMessage.miniMessage().deserialize(subtitle),
@@ -60,7 +60,7 @@ public class AfkTitlesHandler extends BukkitRunnable {
         player.showTitle(formattedTitle);
     }
 
-    private void clearTitle(Player player){
+    private void clearTitle(Player player) {
         player.clearTitle();
     }
 }

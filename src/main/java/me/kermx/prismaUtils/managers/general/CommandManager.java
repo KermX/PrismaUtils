@@ -7,12 +7,12 @@ import org.bukkit.command.TabCompleter;
 public class CommandManager {
     private final PrismaUtils plugin;
 
-    public CommandManager(PrismaUtils plugin){
+    public CommandManager(PrismaUtils plugin) {
         this.plugin = plugin;
     }
 
-    public void registerCommand(String commandName, CommandExecutor executor, TabCompleter tabCompleter){
-        if (plugin.getCommand(commandName) != null){
+    public void registerCommand(String commandName, CommandExecutor executor, TabCompleter tabCompleter) {
+        if (plugin.getCommand(commandName) != null) {
             plugin.getCommand(commandName).setExecutor(executor);
             plugin.getCommand(commandName).setTabCompleter(tabCompleter);
         } else {

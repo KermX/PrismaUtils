@@ -11,12 +11,12 @@ import java.util.List;
 
 public class SetModelDataCommand extends BaseCommand {
 
-    public SetModelDataCommand(){
+    public SetModelDataCommand() {
         super("prismautils.command.setmodeldata", false, "/setmodeldata <modeldata>");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         if (args.length != 1) {
             return false;
         }
@@ -46,7 +46,7 @@ public class SetModelDataCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

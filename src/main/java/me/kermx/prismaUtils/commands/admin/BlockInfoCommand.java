@@ -10,13 +10,13 @@ import java.util.List;
 
 public class BlockInfoCommand extends BaseCommand {
 
-    public BlockInfoCommand(){
+    public BlockInfoCommand() {
         super("prismautils.command.blockinfo", false, "/blockinfo");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -35,7 +35,7 @@ public class BlockInfoCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

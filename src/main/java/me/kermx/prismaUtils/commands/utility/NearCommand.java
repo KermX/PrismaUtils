@@ -4,7 +4,6 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -14,12 +13,12 @@ import java.util.List;
 
 public class NearCommand extends BaseCommand {
 
-    public NearCommand(){
+    public NearCommand() {
         super("prismautils.command.near", false, "/near [radius]");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         Location location = ((Player) sender).getLocation();
         double radius = 100;
         if (args.length > 0) {
@@ -35,16 +34,16 @@ public class NearCommand extends BaseCommand {
         Component radiusComponent = Component.text(radius);
         sender.sendMessage(
                 TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNearPlayersMessage,
-                Placeholder.component("radius", radiusComponent))
+                        Placeholder.component("radius", radiusComponent))
         );
         boolean found = false;
 
-        for( Player onlinePlayer : ((Player) sender).getWorld().getPlayers() ){
-            if( onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != sender ){
+        for (Player onlinePlayer : ((Player) sender).getWorld().getPlayers()) {
+            if (onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != sender) {
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNearbyPlayersMessage,
-                        Placeholder.component("player", onlinePlayer.displayName()),
-                        Placeholder.component("distance", Component.text(onlinePlayer.getLocation().distance(location))))
+                                Placeholder.component("player", onlinePlayer.displayName()),
+                                Placeholder.component("distance", Component.text(onlinePlayer.getLocation().distance(location))))
                 );
                 found = true;
             }
@@ -52,14 +51,14 @@ public class NearCommand extends BaseCommand {
         if (!found) {
             sender.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNoPlayersMessage,
-                    Placeholder.component("radius", radiusComponent))
+                            Placeholder.component("radius", radiusComponent))
             );
         }
         return true;
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

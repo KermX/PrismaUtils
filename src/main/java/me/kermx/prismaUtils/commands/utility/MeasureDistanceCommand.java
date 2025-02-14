@@ -95,7 +95,7 @@ public class MeasureDistanceCommand extends BaseCommand {
             double dz = GenUtils.round(Math.abs(secondPosition.getZ() - firstPosition.getZ()), 2);
             player.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().measureDistanceMessage,
-                    Placeholder.component("distance", Component.text(distance)))
+                            Placeholder.component("distance", Component.text(distance)))
             );
             player.sendMessage(TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().measureDifferenceMessage,
                     Placeholder.component("x", Component.text(dx)),
@@ -109,7 +109,7 @@ public class MeasureDistanceCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         if (args.length == 1) {
             return List.of("pos1", "pos2");
         } else {
@@ -119,13 +119,13 @@ public class MeasureDistanceCommand extends BaseCommand {
                 int y = (int) location.getY();
                 int z = (int) location.getZ();
 
-                if (args.length == 2){
+                if (args.length == 2) {
                     return Collections.singletonList(String.valueOf(x));
                 }
-                if (args.length == 3){
+                if (args.length == 3) {
                     return Collections.singletonList(String.valueOf(y));
                 }
-                if (args.length == 4){
+                if (args.length == 4) {
                     return Collections.singletonList(String.valueOf(z));
                 }
             }

@@ -12,20 +12,20 @@ public class TownyHook {
 
     private final Towny towny;
 
-    public TownyHook(Towny towny){
+    public TownyHook(Towny towny) {
         this.towny = towny;
     }
 
-    public static TownyHook createIfPresent(PluginManager pm){
+    public static TownyHook createIfPresent(PluginManager pm) {
         Plugin townyPlugin = pm.getPlugin("Towny");
-        if (townyPlugin != null && townyPlugin.isEnabled()){
+        if (townyPlugin != null && townyPlugin.isEnabled()) {
             return new TownyHook((Towny) townyPlugin);
         } else {
             return null;
         }
     }
 
-    public boolean canBuildTowny(Player player, Location location){
+    public boolean canBuildTowny(Player player, Location location) {
         return PlayerCacheUtil.getCachePermission(player, location, location.getBlock().getType(), TownyPermission.ActionType.DESTROY);
     }
 

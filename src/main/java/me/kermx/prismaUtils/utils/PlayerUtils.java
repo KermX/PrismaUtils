@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class PlayerUtils {
-    private PlayerUtils(){
+    private PlayerUtils() {
         throw new UnsupportedOperationException("Utility class (PlayerUtils) - cannot be instantiated");
     }
 

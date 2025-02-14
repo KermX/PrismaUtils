@@ -31,7 +31,7 @@ public final class TextUtils {
     /**
      * Deserialize a string into a Component with placeholders
      *
-     * @param message The string to deserialize
+     * @param message      The string to deserialize
      * @param placeholders The placeholders to use
      * @return The deserialized Component
      */
@@ -87,8 +87,8 @@ public final class TextUtils {
 
         long seconds = millis / 1000;
         long minutes = seconds / 60;
-        long hours   = minutes / 60;
-        long days    = hours / 24;
+        long hours = minutes / 60;
+        long days = hours / 24;
 
         seconds %= 60;
         minutes %= 60;

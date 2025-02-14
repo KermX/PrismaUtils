@@ -11,13 +11,13 @@ import java.util.List;
 
 public class TrashCommand extends BaseCommand {
 
-    public TrashCommand(){
+    public TrashCommand() {
         super("prismautils.command.trash", false, "/trash");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -27,7 +27,7 @@ public class TrashCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

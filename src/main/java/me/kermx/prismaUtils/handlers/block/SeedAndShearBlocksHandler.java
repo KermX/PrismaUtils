@@ -1,7 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
 import me.kermx.prismaUtils.hooks.ProtectionHandler;
-import me.kermx.prismaUtils.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -34,7 +33,7 @@ public class SeedAndShearBlocksHandler implements Listener {
         registerTransformations();
     }
 
-    public void registerTransformations(){
+    public void registerTransformations() {
         seedTransformMap.put(Material.DIRT, Material.GRASS_BLOCK);
         seedTransformMap.put(Material.PODZOL, Material.GRASS_BLOCK);
         seedTransformMap.put(Material.COBBLESTONE, Material.MOSSY_COBBLESTONE);
@@ -57,7 +56,7 @@ public class SeedAndShearBlocksHandler implements Listener {
     }
 
     @EventHandler
-    public void onBlockRightClick(PlayerInteractEvent event){
+    public void onBlockRightClick(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getHand() != EquipmentSlot.HAND) return;
 
@@ -67,7 +66,7 @@ public class SeedAndShearBlocksHandler implements Listener {
         Player player = event.getPlayer();
 
         if (protectionHandler != null &&
-        protectionHandler.blockIsProtectedByPlugin(player, block.getLocation())) {
+                protectionHandler.blockIsProtectedByPlugin(player, block.getLocation())) {
             event.setCancelled(true);
             return;
         }
@@ -75,7 +74,7 @@ public class SeedAndShearBlocksHandler implements Listener {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         Material itemType = itemInHand.getType();
 
-        if (itemType == Material.WHEAT_SEEDS){
+        if (itemType == Material.WHEAT_SEEDS) {
             Material original = block.getType();
             Material target = seedTransformMap.get(original);
             if (target == null) return;
@@ -85,7 +84,7 @@ public class SeedAndShearBlocksHandler implements Listener {
             event.setCancelled(true);
         }
 
-        if (itemType == Material.SHEARS){
+        if (itemType == Material.SHEARS) {
             Material original = block.getType();
             Material target = shearTransformMap.get(original);
             if (target == null) return;
@@ -98,37 +97,37 @@ public class SeedAndShearBlocksHandler implements Listener {
         }
     }
 
-    private void transformBlock(Block block, Material newMaterial){
+    private void transformBlock(Block block, Material newMaterial) {
         BlockData originalData = block.getBlockData();
         BlockData newData = Bukkit.createBlockData(newMaterial);
 
-        if (newData instanceof Directional && originalData instanceof Directional){
+        if (newData instanceof Directional && originalData instanceof Directional) {
             ((Directional) newData).setFacing(((Directional) originalData).getFacing());
         }
 
-        if (newData instanceof Stairs newStairs && originalData instanceof Stairs oldStairs){
+        if (newData instanceof Stairs newStairs && originalData instanceof Stairs oldStairs) {
             newStairs.setShape(oldStairs.getShape());
             newStairs.setFacing(oldStairs.getFacing());
             newStairs.setHalf(oldStairs.getHalf());
         }
 
-        if (newData instanceof Slab && originalData instanceof Slab){
+        if (newData instanceof Slab && originalData instanceof Slab) {
             ((Slab) newData).setType(((Slab) originalData).getType());
         }
 
-        if (newData instanceof Orientable && originalData instanceof Orientable){
+        if (newData instanceof Orientable && originalData instanceof Orientable) {
             ((Orientable) newData).setAxis(((Orientable) originalData).getAxis());
         }
 
-        if (newData instanceof Rotatable && originalData instanceof Rotatable){
+        if (newData instanceof Rotatable && originalData instanceof Rotatable) {
             ((Rotatable) newData).setRotation(((Rotatable) originalData).getRotation());
         }
 
-        if (newData instanceof Waterlogged && originalData instanceof Waterlogged){
+        if (newData instanceof Waterlogged && originalData instanceof Waterlogged) {
             ((Waterlogged) newData).setWaterlogged(((Waterlogged) originalData).isWaterlogged());
         }
 
-        if (newData instanceof Wall newWall && originalData instanceof Wall oldWall){
+        if (newData instanceof Wall newWall && originalData instanceof Wall oldWall) {
 
             for (BlockFace face : new BlockFace[]{
                     BlockFace.NORTH,

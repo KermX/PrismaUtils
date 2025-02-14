@@ -170,10 +170,10 @@ public final class PrismaUtils extends JavaPlugin {
         if (ConfigManager.getInstance().getMainConfig().endermitesImmuneToLightning) {
             eventManager.registerListeners(new EndermiteImmunityHandler());
         }
-        if (ConfigManager.getInstance().getMainConfig().chainsAreClimbable){
+        if (ConfigManager.getInstance().getMainConfig().chainsAreClimbable) {
             eventManager.registerListeners(new ClimbableChainsHandler());
         }
-        if (ConfigManager.getInstance().getMainConfig().enableNonLevelBasedEnchanting){
+        if (ConfigManager.getInstance().getMainConfig().enableNonLevelBasedEnchanting) {
             eventManager.registerListeners(new NonLevelBasedEnchantingHandler());
         }
     }

@@ -3,7 +3,6 @@ package me.kermx.prismaUtils.commands.player;
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,16 +17,16 @@ public class GodCommand extends BaseCommand implements Listener {
 
     private final HashSet<UUID> godPlayers = new HashSet<>();
 
-    public GodCommand(){
+    public GodCommand() {
         super("prismautils.command.god", false, "/god");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         Player player = (Player) sender;
         UUID playerUUID = player.getUniqueId();
 
-        if (godPlayers.contains(playerUUID)){
+        if (godPlayers.contains(playerUUID)) {
             godPlayers.remove(playerUUID);
             player.sendMessage(TextUtils.deserializeString(
                     ConfigManager.getInstance().getMessagesConfig().godDisabledMessage)
@@ -42,7 +41,7 @@ public class GodCommand extends BaseCommand implements Listener {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 

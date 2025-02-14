@@ -14,13 +14,13 @@ import java.util.Map;
 
 public class ItemInfoCommand extends BaseCommand {
 
-    public ItemInfoCommand(){
+    public ItemInfoCommand() {
         super("prismautils.command.iteminfo", false, "/iteminfo");
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length > 0){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length > 0) {
             return false;
         }
         Player player = (Player) sender;
@@ -66,7 +66,7 @@ public class ItemInfoCommand extends BaseCommand {
     }
 
     @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args){
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         return super.onTabCompleteExecute(sender, args);
     }
 }

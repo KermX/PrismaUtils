@@ -13,14 +13,18 @@ import org.bukkit.util.Vector;
 public class ClimbableChainsHandler implements Listener {
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
+    public void onPlayerMove(PlayerMoveEvent event) {
 
         Player player = event.getPlayer();
         Block block = player.getLocation().getBlock();
 
-        if (block.getType() != Material.CHAIN){return;}
+        if (block.getType() != Material.CHAIN) {
+            return;
+        }
 
-        if (!(block.getBlockData() instanceof Chain chainData) || chainData.getAxis() != Axis.Y){return;}
+        if (!(block.getBlockData() instanceof Chain chainData) || chainData.getAxis() != Axis.Y) {
+            return;
+        }
 
         Vector velocity = player.getVelocity();
         velocity.setY(player.isSneaking() ? -0.2 : 0.2);

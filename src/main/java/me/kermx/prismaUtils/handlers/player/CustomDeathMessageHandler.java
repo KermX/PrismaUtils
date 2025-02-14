@@ -32,29 +32,30 @@ public class CustomDeathMessageHandler implements Listener {
         public Entity attacker;
         public long time;
 
-        public AttackRecord(Entity attacker, long time){
+        public AttackRecord(Entity attacker, long time) {
             this.attacker = attacker;
             this.time = time;
         }
     }
+
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-        if (event.getEntity() instanceof Player player){
-        long currentTime = System.currentTimeMillis();
-        playerAttackers.put(player.getUniqueId(), new AttackRecord(event.getDamager(), currentTime));
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            long currentTime = System.currentTimeMillis();
+            playerAttackers.put(player.getUniqueId(), new AttackRecord(event.getDamager(), currentTime));
         }
     }
 
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerDeath(PlayerDeathEvent event){
+    public void onPlayerDeath(PlayerDeathEvent event) {
         Player deceased = event.getEntity();
 
         long currentTime = System.currentTimeMillis();
         Long lastDeathTime = playerDeathTimes.get(deceased.getUniqueId());
         long cooldownPeriod = ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCooldownSeconds * 1000;
 
-        if (lastDeathTime != null && (currentTime - lastDeathTime) < cooldownPeriod){
+        if (lastDeathTime != null && (currentTime - lastDeathTime) < cooldownPeriod) {
             event.deathMessage(null);
         } else {
             playerDeathTimes.put(deceased.getUniqueId(), currentTime);
@@ -62,7 +63,7 @@ public class CustomDeathMessageHandler implements Listener {
             EntityDamageEvent lastDamageEvent = deceased.getLastDamageCause();
             Entity killer = null;
 
-            if (lastDamageEvent instanceof EntityDamageByEntityEvent damageByEntityEvent){
+            if (lastDamageEvent instanceof EntityDamageByEntityEvent damageByEntityEvent) {
                 killer = damageByEntityEvent.getDamager();
             }
 
@@ -75,11 +76,11 @@ public class CustomDeathMessageHandler implements Listener {
         }
     }
 
-    private Component constructDeathMessage(PlayerDeathEvent event, Player deceased, Entity killer, AttackRecord previousAttackerRecord){
+    private Component constructDeathMessage(PlayerDeathEvent event, Player deceased, Entity killer, AttackRecord previousAttackerRecord) {
         Component message;
 
-        if (killer != null){
-            if (killer instanceof Player){
+        if (killer != null) {
+            if (killer instanceof Player) {
                 message = handlePlayerKill(deceased, (Player) killer);
             } else if (killer instanceof Projectile) {
                 message = handleProjectileKill(deceased, (Projectile) killer);
@@ -92,15 +93,15 @@ public class CustomDeathMessageHandler implements Listener {
         return message;
     }
 
-    private String getRandomMessage(List<String> messages){
-        if (messages == null || messages.isEmpty()){
+    private String getRandomMessage(List<String> messages) {
+        if (messages == null || messages.isEmpty()) {
             return "";
         }
         int index = random.nextInt(messages.size());
         return messages.get(index);
     }
 
-    private Component handlePlayerKill(Player deceased, Player killer){
+    private Component handlePlayerKill(Player deceased, Player killer) {
         String configMessage = getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageKilledByPlayer);
         configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
 
@@ -110,10 +111,10 @@ public class CustomDeathMessageHandler implements Listener {
                 Placeholder.component("weapon", killer.getInventory().getItemInMainHand().displayName()));
     }
 
-    private Component handleProjectileKill(Player deceased, Projectile projectile){
+    private Component handleProjectileKill(Player deceased, Projectile projectile) {
         ProjectileSource shooter = projectile.getShooter();
 
-        if (shooter instanceof Player killer){
+        if (shooter instanceof Player killer) {
 
             String configMessage = getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageShotByPlayer);
             configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
@@ -123,7 +124,7 @@ public class CustomDeathMessageHandler implements Listener {
                     Placeholder.component("killer", killer.displayName()),
                     Placeholder.component("weapon", killer.getInventory().getItemInMainHand().displayName()));
 
-        } else if (shooter instanceof Entity killer){
+        } else if (shooter instanceof Entity killer) {
             String configMessage = getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageShotByEntity);
             configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
 
@@ -139,7 +140,7 @@ public class CustomDeathMessageHandler implements Listener {
         }
     }
 
-    private Component handleEntityKill(Player deceased, Entity killer){
+    private Component handleEntityKill(Player deceased, Entity killer) {
         String configMessage = getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageKilledByEntity);
         configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
 
@@ -148,55 +149,70 @@ public class CustomDeathMessageHandler implements Listener {
                 Placeholder.component("killer", Component.translatable(killer.getType().translationKey())));
     }
 
-    private Component handleOtherCause(Player deceased, AttackRecord previousAttackerRecord){
+    private Component handleOtherCause(Player deceased, AttackRecord previousAttackerRecord) {
         EntityDamageEvent lastDamageEvent = deceased.getLastDamageCause();
         EntityDamageEvent.DamageCause cause = lastDamageEvent.getCause();
 
         String configMessage = switch (cause) {
-            case BLOCK_EXPLOSION -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageBlockExplosion);
-            case CAMPFIRE -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCampfire);
+            case BLOCK_EXPLOSION ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageBlockExplosion);
+            case CAMPFIRE ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCampfire);
             case CONTACT -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageContact);
-            case CRAMMING -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCramming);
+            case CRAMMING ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCramming);
             case CUSTOM -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageCustom);
-            case DRAGON_BREATH -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDragonBreath);
-            case DROWNING -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDrowning);
-            case ENTITY_EXPLOSION -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageEntityExplosion);
+            case DRAGON_BREATH ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDragonBreath);
+            case DROWNING ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDrowning);
+            case ENTITY_EXPLOSION ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageEntityExplosion);
             case FALL -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFall);
-            case FALLING_BLOCK -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFallingBlock);
+            case FALLING_BLOCK ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFallingBlock);
             case FIRE -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFire);
-            case FIRE_TICK -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFireTick);
-            case FLY_INTO_WALL -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFlyIntoWall);
+            case FIRE_TICK ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFireTick);
+            case FLY_INTO_WALL ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFlyIntoWall);
             case FREEZE -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageFreeze);
-            case HOT_FLOOR -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageHotFloor);
+            case HOT_FLOOR ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageHotFloor);
             case KILL -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageKill);
             case LAVA -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageLava);
-            case LIGHTNING -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageLightning);
+            case LIGHTNING ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageLightning);
             case MAGIC -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageMagic);
             case POISON -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessagePoison);
-            case SONIC_BOOM -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageSonicBoom);
-            case STARVATION -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageStarvation);
-            case SUFFOCATION -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageSuffocation);
+            case SONIC_BOOM ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageSonicBoom);
+            case STARVATION ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageStarvation);
+            case SUFFOCATION ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageSuffocation);
             case SUICIDE -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageSuicide);
             case THORNS -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageThorns);
             case VOID -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageVoid);
             case WITHER -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageWither);
-            case WORLD_BORDER -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageWorldBorder);
+            case WORLD_BORDER ->
+                    getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageWorldBorder);
             default -> getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDefault);
         };
 
-        if (configMessage == null || configMessage.isEmpty()){
+        if (configMessage == null || configMessage.isEmpty()) {
             configMessage = getRandomMessage(ConfigManager.getInstance().getDeathMessagesConfig().deathMessageDefault);
         }
 
         configMessage = PlaceholderAPI.setPlaceholders(deceased, configMessage);
 
         Component suffixComponent = Component.text("");
-        if (previousAttackerRecord != null){
+        if (previousAttackerRecord != null) {
             Entity previousAttack = previousAttackerRecord.attacker;
             long timeSinceAttack = System.currentTimeMillis() - previousAttackerRecord.time;
-            if (timeSinceAttack <= (5 * 1000)){
+            if (timeSinceAttack <= (5 * 1000)) {
                 Component attackerComponent;
-                if (previousAttack instanceof Player playerAttacker){
+                if (previousAttack instanceof Player playerAttacker) {
                     attackerComponent = playerAttacker.displayName();
                 } else {
                     attackerComponent = Component.translatable(previousAttack.getType().translationKey());

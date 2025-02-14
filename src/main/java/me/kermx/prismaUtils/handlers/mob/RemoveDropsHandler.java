@@ -13,21 +13,21 @@ import java.util.List;
 public class RemoveDropsHandler implements Listener {
 
     @EventHandler
-    public void onRelevantEntityDeath(EntityDeathEvent event){
+    public void onRelevantEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
-        if (entity.getType() == EntityType.WITHER_SKELETON){
+        if (entity.getType() == EntityType.WITHER_SKELETON) {
             List<ItemStack> drops = event.getDrops();
 
             drops.removeIf(drop -> drop.getType() == Material.STONE_SWORD);
         }
 
-        if (entity.getType() == EntityType.SKELETON || entity.getType() == EntityType.STRAY){
+        if (entity.getType() == EntityType.SKELETON || entity.getType() == EntityType.STRAY) {
             List<ItemStack> drops = event.getDrops();
 
             drops.removeIf(drop -> drop.getType() == Material.BOW);
         }
 
-        if (entity.getType() == EntityType.ZOMBIFIED_PIGLIN || entity.getType() == EntityType.PIGLIN){
+        if (entity.getType() == EntityType.ZOMBIFIED_PIGLIN || entity.getType() == EntityType.PIGLIN) {
             List<ItemStack> drops = event.getDrops();
 
             drops.removeIf(drop -> drop.getType() == Material.GOLDEN_SWORD);

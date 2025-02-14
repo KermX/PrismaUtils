@@ -19,14 +19,14 @@ public class SeenCommand extends BaseCommand {
 
     private final SeenManager seenManager;
 
-    public SeenCommand(SeenManager seenManager){
+    public SeenCommand(SeenManager seenManager) {
         super("prismautils.command.seen", true, "/seen <player>");
         this.seenManager = seenManager;
     }
 
     @Override
-    protected boolean onCommandExecute(CommandSender sender, String label, String[] args){
-        if (args.length < 1){
+    protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
+        if (args.length < 1) {
             return false;
         }
         String targetName = args[0];
@@ -40,15 +40,15 @@ public class SeenCommand extends BaseCommand {
 
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
-                        Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text(duration)))
+                                Placeholder.component("target", onlinePlayer.displayName()),
+                                Placeholder.component("time", Component.text(duration)))
                 );
             } else {
 
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOnlineMessage,
-                        Placeholder.component("target", onlinePlayer.displayName()),
-                        Placeholder.component("time", Component.text("Unknown")))
+                                Placeholder.component("target", onlinePlayer.displayName()),
+                                Placeholder.component("time", Component.text("Unknown")))
                 );
             }
         } else {
@@ -57,7 +57,7 @@ public class SeenCommand extends BaseCommand {
 
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
-                        Placeholder.component("target", Component.text(targetName)))
+                                Placeholder.component("target", Component.text(targetName)))
                 );
 
             } else {
@@ -66,7 +66,7 @@ public class SeenCommand extends BaseCommand {
 
                     sender.sendMessage(
                             TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenNeverJoinedMessage,
-                            Placeholder.component("target", Component.text(targetName)))
+                                    Placeholder.component("target", Component.text(targetName)))
                     );
 
                 } else {
@@ -75,8 +75,8 @@ public class SeenCommand extends BaseCommand {
 
                     sender.sendMessage(
                             TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().seenOfflineMessage,
-                            Placeholder.component("target", Component.text(targetName)),
-                            Placeholder.component("time", Component.text(duration)))
+                                    Placeholder.component("target", Component.text(targetName)),
+                                    Placeholder.component("time", Component.text(duration)))
                     );
                 }
             }

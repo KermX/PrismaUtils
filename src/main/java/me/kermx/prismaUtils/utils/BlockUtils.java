@@ -46,9 +46,9 @@ public final class BlockUtils {
      * @param block The center block.
      * @return An array of the six adjacent blocks.
      */
-    public static Block[] getAdjacentBlocks(Block block){
+    public static Block[] getAdjacentBlocks(Block block) {
         Objects.requireNonNull(block, "block cannot be null");
-        return new Block[] {
+        return new Block[]{
                 block.getRelative(BlockFace.NORTH),
                 block.getRelative(BlockFace.SOUTH),
                 block.getRelative(BlockFace.EAST),

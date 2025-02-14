@@ -1,8 +1,5 @@
 package me.kermx.prismaUtils.managers.features;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

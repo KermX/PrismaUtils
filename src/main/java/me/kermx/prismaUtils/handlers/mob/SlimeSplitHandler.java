@@ -13,24 +13,24 @@ import org.bukkit.inventory.ItemStack;
 public class SlimeSplitHandler implements Listener {
 
     @EventHandler
-    public void onEntitySpawn(CreatureSpawnEvent event){
+    public void onEntitySpawn(CreatureSpawnEvent event) {
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.SLIME || entity.getType() == EntityType.MAGMA_CUBE
-        && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER){
-            if (entity.getType() == EntityType.SLIME){
-                ((org.bukkit.entity.Slime)entity).setSize(1);
-            } else if (entity.getType() == EntityType.MAGMA_CUBE){
-                ((org.bukkit.entity.MagmaCube)entity).setSize(1);
+                && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER) {
+            if (entity.getType() == EntityType.SLIME) {
+                ((org.bukkit.entity.Slime) entity).setSize(1);
+            } else if (entity.getType() == EntityType.MAGMA_CUBE) {
+                ((org.bukkit.entity.MagmaCube) entity).setSize(1);
             }
         }
     }
 
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent event){
+    public void onEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
-        if (entity.getType() == EntityType.MAGMA_CUBE && ((MagmaCube) entity).getSize() == 1){
-            if (Math.random() <= 0.25){
-                int quantity = (int)(Math.random() * 3) + 1;
+        if (entity.getType() == EntityType.MAGMA_CUBE && ((MagmaCube) entity).getSize() == 1) {
+            if (Math.random() <= 0.25) {
+                int quantity = (int) (Math.random() * 3) + 1;
                 event.getDrops().add(new ItemStack(Material.MAGMA_CREAM, quantity));
             }
         }

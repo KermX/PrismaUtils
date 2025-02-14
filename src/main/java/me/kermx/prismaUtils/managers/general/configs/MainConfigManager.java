@@ -44,16 +44,16 @@ public class MainConfigManager {
 
     public int disenchantCommandExpPerEnchantment;
 
-    public MainConfigManager(PrismaUtils plugin){
+    public MainConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
     }
 
-    public void loadConfig(){
-        if (!plugin.getDataFolder().exists()){
+    public void loadConfig() {
+        if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();
         }
         configFile = new File(plugin.getDataFolder(), "config.yml");
-        if (!configFile.exists()){
+        if (!configFile.exists()) {
             plugin.saveResource("config.yml", false);
         }
 
@@ -106,11 +106,11 @@ public class MainConfigManager {
         disenchantCommandExpPerEnchantment = config.getInt("disenchant_command_exp_per_enchantment");
     }
 
-    public void reload(){
+    public void reload() {
         loadConfig();
     }
 
-    public void save(){
+    public void save() {
         try {
             config.save(configFile);
         } catch (IOException e) {
@@ -119,7 +119,7 @@ public class MainConfigManager {
         }
     }
 
-    public FileConfiguration getConfig(){
+    public FileConfiguration getConfig() {
         return config;
     }
 }

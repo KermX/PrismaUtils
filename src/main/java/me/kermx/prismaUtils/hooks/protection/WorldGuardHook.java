@@ -32,11 +32,12 @@ public class WorldGuardHook {
 
     /**
      * Check if a player can build at a location
-     * @param player the player
+     *
+     * @param player   the player
      * @param location the location
      * @return true if the player can build at the location
      */
-    public boolean canBuildWorldGuard(Player player, Location location){
+    public boolean canBuildWorldGuard(Player player, Location location) {
 
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location blockLocation = BukkitAdapter.adapt(location);
@@ -44,6 +45,6 @@ public class WorldGuardHook {
         ApplicableRegionSet set = query.getApplicableRegions(blockLocation);
         StateFlag.State state = set.queryState(localPlayer, Flags.BLOCK_BREAK);
 
-       return state != StateFlag.State.DENY;
+        return state != StateFlag.State.DENY;
     }
 }

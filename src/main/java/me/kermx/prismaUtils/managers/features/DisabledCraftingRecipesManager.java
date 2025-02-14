@@ -12,12 +12,12 @@ import java.util.List;
 
 public class DisabledCraftingRecipesManager {
 
-    public void removeConfiguredRecipes(){
+    public void removeConfiguredRecipes() {
         List<Material> materialsToRemove = new ArrayList<>();
 
-        for (String material : ConfigManager.getInstance().getMainConfig().disabledCraftingRecipes){
+        for (String material : ConfigManager.getInstance().getMainConfig().disabledCraftingRecipes) {
             Material mat = Material.getMaterial(material);
-            if (mat != null){
+            if (mat != null) {
                 materialsToRemove.add(mat);
             } else {
                 Bukkit.getLogger().warning("Material " + material + " is not valid!");
@@ -26,7 +26,7 @@ public class DisabledCraftingRecipesManager {
 
         List<NamespacedKey> keysToRemove = new ArrayList<>();
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
-        while (recipeIterator.hasNext()){
+        while (recipeIterator.hasNext()) {
             Recipe recipe = recipeIterator.next();
             Material resultType = recipe.getResult().getType();
 
