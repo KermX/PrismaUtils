@@ -89,9 +89,14 @@ measure_messages:
   measure_second_position_set: '<green>Second position set!'
   measure_no_first_position_set: '<red>You must set the first position first!'
   measure_different_worlds: '<red>Both positions must be in the same world!'
-  measure_distance: '<green>Distance: <distance> blocks'
-  measure_difference: '<green>Difference: x: <x> y: <y> z: <z>'
+  measure_distance: '<dark_green>Distance: <green><distance> blocks'
+  measure_difference: '<dark_green>Difference: <green>x: <x> y: <y> z: <z>'
+  measure_midpoint: '<dark_green>Midpoint: <green>x: <x> y: <y> z: <z>'
   measure_invalid_coordinates: '<red>Invalid coordinates!'
+
+player_head_messages:
+  player_head_name: '<white><player>''s Head'
+  player_head_given: '<green>Given <player>''s head to <recipient>!'
 
 afk_title_feature:
   afk_placeholder: '%essentials_afk%'

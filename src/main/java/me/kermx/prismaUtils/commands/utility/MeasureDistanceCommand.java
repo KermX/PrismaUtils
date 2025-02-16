@@ -102,6 +102,16 @@ public class MeasureDistanceCommand extends BaseCommand {
                     Placeholder.component("y", Component.text(dy)),
                     Placeholder.component("z", Component.text(dz)))
             );
+            double midX = GenUtils.round((firstPosition.getX() + secondPosition.getX()) / 2, 0);
+            double midY = GenUtils.round((firstPosition.getY() + secondPosition.getY()) / 2, 0);
+            double midZ = GenUtils.round((firstPosition.getZ() + secondPosition.getZ()) / 2, 0);
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().measureMidpointMessage,
+                            Placeholder.component("x", Component.text(midX)),
+                            Placeholder.component("y", Component.text(midY)),
+                            Placeholder.component("z", Component.text(midZ)))
+            );
+
             firstPositions.remove(player.getUniqueId());
             return true;
         }

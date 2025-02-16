@@ -107,7 +107,12 @@ public class MessagesConfigManager {
     public String measureDifferentWorldsMessage;
     public String measureDistanceMessage;
     public String measureDifferenceMessage;
+    public String measureMidpointMessage;
     public String measureInvalidCoordinatesMessage;
+
+    //Player Head Messages
+    public String playerHeadName;
+    public String playerHeadGivenMessage;
 
     // AFK Title Messages
     public String afkPlaceholder;
@@ -236,7 +241,12 @@ public class MessagesConfigManager {
         measureDifferentWorldsMessage = messages.getString("measure_messages.measure_different_worlds");
         measureDistanceMessage = messages.getString("measure_messages.measure_distance");
         measureDifferenceMessage = messages.getString("measure_messages.measure_difference");
+        measureMidpointMessage = messages.getString("measure_messages.measure_midpoint");
         measureInvalidCoordinatesMessage = messages.getString("measure_messages.measure_invalid_coordinates");
+
+        //Player Head Messages
+        playerHeadName = messages.getString("player_head_messages.player_head_name");
+        playerHeadGivenMessage = messages.getString("player_head_messages.player_head_given");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
