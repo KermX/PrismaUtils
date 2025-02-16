@@ -11,7 +11,7 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
-import me.kermx.prismaUtils.hooks.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.ProtectionHandler;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
@@ -32,8 +32,8 @@ public final class PrismaUtils extends JavaPlugin {
     public void onEnable() {
         loadConfigurations();
 
-        // Load hooks
-        protectionHandler = new ProtectionHandler(getServer().getPluginManager());
+        // Load integrations
+        protectionHandler = new ProtectionHandler(getServer().getPluginManager(), getLogger());
 
         // Initialize specific managers / handlers
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionHandler);
