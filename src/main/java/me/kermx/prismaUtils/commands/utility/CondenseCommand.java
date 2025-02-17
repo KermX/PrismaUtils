@@ -45,8 +45,8 @@ public class CondenseCommand extends BaseCommand {
             if (condensedItems > 0) {
                 player.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                                Placeholder.component("from", Component.text(cmm.normalizeMaterialName(material.name()))),
-                                Placeholder.component("to", Component.text(cmm.normalizeMaterialName(cmm.getResultMaterial(material, false).name()))))
+                                Placeholder.component("from", Component.text(TextUtils.normalizeMaterialName(material))),
+                                Placeholder.component("to", Component.text(TextUtils.normalizeMaterialName(cmm.getResultMaterial(material, false)))))
                 );
             }
         } else {
@@ -55,8 +55,8 @@ public class CondenseCommand extends BaseCommand {
                 if (condensedItems > 0) {
                     player.sendMessage(
                             TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                                    Placeholder.component("from", Component.text(cmm.normalizeMaterialName(material.name()))),
-                                    Placeholder.component("to", Component.text(cmm.normalizeMaterialName(cmm.getResultMaterial(material, false).name()))))
+                                    Placeholder.component("from", Component.text(TextUtils.normalizeMaterialName(material))),
+                                    Placeholder.component("to", Component.text(TextUtils.normalizeMaterialName(cmm.getResultMaterial(material, false)))))
                     );
                 }
             });

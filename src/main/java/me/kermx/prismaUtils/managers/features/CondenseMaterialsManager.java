@@ -167,14 +167,4 @@ public class CondenseMaterialsManager {
         }
         return materialMappings.getOrDefault(inputMaterial, Material.AIR);
     }
-
-    public String normalizeMaterialName(String materialName) {
-        // Replace underscores with spaces and capitalize each word
-        String[] words = materialName.toLowerCase().split("_");
-        StringBuilder normalized = new StringBuilder();
-        for (String word : words) {
-            normalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-        }
-        return normalized.toString().trim();
-    }
 }

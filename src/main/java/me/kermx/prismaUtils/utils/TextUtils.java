@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Material;
 
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -109,6 +110,37 @@ public final class TextUtils {
         }
 
         return joiner.toString();
+    }
+
+    /**
+     * Normalize a material name by capitalizing the first letter of each word and replacing underscores with spaces.
+     *
+     * @param materialName the material name to normalize
+     * @return the normalized material name
+     */
+    public static String normalizeMaterialName(String materialName) {
+        String[] words = materialName.toLowerCase().split("_");
+        StringBuilder normalized = new StringBuilder();
+        for (String word : words) {
+            normalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        return normalized.toString().trim();
+    }
+
+    /**
+     * Normalize a material name by capitalizing the first letter of each word and replacing underscores with spaces.
+     *
+     * @param material the material to normalize
+     * @return the normalized material name
+     */
+    public static String normalizeMaterialName(Material material) {
+        String materialName = material.name();
+        String[] words = materialName.toLowerCase().split("_");
+        StringBuilder normalized = new StringBuilder();
+        for (String word : words) {
+            normalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        return normalized.toString().trim();
     }
 
 }

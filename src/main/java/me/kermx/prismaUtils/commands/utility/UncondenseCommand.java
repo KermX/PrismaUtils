@@ -73,8 +73,8 @@ public class UncondenseCommand extends BaseCommand {
             if (uncondensedItemCount > 0) {
                 player.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                                Placeholder.component("from", Component.text(condenseMaterialsManager.normalizeMaterialName(blockMaterial.name()))),
-                                Placeholder.component("to", Component.text(condenseMaterialsManager.normalizeMaterialName(condenseMaterialsManager.getReversibleMaterialMappings(false).get(blockMaterial).name()))))
+                                Placeholder.component("from", Component.text(TextUtils.normalizeMaterialName(blockMaterial))),
+                                Placeholder.component("to", Component.text(TextUtils.normalizeMaterialName(condenseMaterialsManager.getReversibleMaterialMappings(false).get(blockMaterial)))))
                 );
             }
         }
@@ -117,8 +117,8 @@ public class UncondenseCommand extends BaseCommand {
 
         player.sendMessage(
                 TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                        Placeholder.component("from", Component.text(condenseMaterialsManager.normalizeMaterialName(material.name()))),
-                        Placeholder.component("to", Component.text(condenseMaterialsManager.normalizeMaterialName(resultMaterial.name()))))
+                        Placeholder.component("from", Component.text(TextUtils.normalizeMaterialName(material))),
+                        Placeholder.component("to", Component.text(TextUtils.normalizeMaterialName(resultMaterial))))
         );
 
         return totalUncondensedItems; // Return the number of uncondensed items
