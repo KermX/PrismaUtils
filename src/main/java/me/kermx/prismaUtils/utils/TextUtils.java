@@ -73,6 +73,11 @@ public final class TextUtils {
         return LEGACY_COMPONENT_SERIALIZER.deserialize(legacyText);
     }
 
+    public static String serializeToMini(Component component) {
+        Objects.requireNonNull(component, "Component cannot be null");
+        return MINI_MESSAGE.serialize(component);
+    }
+
     /**
      * Format a duration in milliseconds into a human-readable string.
      * For example: "1d 2h 3m 4s".
