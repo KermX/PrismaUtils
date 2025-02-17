@@ -36,6 +36,11 @@ public class UnixLocalTimeExpansion extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
         String[] parts = identifier.split("_", 2);
         if (parts.length < 2) {

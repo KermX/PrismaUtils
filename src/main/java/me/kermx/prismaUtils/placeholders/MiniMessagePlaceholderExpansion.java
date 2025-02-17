@@ -30,6 +30,11 @@ public class MiniMessagePlaceholderExpansion extends PlaceholderExpansion implem
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
         return onRequest(player, params);
     }
