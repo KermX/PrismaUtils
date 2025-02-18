@@ -123,7 +123,7 @@ public final class TextUtils {
      * @param materialName the material name to normalize
      * @return the normalized material name
      */
-    public static String normalizeMaterialName(String materialName) {
+    public static String normalizeEnumName(String materialName) {
         String[] words = materialName.toLowerCase().split("_");
         StringBuilder normalized = new StringBuilder();
         for (String word : words) {
@@ -138,14 +138,9 @@ public final class TextUtils {
      * @param material the material to normalize
      * @return the normalized material name
      */
-    public static String normalizeMaterialName(Material material) {
+    public static String normalizeEnumName(Material material) {
         String materialName = material.name();
-        String[] words = materialName.toLowerCase().split("_");
-        StringBuilder normalized = new StringBuilder();
-        for (String word : words) {
-            normalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-        }
-        return normalized.toString().trim();
+        return normalizeEnumName(materialName);
     }
 
 }
