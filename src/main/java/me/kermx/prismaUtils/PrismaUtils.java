@@ -199,8 +199,4 @@ public final class PrismaUtils extends JavaPlugin {
     private void startTasks() {
         new AfkTitlesHandler().runTaskTimer(this, 0, 40);
     }
-
-    public ProtectionHandler getProtectionHandler() {
-        return protectionHandler;
-    }
 }
