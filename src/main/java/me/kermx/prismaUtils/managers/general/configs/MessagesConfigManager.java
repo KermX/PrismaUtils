@@ -254,7 +254,7 @@ public class MessagesConfigManager {
 
         //Cuff Messages
         cuffMessage = messages.getString("cuff_messages.cuff_message");
-        cuffUncuffMessage = messages.getString("cuff_messages.uncuff_message");
+        cuffUncuffMessage = messages.getString("cuff_messages.cuff_uncuff_message");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
