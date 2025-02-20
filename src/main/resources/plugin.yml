@@ -170,6 +170,10 @@ commands:
     permission: prismautils.command.playerhead
     aliases:
       - skull
+  spawnmob:
+    description: Spawns mobs.
+    usage: /spawnmob <mob> [amount]
+    permission: prismautils.command.spawnmob
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

@@ -97,6 +97,10 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("setmodeldata", setModelDataCommand, setModelDataCommand);
         PlayerHeadCommand playerHeadCommand = new PlayerHeadCommand();
         commandManager.registerCommand("playerhead", playerHeadCommand, playerHeadCommand);
+        SpawnMobCommand spawnMobCommand = new SpawnMobCommand();
+        commandManager.registerCommand("spawnmob", spawnMobCommand, spawnMobCommand);
+        CuffCommand cuffCommand = new CuffCommand();
+        commandManager.registerCommand("cuff", cuffCommand, cuffCommand);
 
         // Player Commands
         BottomCommand bottomCommand = new BottomCommand();
@@ -150,7 +154,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new FirstJoinSpawnHandler(),
                 new SilkSpawnerHandler(),
                 seedAndShearBlocksHandler,
-                new CopperOxidationHandler(protectionHandler)
+                new CopperOxidationHandler(protectionHandler),
+                new CuffCommand()
         );
 
         // Register config conditional events

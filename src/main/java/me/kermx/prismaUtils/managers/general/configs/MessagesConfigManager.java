@@ -114,6 +114,10 @@ public class MessagesConfigManager {
     public String playerHeadName;
     public String playerHeadGivenMessage;
 
+    //Cuff Messages
+    public String cuffMessage;
+    public String cuffUncuffMessage;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -247,6 +251,10 @@ public class MessagesConfigManager {
         //Player Head Messages
         playerHeadName = messages.getString("player_head_messages.player_head_name");
         playerHeadGivenMessage = messages.getString("player_head_messages.player_head_given");
+
+        //Cuff Messages
+        cuffMessage = messages.getString("cuff_messages.cuff_message");
+        cuffUncuffMessage = messages.getString("cuff_messages.uncuff_message");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");

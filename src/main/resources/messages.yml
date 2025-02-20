@@ -98,6 +98,10 @@ player_head_messages:
   player_head_name: '<white><player>''s Head'
   player_head_given: '<green>Given <player>''s head to <recipient>!'
 
+cuff_messages:
+  cuff_message: '<green>Cuffed <target>!'
+  cuff_uncuff_message: '<green>Uncuffed <target>!'
+
 afk_title_feature:
   afk_placeholder: '%essentials_afk%'
   afk_titles:

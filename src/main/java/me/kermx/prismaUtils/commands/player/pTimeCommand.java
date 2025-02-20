@@ -27,6 +27,16 @@ public class pTimeCommand extends BaseCommand {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("freeze") || args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("worldtime")) {
+            long worldTime = ((Player) sender).getWorld().getTime();
+            ((Player) sender).setPlayerTime(worldTime, true);
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().pTimeSetMessage,
+                    Placeholder.component("time", Component.text(worldTime)))
+            );
+            return true;
+        }
+
         try {
             long time = parseTime(args[0]);
             ((Player) sender).setPlayerTime(time, false);
@@ -62,7 +72,7 @@ public class pTimeCommand extends BaseCommand {
                 return 18000L;
             default:
                 long time = Long.parseLong(input);
-                if (time < 0 || time > 24000) {
+                if (time < 0 || time >= 24000) {
                     throw new IllegalArgumentException("Invalid time! Must be between 0 and 24000.");
                 }
                 return time;
@@ -83,6 +93,10 @@ public class pTimeCommand extends BaseCommand {
             completions.add("evening");
             completions.add("midnight");
             completions.add("reset");
+            completions.add("freeze");
+            completions.add("lock");
+            completions.add("worldtime");
+            completions.add("sync");
         }
         return completions;
     }
