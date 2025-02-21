@@ -8,6 +8,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -57,6 +58,31 @@ public final class ItemUtils {
                     droppedItem.setPickupDelay(0);
                 }
             }
+        }
+    }
+
+
+    /**
+     * Damages the item by one durability point.
+     *
+     * @param item the item to damage; must not be null
+     * @throws NullPointerException if item is null
+     */
+    public static void damageItem(ItemStack item, int damage) {
+        Objects.requireNonNull(item, "ItemStack cannot be null");
+
+        if (!(item.getItemMeta() instanceof Damageable damageableMeta)) {
+            return;
+        }
+
+        int newDamage = damageableMeta.getDamage() + damage;
+        int maxDurability = item.getType().getMaxDurability();
+
+        if (newDamage >= maxDurability) {
+            item.setAmount(0);
+        } else {
+            damageableMeta.setDamage(newDamage);
+            item.setItemMeta(damageableMeta);
         }
     }
 

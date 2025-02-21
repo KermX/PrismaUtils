@@ -155,7 +155,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new SilkSpawnerHandler(),
                 seedAndShearBlocksHandler,
                 new CopperOxidationHandler(protectionHandler),
-                new CuffCommand()
+                new CuffCommand(),
+                new HorseZombificationHandler()
         );
 
         // Register config conditional events

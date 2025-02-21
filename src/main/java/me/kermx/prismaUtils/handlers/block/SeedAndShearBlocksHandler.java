@@ -1,6 +1,7 @@
 package me.kermx.prismaUtils.handlers.block;
 
 import me.kermx.prismaUtils.integrations.ProtectionHandler;
+import me.kermx.prismaUtils.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -90,9 +91,12 @@ public class SeedAndShearBlocksHandler implements Listener {
             if (target == null) return;
 
             transformBlock(block, target);
-            Damageable shearsMeta = (Damageable) itemInHand.getItemMeta();
-            shearsMeta.setDamage(shearsMeta.getDamage() + 1);
-            itemInHand.setItemMeta(shearsMeta);
+
+//            Damageable shearsMeta = (Damageable) itemInHand.getItemMeta();
+//            shearsMeta.setDamage(shearsMeta.getDamage() + 1);
+//            itemInHand.setItemMeta(shearsMeta);
+            ItemUtils.damageItem(itemInHand, 1);
+
             event.setCancelled(true);
         }
     }
