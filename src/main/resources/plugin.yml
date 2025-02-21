@@ -199,3 +199,6 @@ permissions:
         prismautils.command.loom: true
         prismautils.command.cartographytable: true
         prismautils.command.enderchest: true
+  prismautils.keepinventory:
+    description: Allows the player to keep their inventory on death.
+    default: op
