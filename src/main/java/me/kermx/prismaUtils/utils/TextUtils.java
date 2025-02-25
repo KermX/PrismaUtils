@@ -1,10 +1,14 @@
 package me.kermx.prismaUtils.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -73,9 +77,49 @@ public final class TextUtils {
         return LEGACY_COMPONENT_SERIALIZER.deserialize(legacyText);
     }
 
+    /**
+     * Serializes a Component into a MiniMessage string.
+     *
+     * @param component the Component to serialize; must not be null.
+     * @return the serialized MiniMessage string.
+     */
     public static String serializeToMini(Component component) {
         Objects.requireNonNull(component, "Component cannot be null");
         return MINI_MESSAGE.serialize(component);
+    }
+
+    /**
+     * Send a message to a player that can be copied to the clipboard.
+     *
+     * @param player   the player to send the message to; must not be null
+     * @param message  the message to send; must not be null
+     * @param copyText the text to copy to the clipboard; must not be null
+     */
+    public static void sendCopyableMessage(Player player, String message, String copyText) {
+        Objects.requireNonNull(player, "player cannot be null");
+        Objects.requireNonNull(message, "message cannot be null");
+        Objects.requireNonNull(copyText, "copyText cannot be null");
+
+        player.sendMessage(Component.text(message)
+                .clickEvent(ClickEvent.copyToClipboard(copyText))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to copy!", NamedTextColor.GREEN))));
+    }
+
+    /**
+     * Send a message to a player that can be copied to the clipboard.
+     *
+     * @param player   the player to send the message to; must not be null
+     * @param message  the message to send; must not be null
+     * @param copyText the text to copy to the clipboard; must not be null
+     */
+    public static void sendCopyableMessage(Player player, Component message, Component copyText) {
+        Objects.requireNonNull(player, "player cannot be null");
+        Objects.requireNonNull(message, "message cannot be null");
+        Objects.requireNonNull(copyText, "copyText cannot be null");
+
+        player.sendMessage(message
+                .clickEvent(ClickEvent.copyToClipboard(serializeToLegacy(copyText)))
+                .hoverEvent(HoverEvent.showText(copyText)));
     }
 
     /**
