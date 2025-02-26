@@ -178,6 +178,10 @@ commands:
     description: Cuffs a player.
     usage: /cuff <player>
     permission: prismautils.command.cuff
+  smite:
+    description: Strikes lightning at a player.
+    usage: /smite <player>
+    permission: prismautils.command.smite
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

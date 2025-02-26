@@ -7,8 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class PlayerUtils {
     private PlayerUtils() {
@@ -57,6 +59,17 @@ public final class PlayerUtils {
     public static Player getOnlinePlayer(UUID uuid) {
         Objects.requireNonNull(uuid, "UUID cannot be null");
         return Bukkit.getPlayer(uuid);
+    }
+
+    /**
+     * Gets the names of all online players.
+     *
+     * @return A list of online player names.
+     */
+    public static List<String> getOnlinePlayerNames() {
+        return Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
+                .collect(Collectors.toList());
     }
 
     /**
