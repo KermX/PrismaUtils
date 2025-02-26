@@ -4,6 +4,8 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.PlayerUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,10 +39,17 @@ public class SmiteCommand extends BaseCommand {
 
             target.getWorld().strikeLightningEffect(target.getLocation());
             target.damage(damage);
-            sender.sendMessage(TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().smiteMessageDamage,
+                    Placeholder.component("damage", Component.text(damage)),
+                    Placeholder.component("target", target.displayName())
+            ));
         } else {
             target.getWorld().strikeLightningEffect(target.getLocation());
-            sender.sendMessage(TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().playerNotFoundMessage));
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().smiteMessageNoDamage,
+                    Placeholder.component("target", target.displayName())
+            ));
         }
         return true;
     }

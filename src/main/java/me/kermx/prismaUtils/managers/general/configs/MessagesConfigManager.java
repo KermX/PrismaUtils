@@ -118,6 +118,10 @@ public class MessagesConfigManager {
     public String cuffMessage;
     public String cuffUncuffMessage;
 
+    //Smite Messages
+    public String smiteMessageDamage;
+    public String smiteMessageNoDamage;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -255,6 +259,10 @@ public class MessagesConfigManager {
         //Cuff Messages
         cuffMessage = messages.getString("cuff_messages.cuff_message");
         cuffUncuffMessage = messages.getString("cuff_messages.cuff_uncuff_message");
+
+        //Smite Messages
+        smiteMessageDamage = messages.getString("smite_messages.smite_message_damage");
+        smiteMessageNoDamage = messages.getString("smite_messages.smite_message_no_damage");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
