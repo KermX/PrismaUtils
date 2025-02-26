@@ -182,6 +182,10 @@ commands:
     description: Strikes lightning at a player.
     usage: /smite <player>
     permission: prismautils.command.smite
+  clearmobs:
+    description: Clears mobs.
+    usage: /clearmobs [flags]
+    permission: prismautils.command.clearmobs
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

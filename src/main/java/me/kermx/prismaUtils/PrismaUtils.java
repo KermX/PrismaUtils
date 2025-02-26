@@ -103,6 +103,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("cuff", cuffCommand, cuffCommand);
         SmiteCommand smiteCommand = new SmiteCommand();
         commandManager.registerCommand("smite", smiteCommand, smiteCommand);
+        ClearMobsCommand clearMobsCommand = new ClearMobsCommand();
+        commandManager.registerCommand("clearmobs", clearMobsCommand, clearMobsCommand);
 
         // Player Commands
         BottomCommand bottomCommand = new BottomCommand();
