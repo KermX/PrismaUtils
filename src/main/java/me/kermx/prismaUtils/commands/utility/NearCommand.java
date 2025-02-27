@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NearCommand extends BaseCommand {
@@ -19,8 +20,11 @@ public class NearCommand extends BaseCommand {
 
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
-        Location location = ((Player) sender).getLocation();
-        double radius = 100;
+        Player player = (Player) sender;
+
+        Location location = player.getLocation();
+        double radius = 256; // Default radius
+
         if (args.length > 0) {
             try {
                 radius = Double.parseDouble(args[0]);
@@ -31,15 +35,17 @@ public class NearCommand extends BaseCommand {
                 return false;
             }
         }
+
         Component radiusComponent = Component.text(radius);
         sender.sendMessage(
                 TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNearPlayersMessage,
                         Placeholder.component("radius", radiusComponent))
         );
+
         boolean found = false;
 
-        for (Player onlinePlayer : ((Player) sender).getWorld().getPlayers()) {
-            if (onlinePlayer.getLocation().distance(location) <= radius && onlinePlayer != sender) {
+        for (Player onlinePlayer : player.getWorld().getPlayers()) {
+            if (onlinePlayer.getLocation().distance(location) <= radius && !onlinePlayer.equals(player)) {
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNearbyPlayersMessage,
                                 Placeholder.component("player", onlinePlayer.displayName()),
@@ -48,18 +54,33 @@ public class NearCommand extends BaseCommand {
                 found = true;
             }
         }
+
         if (!found) {
             sender.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNoPlayersMessage,
                             Placeholder.component("radius", radiusComponent))
             );
         }
+
         return true;
     }
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            String partialArg = args[0].toLowerCase();
+            List<String> suggestions = new ArrayList<>();
+            List<String> options = List.of("32", "64", "128", "256", "512");
+
+            for (String option : options) {
+                if (option.startsWith(partialArg)) {
+                    suggestions.add(option);
+                }
+            }
+
+            return suggestions;
+        }
+
         return super.onTabCompleteExecute(sender, args);
     }
 }
-

@@ -30,6 +30,7 @@ public class pWeatherCommand extends BaseCommand {
         }
         switch (args[0].toLowerCase()) {
             case "clear":
+            case "sun":
                 ((Player) sender).setPlayerWeather(WeatherType.CLEAR);
                 sender.sendMessage(TextUtils.deserializeString(
                         ConfigManager.getInstance().getMessagesConfig().pWeatherSetMessage,
@@ -57,6 +58,7 @@ public class pWeatherCommand extends BaseCommand {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             completions.add("clear");
+            completions.add("sun");
             completions.add("rain");
             completions.add("reset");
         }

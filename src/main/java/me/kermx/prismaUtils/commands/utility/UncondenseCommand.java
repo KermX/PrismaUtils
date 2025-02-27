@@ -14,8 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class UncondenseCommand extends BaseCommand {
 
@@ -130,13 +132,35 @@ public class UncondenseCommand extends BaseCommand {
             String input = args[0].toLowerCase();
             List<String> suggestions = new ArrayList<>();
 
-            for (Material material : condenseMaterialsManager.getReversibleMaterialMappings(true).keySet()) {
-                if (material.name().toLowerCase().startsWith(input)) {
-                    suggestions.add(material.name());
+            // Include "hand" and "all" if they match the input
+            if ("hand".startsWith(input)) {
+                suggestions.add("hand");
+            }
+            if ("all".startsWith(input)) {
+                suggestions.add("all");
+            }
+
+            // Add reversible materials present in player's inventory that start with the input
+            if (sender instanceof Player player) {
+                Set<Material> materialsInInventory = new HashSet<>();
+                Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
+
+                for (ItemStack item : player.getInventory().getContents()) {
+                    if (item != null && reversibleMappings.containsKey(item.getType())) {
+                        materialsInInventory.add(item.getType());
+                    }
+                }
+
+                for (Material material : materialsInInventory) {
+                    String materialName = material.name().toLowerCase();
+                    if (materialName.startsWith(input)) {
+                        suggestions.add(materialName);
+                    }
                 }
             }
+
             return suggestions;
         }
-        return null;
+        return super.onTabCompleteExecute(sender, args);
     }
 }

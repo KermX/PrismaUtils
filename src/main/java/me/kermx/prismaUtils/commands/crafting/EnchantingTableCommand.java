@@ -9,7 +9,6 @@ import java.util.List;
 
 public class EnchantingTableCommand extends BaseCommand {
 
-
     public EnchantingTableCommand() {
         super("prismautils.command.enchantingtable", false, "/enchantingtable");
     }

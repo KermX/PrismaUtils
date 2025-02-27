@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CartographyTableCommand extends BaseCommand {
 
-
     public CartographyTableCommand() {
         super("prismautils.command.cartographytable", false, "/cartographytable");
     }

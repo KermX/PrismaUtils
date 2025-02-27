@@ -16,7 +16,7 @@ import java.util.List;
 public class RepairCommand extends BaseCommand {
 
     public RepairCommand() {
-        super("prismautils.command.repair", false, "/repair");
+        super("prismautils.command.repair", false, "/repair <hand|all>");
     }
 
     @Override
@@ -39,7 +39,6 @@ public class RepairCommand extends BaseCommand {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if (itemInHand.getType() == Material.AIR) {
-
             player.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().repairNoItemInHandMessage)
             );
@@ -79,11 +78,18 @@ public class RepairCommand extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            completions.add("hand");
-            completions.add("all");
+            String partialArg = args[0].toLowerCase();
+            List<String> suggestions = new ArrayList<>();
+
+            if ("hand".startsWith(partialArg)) {
+                suggestions.add("hand");
+            }
+            if ("all".startsWith(partialArg)) {
+                suggestions.add("all");
+            }
+            return suggestions;
         }
-        return completions;
+        return super.onTabCompleteExecute(sender, args);
     }
 }

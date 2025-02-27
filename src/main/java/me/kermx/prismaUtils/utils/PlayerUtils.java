@@ -71,6 +71,19 @@ public final class PlayerUtils {
                 .map(Player::getName)
                 .collect(Collectors.toList());
     }
+    /**
+     * Gets the names of all online players that start with the given partial name.
+     *
+     * @param partialName The partial name to match.
+     * @return A list of matching online player names.
+     */
+    public static List<String> getOnlinePlayerNamesStartingWith(String partialName) {
+        String lowerPartialName = partialName.toLowerCase();
+        return Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
+                .filter(name -> name.toLowerCase().startsWith(lowerPartialName))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Retrieves the player's main inventory (the first 36 slots).

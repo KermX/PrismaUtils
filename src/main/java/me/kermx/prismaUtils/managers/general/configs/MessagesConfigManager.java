@@ -88,6 +88,8 @@ public class MessagesConfigManager {
     // God Messages
     public String godEnabledMessage;
     public String godDisabledMessage;
+    public String godEnabledForPlayerMessage;
+    public String godDisabledForPlayerMessage;
 
     // Condense and Uncondense Messages
     public String condenseMessage;
@@ -230,6 +232,8 @@ public class MessagesConfigManager {
         // God Messages
         godEnabledMessage = messages.getString("god_messages.god_enabled_message");
         godDisabledMessage = messages.getString("god_messages.god_disabled_message");
+        godEnabledForPlayerMessage = messages.getString("god_messages.god_enabled_for_player_message");
+        godDisabledForPlayerMessage = messages.getString("god_messages.god_disabled_for_player_message");
 
         // Condense and Uncondense Messages
         condenseMessage = messages.getString("condense_uncondense.condense_message");
