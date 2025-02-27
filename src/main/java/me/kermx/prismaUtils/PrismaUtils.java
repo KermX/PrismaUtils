@@ -12,6 +12,7 @@ import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
 import me.kermx.prismaUtils.integrations.ProtectionHandler;
+import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
@@ -19,10 +20,12 @@ import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
+    private PlayerDataManager playerDataManager;
     private ProtectionHandler protectionHandler;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
@@ -38,6 +41,10 @@ public final class PrismaUtils extends JavaPlugin {
         // Initialize specific managers / handlers
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionHandler);
         seenManager = new SeenManager();
+
+        // Initialize player data manager
+        playerDataManager = new PlayerDataManager(this);
+
 
         doStartupOperations();
         registerPlaceholders();
@@ -56,7 +63,9 @@ public final class PrismaUtils extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        for (Player player : getServer().getOnlinePlayers()) {
+            playerDataManager.savePlayerData(player.getUniqueId());
+        }
     }
 
     private void loadConfigurations() {
@@ -149,6 +158,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void registerEvents(EventManager eventManager) {
         eventManager.registerListeners(
+                new PlayerDataListener(playerDataManager),
                 new RemoveDropsHandler(),
                 new NetherMobZombificationHandler(),
                 new SlimeSplitHandler(),
