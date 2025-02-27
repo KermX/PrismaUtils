@@ -62,11 +62,6 @@ public class CuffCommand extends BaseCommand implements Listener {
         return cuffedPlayers.contains(player.getUniqueId());
     }
 
-    @Override
-    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        return super.onTabCompleteExecute(sender, args);
-    }
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (isCuffed(event.getPlayer())) {
@@ -107,5 +102,13 @@ public class CuffCommand extends BaseCommand implements Listener {
         if (isCuffed(event.getPlayer())) {
             event.getCommands().clear();
         }
+    }
+
+    @Override
+    protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            return PlayerUtils.getOnlinePlayerNamesStartingWith(args[0]);
+        }
+        return super.onTabCompleteExecute(sender, args);
     }
 }

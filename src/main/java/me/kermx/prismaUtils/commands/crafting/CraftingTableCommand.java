@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CraftingTableCommand extends BaseCommand {
 
-
     public CraftingTableCommand() {
         super("prismautils.command.craftingtable", false, "/craftingtable");
     }

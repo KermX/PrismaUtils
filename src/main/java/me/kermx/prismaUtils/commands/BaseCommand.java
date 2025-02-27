@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (permission != null && !permission.isEmpty()) {
             if (!sender.hasPermission(permission)) {
                 sender.sendMessage(
@@ -74,7 +75,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public final List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public final List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (permission != null && !permission.isEmpty() && !sender.hasPermission(permission)) {
             return new ArrayList<>();
         }

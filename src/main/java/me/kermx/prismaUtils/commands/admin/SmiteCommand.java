@@ -56,9 +56,8 @@ public class SmiteCommand extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        // Provide player name suggestions for the first argument.
         if (args.length == 1) {
-            return PlayerUtils.getOnlinePlayerNames();
+            return PlayerUtils.getOnlinePlayerNamesStartingWith(args[0]);
         }
         return super.onTabCompleteExecute(sender, args);
     }

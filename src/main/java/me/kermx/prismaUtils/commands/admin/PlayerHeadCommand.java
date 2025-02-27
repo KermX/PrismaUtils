@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerHeadCommand extends BaseCommand {
@@ -84,16 +83,9 @@ public class PlayerHeadCommand extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            String partialArg = args[0].toLowerCase();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String name = player.getName().toLowerCase();
-                if (name.startsWith(partialArg)) {
-                    completions.add(player.getName());
-                }
-            }
+            return PlayerUtils.getOnlinePlayerNamesStartingWith(args[0]);
         }
-        return completions;
+        return super.onTabCompleteExecute(sender, args);
     }
 }

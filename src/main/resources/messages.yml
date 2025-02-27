@@ -73,6 +73,8 @@ bottom_messages:
 god_messages:
   god_enabled_message: '<green>God mode enabled!'
   god_disabled_message: '<red>God mode disabled!'
+  god_enabled_for_player_message: '<green>God mode enabled for <player>!'
+  god_disabled_for_player_message: '<red>God mode disabled for <player>!'
 
 condense_uncondense:
   condense_message: '<green>Condensed <from> into <to>!'

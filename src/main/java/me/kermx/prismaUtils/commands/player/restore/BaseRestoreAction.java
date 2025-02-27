@@ -2,13 +2,13 @@ package me.kermx.prismaUtils.commands.player.restore;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.PlayerUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseRestoreAction extends BaseCommand {
@@ -92,19 +92,14 @@ public abstract class BaseRestoreAction extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        List<String> completions = new ArrayList<>();
+        List<String> completions;
         if (args.length == 1) {
-            String partialArg = args[0].toLowerCase();
-            if ("all".startsWith(partialArg)) {
+            completions = PlayerUtils.getOnlinePlayerNamesStartingWith(args[0]);
+            if ("all".startsWith(args[0].toLowerCase())) {
                 completions.add("all");
             }
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String name = player.getName().toLowerCase();
-                if (name.startsWith(partialArg)) {
-                    completions.add(player.getName());
-                }
-            }
+            return completions;
         }
-        return completions;
+        return super.onTabCompleteExecute(sender, args);
     }
 }
