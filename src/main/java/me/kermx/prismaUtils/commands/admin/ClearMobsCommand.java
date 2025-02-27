@@ -4,9 +4,18 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ClearMobsCommand extends BaseCommand {
 
@@ -53,9 +62,9 @@ public class ClearMobsCommand extends BaseCommand {
             }
         }
 
-        boolean includeTamed = flags.containsKey("includetamed") && Boolean.parseBoolean(flags.get("includetamed"));
-        boolean excludeNamed = flags.containsKey("excludenamed") && Boolean.parseBoolean(flags.get("excludenamed"));
-        boolean preview = flags.containsKey("preview") && Boolean.parseBoolean(flags.get("preview"));
+        boolean includeTamed = flags.containsKey("includetamed");
+        boolean includeNamed = flags.containsKey("includenamed");
+        boolean preview = flags.containsKey("preview");
 
         int count = 0;
 
@@ -74,7 +83,7 @@ public class ClearMobsCommand extends BaseCommand {
                 }
             }
 
-            if (excludeNamed && entity.customName() != null) {
+            if (!includeNamed && entity.customName() != null) {
                 continue;
             }
 
@@ -125,25 +134,17 @@ public class ClearMobsCommand extends BaseCommand {
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         // Available flags.
-        String[] availableFlags = {"radius", "mobtype", "limit", "includetamed", "excludenamed", "preview"};
+        String[] availableFlags = {"radius", "mobtype", "limit", "includetamed", "includenamed", "preview"};
 
-        // If no arguments, suggest all flags.
-        if (args.length == 0) {
-            for (String flag : availableFlags) {
-                completions.add("--" + flag);
-            }
-            return completions;
-        }
-
-        String current = args[args.length - 1];
+        String current = args.length > 0 ? args[args.length - 1] : "";
 
         Set<String> usedFlags = new HashSet<>();
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("--")) {
                 String flagName = args[i].substring(2).toLowerCase();
                 usedFlags.add(flagName);
-                if (i + 1 < args.length && !args[i + 1].startsWith("--")) {
-                    i++;
+                if (i + 1 < args.length && !args[i + 1].startsWith("--") && !isBooleanFlag(flagName)) {
+                    i++; // Skip value for non-boolean flags.
                 }
             }
         }
@@ -159,24 +160,15 @@ public class ClearMobsCommand extends BaseCommand {
             return completions;
         }
 
-        // Otherwise, check if previous argument is a flag expecting a value.
+        // If previous argument is a flag expecting a value.
         if (args.length >= 2 && args[args.length - 2].startsWith("--")) {
             String flagName = args[args.length - 2].substring(2).toLowerCase();
-            // For boolean flags, suggest true/false.
-            if (flagName.equals("includetamed") || flagName.equals("excludenamed") || flagName.equals("preview")) {
-                String[] boolOptions = {"true", "false"};
-                for (String option : boolOptions) {
-                    if (option.startsWith(current.toLowerCase())) {
-                        completions.add(option);
-                    }
-                }
-                return completions;
-            }
-            // For mobtype, suggest valid EntityType names (for LivingEntities and ArmorStands, excluding PLAYER).
+
+            // For mobtype, suggest valid EntityType names.
             if (flagName.equals("mobtype")) {
                 for (EntityType type : EntityType.values()) {
-                    if ((type.getEntityClass() != null && LivingEntity.class.isAssignableFrom(type.getEntityClass()) && type != EntityType.PLAYER)
-                            || type == EntityType.ARMOR_STAND) {
+                    if ((type.getEntityClass() != null && LivingEntity.class.isAssignableFrom(type.getEntityClass())
+                            && type != EntityType.PLAYER) || type == EntityType.ARMOR_STAND) {
                         String typeName = type.name().toLowerCase();
                         if (typeName.startsWith(current.toLowerCase())) {
                             completions.add(type.name());
@@ -185,14 +177,29 @@ public class ClearMobsCommand extends BaseCommand {
                 }
                 return completions;
             }
-            // For numeric flags (radius and limit), no suggestions are provided.
+
+            // For radius and limit, suggest predefined numbers.
+            if (flagName.equals("radius") || flagName.equals("limit")) {
+                String[] numberOptions = {"8", "16", "32", "64", "128", "256", "512"};
+                for (String option : numberOptions) {
+                    if (option.startsWith(current)) {
+                        completions.add(option);
+                    }
+                }
+                return completions;
+            }
         }
 
+        // Suggest remaining flags that haven't been used yet.
         for (String flag : availableFlags) {
             if (!usedFlags.contains(flag)) {
                 completions.add("--" + flag);
             }
         }
         return completions;
+    }
+
+    private boolean isBooleanFlag(String flagName) {
+        return flagName.equals("includetamed") || flagName.equals("includenamed") || flagName.equals("preview");
     }
 }
