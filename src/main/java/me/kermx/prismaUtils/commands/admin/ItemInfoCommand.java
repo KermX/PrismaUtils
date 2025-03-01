@@ -49,6 +49,10 @@ public class ItemInfoCommand extends BaseCommand {
             // Item meta data
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
+
+                player.sendMessage(Component.text("Item Meta Data:", NamedTextColor.YELLOW));
+                TextUtils.sendCopyableMessage(player, meta.toString(), meta.toString());
+
                 if (meta.hasDisplayName()) {
                     player.sendMessage(Component.text("Display Name: ", NamedTextColor.YELLOW));
                     TextUtils.sendCopyableMessage(player, meta.displayName(), meta.displayName());
