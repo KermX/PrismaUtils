@@ -32,7 +32,6 @@ public class AfkTitlesHandler extends BukkitRunnable {
                 sendAfkTitle(player, assignedTitle[0], assignedTitle[1]);
             } else {
                 playerTitles.remove(uuid);
-                clearTitle(player);
             }
 
         }
@@ -55,12 +54,8 @@ public class AfkTitlesHandler extends BukkitRunnable {
         Title formattedTitle = Title.title(
                 MiniMessage.miniMessage().deserialize(title),
                 MiniMessage.miniMessage().deserialize(subtitle),
-                Title.Times.times(Duration.ZERO, Duration.ofSeconds(3), Duration.ZERO)
+                Title.Times.times(Duration.ZERO, Duration.ofSeconds(5), Duration.ZERO)
         );
         player.showTitle(formattedTitle);
-    }
-
-    private void clearTitle(Player player) {
-        player.clearTitle();
     }
 }
