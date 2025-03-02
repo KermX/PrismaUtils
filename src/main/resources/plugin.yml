@@ -186,6 +186,12 @@ commands:
     description: Clears mobs.
     usage: /clearmobs [flags]
     permission: prismautils.command.clearmobs
+  roundrotation:
+    description: Rounds the player's rotation.
+    usage: /roundrotation
+    permission: prismautils.command.roundrotation
+    aliases:
+      - snapneck
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload
