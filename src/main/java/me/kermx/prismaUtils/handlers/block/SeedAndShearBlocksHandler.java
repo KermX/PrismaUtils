@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.integrations.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
 import me.kermx.prismaUtils.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +17,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class SeedAndShearBlocksHandler implements Listener {
         Player player = event.getPlayer();
 
         if (protectionHandler != null &&
-                protectionHandler.blockIsProtectedByPlugin(player, block.getLocation())) {
+                protectionHandler.isLocationProtected(player, block.getLocation())) {
             event.setCancelled(true);
             return;
         }

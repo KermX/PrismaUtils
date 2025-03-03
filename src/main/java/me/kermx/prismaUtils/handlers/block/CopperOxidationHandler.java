@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.integrations.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -41,7 +41,7 @@ public class CopperOxidationHandler implements Listener {
                 Block middle = event.getHitBlock();
                 Player thrower = (potion.getShooter() instanceof Player) ? (Player) potion.getShooter() : null;
 
-                if (middle == null || protectionHandler.blockIsProtectedByPlugin(thrower, middle.getLocation())) return;
+                if (middle == null || protectionHandler.isLocationProtected(thrower, middle.getLocation())) return;
 
                 for (int x = -TRANSFORM_RADIUS; x <= TRANSFORM_RADIUS; x++) {
                     for (int y = -TRANSFORM_RADIUS; y <= TRANSFORM_RADIUS; y++) {

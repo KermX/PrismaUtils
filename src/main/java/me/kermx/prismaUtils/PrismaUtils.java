@@ -11,7 +11,8 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
-import me.kermx.prismaUtils.integrations.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.flight.FlightHandler;
+import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
@@ -27,6 +28,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     private PlayerDataManager playerDataManager;
     private ProtectionHandler protectionHandler;
+    private FlightHandler flightHandler;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
@@ -35,8 +37,12 @@ public final class PrismaUtils extends JavaPlugin {
     public void onEnable() {
         loadConfigurations();
 
-        // Load integrations
+        // Initialize ProtectionHandler
         protectionHandler = new ProtectionHandler(getServer().getPluginManager(), getLogger());
+
+        // Initialize FlightHandler (if needed)
+        flightHandler = new FlightHandler(getServer().getPluginManager(), getLogger());
+
 
         // Initialize specific managers / handlers
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionHandler);
@@ -114,6 +120,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("smite", smiteCommand, smiteCommand);
         ClearMobsCommand clearMobsCommand = new ClearMobsCommand();
         commandManager.registerCommand("clearmobs", clearMobsCommand, clearMobsCommand);
+        UptimeCommand uptimeCommand = new UptimeCommand();
+        commandManager.registerCommand("uptime", uptimeCommand, uptimeCommand);
         RoundRotationCommand roundRotationCommand = new RoundRotationCommand();
         commandManager.registerCommand("roundrotation", roundRotationCommand, roundRotationCommand);
 

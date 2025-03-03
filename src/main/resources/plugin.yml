@@ -12,6 +12,7 @@ commands:
     permission: prismautils.command.craftingtable
     aliases:
       - craft
+      - vcraft
       - wb
       - workbench
   stonecutter:
@@ -192,6 +193,10 @@ commands:
     permission: prismautils.command.roundrotation
     aliases:
       - snapneck
+  uptime:
+    description: Shows the server uptime.
+    usage: /uptime
+    permission: prismautils.command.uptime
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload
