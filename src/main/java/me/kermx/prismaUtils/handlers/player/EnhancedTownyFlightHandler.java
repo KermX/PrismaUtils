@@ -1,5 +1,6 @@
 package me.kermx.prismaUtils.handlers.player;
 
+import com.gmail.llmdlio.townyflight.PlayerFlightChangeEvent;
 import me.kermx.prismaUtils.integrations.flight.FlightHandler;
 import me.kermx.prismaUtils.integrations.flight.impl.TownyFlightHookImpl;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
@@ -18,6 +19,14 @@ public class EnhancedTownyFlightHandler implements Listener {
     public EnhancedTownyFlightHandler(FlightHandler flightHandler, PlayerDataManager dataManager) {
         this.flightHandler = flightHandler;
         this.dataManager = dataManager;
+    }
+
+    @EventHandler
+    public void onPlayerFlightChangeEvent(PlayerFlightChangeEvent event) {
+        Player player = event.getPlayer();
+        PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
+
+        pData.setFlyEnabled(event.isFlightAllowed());
     }
 
     @EventHandler
