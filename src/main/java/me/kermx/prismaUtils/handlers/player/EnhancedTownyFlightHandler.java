@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class EnhancedTownyFlightHandler implements Listener {
@@ -29,27 +30,37 @@ public class EnhancedTownyFlightHandler implements Listener {
         checkAndUpdateFlight(event.getPlayer());
     }
 
+    @EventHandler
+    public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+        checkAndUpdateFlight(event.getPlayer());
+    }
+
     private void checkAndUpdateFlight(Player player) {
         PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
+
         if (pData == null || !pData.isFlyEnabled()) {
-            flightHandler.getHooks().stream()
-                    .filter(hook -> hook instanceof TownyFlightHookImpl)
-                    .findFirst()
-                    .ifPresent(hook -> ((TownyFlightHookImpl) hook).disableFlight(player));
+            disablePlayerFlight(player);
             return;
         }
+
         if (flightHandler.canPlayerFly(player, player.getLocation())) {
-            flightHandler.getHooks().stream()
-                    .filter(hook -> hook instanceof TownyFlightHookImpl)
-                    .findFirst()
-                    .ifPresent(hook -> ((TownyFlightHookImpl) hook).enableFlight(player));
+            enablePlayerFlight(player);
         } else {
-            flightHandler.getHooks().stream()
-                    .filter(hook -> hook instanceof TownyFlightHookImpl)
-                    .findFirst()
-                    .ifPresent(hook -> ((TownyFlightHookImpl) hook).disableFlight(player));
+            disablePlayerFlight(player);
         }
     }
+
+    private void enablePlayerFlight(Player player) {
+        flightHandler.getHooks().stream()
+                .filter(hook -> hook instanceof TownyFlightHookImpl)
+                .findFirst()
+                .ifPresent(hook -> ((TownyFlightHookImpl) hook).enableFlight(player));
+    }
+
+    private void disablePlayerFlight(Player player) {
+        flightHandler.getHooks().stream()
+                .filter(hook -> hook instanceof TownyFlightHookImpl)
+                .findFirst()
+                .ifPresent(hook -> ((TownyFlightHookImpl) hook).disableFlight(player));
+    }
 }
-
-
