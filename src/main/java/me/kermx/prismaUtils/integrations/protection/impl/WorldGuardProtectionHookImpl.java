@@ -1,12 +1,12 @@
 package me.kermx.prismaUtils.integrations.protection.impl;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flags;
-import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import me.kermx.prismaUtils.integrations.protection.api.IProtectionHook;
 import org.bukkit.Location;
@@ -39,16 +39,12 @@ public class WorldGuardProtectionHookImpl implements IProtectionHook {
     public boolean canBuild(Player player, Location location) {
         LocalPlayer localPlayer = worldGuard.wrapPlayer(player);
         com.sk89q.worldedit.util.Location adaptedLocation = BukkitAdapter.adapt(location);
-        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
-        ApplicableRegionSet regions = query.getApplicableRegions(adaptedLocation);
+        World adaptedWorld = BukkitAdapter.adapt(location.getWorld());
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        boolean canBypass = WorldGuard.getInstance().getPlatform().getSessionManager().hasBypass(localPlayer,adaptedWorld);
 
-        boolean hasDefinedRegion = !regions.getRegions().isEmpty();
-        StateFlag.State state = regions.queryState(localPlayer, Flags.BLOCK_BREAK);
-
-        if (hasDefinedRegion) {
-            return state == StateFlag.State.ALLOW;
-        } else {
-            return state != StateFlag.State.DENY;
-        }
+        if (canBypass) {return true;}
+        return query.testState(adaptedLocation, localPlayer, Flags.BUILD);
     }
 }

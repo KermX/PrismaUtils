@@ -181,7 +181,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new CopperOxidationHandler(protectionHandler),
                 new CuffCommand(),
                 new HorseZombificationHandler(),
-                new PermissionKeepInvHandler()
+                new PermissionKeepInvHandler(),
+                new EnhancedTownyFlightHandler(flightHandler,playerDataManager)
         );
 
         // Register config conditional events

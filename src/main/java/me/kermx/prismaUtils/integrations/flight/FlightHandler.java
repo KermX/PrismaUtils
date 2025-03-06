@@ -14,7 +14,7 @@ public class FlightHandler extends BaseIntegrationHandler<IFlightHook> {
         super(logger);
         // Maybe add world guard flag later, no need for now
         //loadIntegration(pm, "WorldGuard", "me.kermx.prismaUtils.integrations.flight.impl.WorldGuardFlightHookImpl");
-        loadIntegration(pm, "Towny", "me.kermx.prismaUtils.integrations.flight.impl.TownyFlightHookImpl");
+        loadIntegration(pm, "TownyFlight", "me.kermx.prismaUtils.integrations.flight.impl.TownyFlightHookImpl");
     }
 
     /**
