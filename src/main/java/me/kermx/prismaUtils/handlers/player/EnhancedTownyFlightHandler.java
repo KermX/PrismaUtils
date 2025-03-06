@@ -39,10 +39,10 @@ public class EnhancedTownyFlightHandler implements Listener {
         checkAndUpdateFlight(event.getPlayer());
     }
 
-    @EventHandler
-    public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
-        checkAndUpdateFlight(event.getPlayer());
-    }
+//    @EventHandler
+//    public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+//        checkAndUpdateFlight(event.getPlayer());
+//    }
 
     private void checkAndUpdateFlight(Player player) {
         PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
