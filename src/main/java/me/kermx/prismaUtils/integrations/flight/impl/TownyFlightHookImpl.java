@@ -1,7 +1,6 @@
 package me.kermx.prismaUtils.integrations.flight.impl;
 
 import com.gmail.llmdlio.townyflight.TownyFlightAPI;
-import com.palmergames.bukkit.towny.TownyAPI;
 import me.kermx.prismaUtils.integrations.flight.api.IFlightHook;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -28,7 +27,6 @@ public class TownyFlightHookImpl implements IFlightHook {
         return null;
     }
 
-
     @Override
     public boolean canPlayerFly(Player player, Location location) {
         return townyFlightAPI.canFly(player,true);
@@ -36,6 +34,7 @@ public class TownyFlightHookImpl implements IFlightHook {
 
     public void enableFlight(Player player) {
         townyFlightAPI.addFlight(player, true);
+        player.setFlying(true);
     }
 
     public void disableFlight(Player player) {

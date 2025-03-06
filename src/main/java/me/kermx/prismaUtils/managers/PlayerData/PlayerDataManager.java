@@ -63,5 +63,4 @@ public class PlayerDataManager {
     public void removePlayerData(UUID playerId) {
         playerDataMap.remove(playerId);
     }
-
 }
