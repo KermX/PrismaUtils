@@ -56,6 +56,7 @@ public class BottomCommand extends BaseCommand {
                         ConfigManager.getInstance().getMessagesConfig().bottomMessageInvalidBlock)
                 );
             } else {
+                player.setFallDistance(0);
                 player.teleport(targetLocation);
                 player.sendMessage(TextUtils.deserializeString(
                         ConfigManager.getInstance().getMessagesConfig().bottomMessage)

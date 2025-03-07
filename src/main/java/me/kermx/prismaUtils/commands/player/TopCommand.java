@@ -32,6 +32,7 @@ public class TopCommand extends BaseCommand {
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().topMessageAlreadyAtTop)
             );
         } else {
+            player.setFallDistance(0);
             player.teleport(topLocation);
             player.sendMessage(TextUtils.deserializeString(
                     ConfigManager.getInstance().getMessagesConfig().topMessage)
