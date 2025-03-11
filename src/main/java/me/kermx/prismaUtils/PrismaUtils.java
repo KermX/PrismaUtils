@@ -164,6 +164,10 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("measure", measureDistanceCommand, measureDistanceCommand);
         MassDisenchantCommand massDisenchantCommand = new MassDisenchantCommand();
         commandManager.registerCommand("disenchant", massDisenchantCommand, massDisenchantCommand);
+        LightLevelCommand lightLevelCommand = new LightLevelCommand();
+        commandManager.registerCommand("lightlevel", lightLevelCommand, lightLevelCommand);
+        ExtinguishCommand extinguishCommand = new ExtinguishCommand();
+        commandManager.registerCommand("extinguish", extinguishCommand, extinguishCommand);
     }
 
     private void registerEvents(EventManager eventManager) {

@@ -141,6 +141,14 @@ commands:
     permission: prismautils.command.measure
     aliases:
       - ruler
+  lightlevel:
+    description: Show spawnable blocks
+    usage: /lightlevel [radius] [duration]
+    permission: prismautils.command.lightlevel
+  extinguish:
+    description: Remove fire from yourself
+    usage: /extinguish
+    permission: prismautils.command.extinguish
   disenchant:
     description: Disenchants the item in the player's hand.
     usage: /disenchant <item>
