@@ -23,7 +23,7 @@ feed_messages:
 
 flyspeed_messages:
   flyspeed_reset_message: '<green>Your fly speed has been reset to default!'
-  flyspeed_invalid_speed_message: '<red>Invalid speed! Must be between 0.1 and 10!'
+  flyspeed_invalid_speed_message: '<red>Invalid speed! Must be between 0.1 and <maxspeed>!'
   flyspeed_set_message: '<green>Your fly speed has been set to <speed>!'
 
 heal_messages:
