@@ -2,209 +2,234 @@ name: PrismaUtils
 version: '1.0-SNAPSHOT'
 main: me.kermx.prismaUtils.PrismaUtils
 api-version: '1.21'
+description: 'Utility plugin providing various core commands'
+
 depend: [PlaceholderAPI]
 softdepend: [Towny, WorldGuard, TownyFlight]
 
 commands:
+  # ----- Workstation Interface Commands -----
   craftingtable:
     description: Opens a crafting table interface.
     usage: /craftingtable
     permission: prismautils.command.craftingtable
-    aliases:
-      - craft
-      - vcraft
-      - wb
-      - workbench
+    aliases: [craft, vcraft, wb, workbench]
+
   stonecutter:
     description: Opens a stonecutter interface.
     usage: /stonecutter
     permission: prismautils.command.stonecutter
-    aliases:
-      - scut
+    aliases: [scut]
+
   anvil:
     description: Opens an anvil interface.
     usage: /anvil
     permission: prismautils.command.anvil
-    aliases:
-      - anv
+    aliases: [anv]
+
   enchantingtable:
     description: Opens an enchanting table interface.
     usage: /enchantingtable
     permission: prismautils.command.enchantingtable
-    aliases:
-      - etable
+    aliases: [etable]
+
   smithingtable:
     description: Opens a smithing table interface.
     usage: /smithingtable
     permission: prismautils.command.smithingtable
-    aliases:
-      - smith
+    aliases: [smith]
+
   grindstone:
     description: Opens a grindstone interface.
     usage: /grindstone
     permission: prismautils.command.grindstone
-    aliases:
-      - grind
+    aliases: [grind]
+
   loom:
     description: Opens a loom interface.
     usage: /loom
     permission: prismautils.command.loom
-    aliases:
-      - loom
+
   cartographytable:
     description: Opens a cartography table interface.
     usage: /cartographytable
     permission: prismautils.command.cartographytable
+
+  # ----- Player Utility Commands -----
   enderchest:
     description: Opens the player's ender chest.
     usage: /enderchest
     permission: prismautils.command.enderchest
-    aliases:
-      - ec
-      - echest
+    aliases: [ec, echest]
+
   feed:
     description: Feeds the player.
     usage: /feed
     permission: prismautils.command.feed
+
   heal:
     description: Heals the player.
     usage: /heal
     permission: prismautils.command.heal
+
   god:
     description: Toggles god mode.
     usage: /god
     permission: prismautils.command.god
-  itemname:
-    description: Renames the item in the player's hand.
-    usage: /itemname <name>
-    permission: prismautils.command.itemname
-  near:
-    description: Shows nearby players.
-    usage: /near [radius]
-    permission: prismautils.command.near
-  ptime:
-    description: Sets the player's time.
-    usage: /ptime [time|reset]
-    permission: prismautils.command.ptime
-  pweather:
-    description: Sets the player's weather.
-    usage: /pweather [weather|reset]
-    permission: prismautils.command.pweather
-  repair:
-    description: Repairs the item in the player's hand.
-    usage: /repair <hand/all>
-    permission: prismautils.command.repair
-    aliases:
-      - fix
+
   flyspeed:
     description: Sets the player's fly speed.
     usage: /flyspeed [speed]
     permission: prismautils.command.flyspeed
-  top:
-    description: Teleports the player to the top.
-    usage: /top
-    permission: prismautils.command.top
-  bottom:
-    description: Teleports the player to the bottom.
-    usage: /bottom
-    permission: prismautils.command.bottom
-  seen:
-    description: Shows the last time a player was online.
-    usage: /seen <player>
-    permission: prismautils.command.seen
-  condense:
-    description: Condenses items into their block form.
-    usage: /condense <item/all>
-    permission: prismautils.command.condense
-    aliases:
-      - cond
-      - smush
-      - c
-  uncondense:
-    description: Uncondenses items into their item form, from block.
-    usage: /uncondense <item/all>
-    permission: prismautils.command.uncondense
-    aliases:
-      - uncond
-      - unsmush
-      - uc
-  trash:
-    description: Opens a trash interface.
-    usage: /trash
-    permission: prismautils.command.trash
-    aliases:
-      - bin
-      - disposal
-  measure:
-    description: Measures the distance between two points.
-    usage: /measure pos1|pos2 [x] [y] [z]
-    permission: prismautils.command.measure
-    aliases:
-      - ruler
-  lightlevel:
-    description: Show spawnable blocks
-    usage: /lightlevel [radius] [duration]
-    permission: prismautils.command.lightlevel
+
   extinguish:
     description: Remove fire from yourself
     usage: /extinguish
     permission: prismautils.command.extinguish
-  disenchant:
-    description: Disenchants the item in the player's hand.
-    usage: /disenchant <item>
-    permission: prismautils.command.disenchant
-  ping:
-    description: Shows the player's ping.
-    usage: /ping [player]
-    permission: prismautils.command.ping
-  setmodeldata:
-    description: Sets the model data of the item in the player's hand.
-    usage: /setmodeldata <modeldata>
-    permission: prismautils.command.setmodeldata
-  blockinfo:
-    description: Shows information about the block the player is looking at.
-    usage: /blockinfo
-    permission: prismautils.command.blockinfo
-  entityinfo:
-    description: Shows information about the entity the player is looking at.
-    usage: /entityinfo
-    permission: prismautils.command.entityinfo
-  iteminfo:
-    description: Shows information about the item in the player's hand.
-    usage: /iteminfo
-    permission: prismautils.command.iteminfo
-  playerhead:
-    description: Gives the player a player head.
-    usage: /playerhead <player>
-    permission: prismautils.command.playerhead
-    aliases:
-      - skull
-  spawnmob:
-    description: Spawns mobs.
-    usage: /spawnmob <mob> [amount]
-    permission: prismautils.command.spawnmob
-  cuff:
-    description: Cuffs a player.
-    usage: /cuff <player>
-    permission: prismautils.command.cuff
-  smite:
-    description: Strikes lightning at a player.
-    usage: /smite <player>
-    permission: prismautils.command.smite
-  clearmobs:
-    description: Clears mobs.
-    usage: /clearmobs [flags]
-    permission: prismautils.command.clearmobs
+
   roundrotation:
     description: Rounds the player's rotation.
     usage: /roundrotation
     permission: prismautils.command.roundrotation
     aliases:
       - snapneck
+
+  # ----- Item Management Commands -----
+  itemname:
+    description: Renames the item in the player's hand.
+    usage: /itemname <name>
+    permission: prismautils.command.itemname
+
+  repair:
+    description: Repairs the item in the player's hand.
+    usage: /repair <hand/all>
+    permission: prismautils.command.repair
+    aliases: [fix]
+
+  condense:
+    description: Condenses items into their block form.
+    usage: /condense <item/all>
+    permission: prismautils.command.condense
+    aliases: [cond, smush, c]
+
+  uncondense:
+    description: Uncondenses items into their item form, from block.
+    usage: /uncondense <item/all>
+    permission: prismautils.command.uncondense
+    aliases: [uncond, unsmush, uc]
+
+  trash:
+    description: Opens a trash interface.
+    usage: /trash
+    permission: prismautils.command.trash
+    aliases: [bin, disposal]
+
+  disenchant:
+    description: Disenchants the item in the player's hand.
+    usage: /disenchant <item>
+    permission: prismautils.command.disenchant
+
+  # ----- World/Environment Commands -----
+  near:
+    description: Shows nearby players.
+    usage: /near [radius]
+    permission: prismautils.command.near
+
+  ptime:
+    description: Sets the player's time.
+    usage: /ptime [time|reset]
+    permission: prismautils.command.ptime
+
+  pweather:
+    description: Sets the player's weather.
+    usage: /pweather [weather|reset]
+    permission: prismautils.command.pweather
+
+  top:
+    description: Teleports the player to the top.
+    usage: /top
+    permission: prismautils.command.top
+
+  bottom:
+    description: Teleports the player to the bottom.
+    usage: /bottom
+    permission: prismautils.command.bottom
+
+  # ----- Information Commands -----
+  seen:
+    description: Shows the last time a player was online.
+    usage: /seen <player>
+    permission: prismautils.command.seen
+
+  measure:
+    description: Measures the distance between two points.
+    usage: /measure pos1|pos2 [x] [y] [z]
+    permission: prismautils.command.measure
+    aliases: [ruler]
+
+  lightlevel:
+    description: Show spawnable blocks
+    usage: /lightlevel [radius] [duration]
+    permission: prismautils.command.lightlevel
+
+  ping:
+    description: Shows the player's ping.
+    usage: /ping [player]
+    permission: prismautils.command.ping
+
+  # ----- Staff Commands -----
+
+  playerhead:
+    description: Gives the player a player head.
+    usage: /playerhead <player>
+    permission: prismautils.command.playerhead
+    aliases: [skull]
+
+  setmodeldata:
+    description: Sets the model data of the item in the player's hand.
+    usage: /setmodeldata <modeldata>
+    permission: prismautils.command.setmodeldata
+
+  blockinfo:
+    description: Shows information about the block the player is looking at.
+    usage: /blockinfo
+    permission: prismautils.command.blockinfo
+
+  entityinfo:
+    description: Shows information about the entity the player is looking at.
+    usage: /entityinfo
+    permission: prismautils.command.entityinfo
+
+  iteminfo:
+    description: Shows information about the item in the player's hand.
+    usage: /iteminfo
+    permission: prismautils.command.iteminfo
+
+  spawnmob:
+    description: Spawns mobs.
+    usage: /spawnmob <mob> [amount]
+    permission: prismautils.command.spawnmob
+
+  cuff:
+    description: Cuffs a player.
+    usage: /cuff <player>
+    permission: prismautils.command.cuff
+
+  smite:
+    description: Strikes lightning at a player.
+    usage: /smite <player>
+    permission: prismautils.command.smite
+
+  clearmobs:
+    description: Clears mobs.
+    usage: /clearmobs [flags]
+    permission: prismautils.command.clearmobs
+
   uptime:
     description: Shows the server uptime.
     usage: /uptime
     permission: prismautils.command.uptime
+
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload
