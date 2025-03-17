@@ -168,6 +168,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("lightlevel", lightLevelCommand, lightLevelCommand);
         ExtinguishCommand extinguishCommand = new ExtinguishCommand();
         commandManager.registerCommand("extinguish", extinguishCommand, extinguishCommand);
+        LimitsCommand limitsCommand = new LimitsCommand(this);
+        commandManager.registerCommand("limits", limitsCommand, limitsCommand);
     }
 
     private void registerEvents(EventManager eventManager) {

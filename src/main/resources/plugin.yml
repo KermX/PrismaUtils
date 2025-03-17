@@ -94,6 +94,11 @@ commands:
     aliases:
       - snapneck
 
+  limits:
+    description: Show block and entity limits.
+    usage: /limits
+    permission: prismautils.command.limits
+
   # ----- Item Management Commands -----
   itemname:
     description: Renames the item in the player's hand.
