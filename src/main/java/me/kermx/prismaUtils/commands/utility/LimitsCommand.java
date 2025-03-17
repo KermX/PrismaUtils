@@ -24,6 +24,7 @@ public class LimitsCommand extends BaseCommand {
 
     //TODO: make messages config-able
     //TODO: do something with this command, it doesn't really
+    //TODO: use textutils methods properly
 
     public LimitsCommand(PrismaUtils plugin) {
         super("prismautils.command.limits", false, "/limits");
