@@ -176,7 +176,6 @@ public final class PrismaUtils extends JavaPlugin {
         eventManager.registerListeners(
                 new PlayerDataListener(playerDataManager),
                 new RemoveDropsHandler(),
-                new NetherMobZombificationHandler(),
                 new SlimeSplitHandler(),
                 new CustomDeathMessageHandler(),
                 new HealthScaleHandler(),
@@ -213,6 +212,9 @@ public final class PrismaUtils extends JavaPlugin {
         }
         if (ConfigManager.getInstance().getMainConfig().enableNonLevelBasedEnchanting) {
             eventManager.registerListeners(new NonLevelBasedEnchantingHandler());
+        }
+        if (ConfigManager.getInstance().getMainConfig().disableNetherMobZombification) {
+            eventManager.registerListeners(new NetherMobZombificationHandler());
         }
     }
 

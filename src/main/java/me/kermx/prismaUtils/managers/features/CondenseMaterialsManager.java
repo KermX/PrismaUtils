@@ -35,7 +35,6 @@ public class CondenseMaterialsManager {
         irreversibleRecipes.put(Material.PACKED_ICE, 9);
         irreversibleRecipes.put(Material.ICE, 9);
         irreversibleRecipes.put(Material.POPPED_CHORUS_FRUIT, 4);
-        irreversibleRecipes.put(Material.CHARCOAL, 9);
         irreversibleRecipes.put(Material.MAGMA_CREAM, 4);
 
         // Initialize reversible recipes.
@@ -43,6 +42,7 @@ public class CondenseMaterialsManager {
         reversibleRecipes.put(Material.BONE_MEAL, 9);
         reversibleRecipes.put(Material.WHEAT, 9);
         reversibleRecipes.put(Material.COAL, 9);
+        reversibleRecipes.put(Material.CHARCOAL, 9);
         reversibleRecipes.put(Material.RAW_IRON, 9);
         reversibleRecipes.put(Material.RAW_COPPER, 9);
         reversibleRecipes.put(Material.RAW_GOLD, 9);
@@ -75,7 +75,6 @@ public class CondenseMaterialsManager {
         irreversibleMaterialMappings.put(Material.QUARTZ, Material.QUARTZ_BLOCK);
         irreversibleMaterialMappings.put(Material.HONEYCOMB, Material.HONEYCOMB_BLOCK);
         irreversibleMaterialMappings.put(Material.HONEY_BOTTLE, Material.HONEY_BLOCK);
-        irreversibleMaterialMappings.put(Material.CHARCOAL, Material.COAL_BLOCK);
         irreversibleMaterialMappings.put(Material.AMETHYST_SHARD, Material.AMETHYST_BLOCK);
         irreversibleMaterialMappings.put(Material.PRISMARINE_SHARD, Material.PRISMARINE);
         irreversibleMaterialMappings.put(Material.GLOWSTONE_DUST, Material.GLOWSTONE);
@@ -93,6 +92,7 @@ public class CondenseMaterialsManager {
         // Initialize reversible material mappings.
         reversibleMaterialMappings = new HashMap<>();
         reversibleMaterialMappings.put(Material.COAL, Material.COAL_BLOCK);
+        reversibleMaterialMappings.put(Material.CHARCOAL, Material.COAL_BLOCK);
         reversibleMaterialMappings.put(Material.RAW_GOLD, Material.RAW_GOLD_BLOCK);
         reversibleMaterialMappings.put(Material.COPPER_INGOT, Material.COPPER_BLOCK);
         reversibleMaterialMappings.put(Material.IRON_INGOT, Material.IRON_BLOCK);

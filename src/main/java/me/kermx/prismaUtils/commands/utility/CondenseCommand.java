@@ -34,10 +34,10 @@ public class CondenseCommand extends BaseCommand {
         Map<Material, Integer> recipes;
 
         // Determine which recipes to use based on arguments
-        if (args.length == 0 || args[0].equalsIgnoreCase("all")) {
-            recipes = cmm.getRecipes();
-        } else if (args[0].equalsIgnoreCase("reversible")) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("reversible")) {
             recipes = cmm.getReversibleRecipes();
+        } else if (args[0].equalsIgnoreCase("all")) {
+            recipes = cmm.getRecipes();
         } else if (args[0].equalsIgnoreCase("hand")) {
             // Handle 'hand' argument
             ItemStack itemInHand = player.getInventory().getItemInMainHand();

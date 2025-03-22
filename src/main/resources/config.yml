@@ -23,6 +23,7 @@ tweaks:
   disable_spawner_mob_item_drops: true
   endermites_immune_to_lightning: true
   non_level_based_enchanting: false
+  disable_nether_mob_zombification: false
 
 disabled_recipes: []
   ##must restart to edit this feature
