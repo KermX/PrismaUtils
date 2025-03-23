@@ -128,39 +128,23 @@ public class UncondenseCommand extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            return super.onTabCompleteExecute(sender, args);
+        }
+
         if (args.length == 1) {
-            String input = args[0].toLowerCase();
-            List<String> suggestions = new ArrayList<>();
+            Set<String> suggestionSet = new HashSet<>();
 
-            // Include "hand" and "all" if they match the input
-            if ("hand".startsWith(input)) {
-                suggestions.add("hand");
-            }
-            if ("all".startsWith(input)) {
-                suggestions.add("all");
+            Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
+            for (Material material : reversibleMappings.keySet()) {
+                suggestionSet.add(material.name());
             }
 
-            // Add reversible materials present in player's inventory that start with the input
-            if (sender instanceof Player player) {
-                Set<Material> materialsInInventory = new HashSet<>();
-                Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
-
-                for (ItemStack item : player.getInventory().getContents()) {
-                    if (item != null && reversibleMappings.containsKey(item.getType())) {
-                        materialsInInventory.add(item.getType());
-                    }
-                }
-
-                for (Material material : materialsInInventory) {
-                    String materialName = material.name().toLowerCase();
-                    if (materialName.startsWith(input)) {
-                        suggestions.add(materialName);
-                    }
-                }
-            }
-
+            List<String> suggestions = new ArrayList<>(suggestionSet);
             return suggestions;
         }
+
         return super.onTabCompleteExecute(sender, args);
     }
+
 }
