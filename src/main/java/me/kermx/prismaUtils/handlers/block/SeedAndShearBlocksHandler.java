@@ -62,6 +62,9 @@ public class SeedAndShearBlocksHandler implements Listener {
 
         Block block = event.getClickedBlock();
         if (block == null) return;
+        if (!seedTransformMap.containsKey(block.getType()) || !shearTransformMap.containsKey(block.getType())){
+            return;
+        }
 
         Player player = event.getPlayer();
 
