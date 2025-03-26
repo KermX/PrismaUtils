@@ -72,6 +72,7 @@ public class CondenseMaterialsManager {
 
         // Initialize irreversible material mappings.
         irreversibleMaterialMappings = new HashMap<>();
+        irreversibleMaterialMappings.put(Material.CHARCOAL, Material.COAL_BLOCK);
         irreversibleMaterialMappings.put(Material.QUARTZ, Material.QUARTZ_BLOCK);
         irreversibleMaterialMappings.put(Material.HONEYCOMB, Material.HONEYCOMB_BLOCK);
         irreversibleMaterialMappings.put(Material.HONEY_BOTTLE, Material.HONEY_BLOCK);
@@ -92,7 +93,6 @@ public class CondenseMaterialsManager {
         // Initialize reversible material mappings.
         reversibleMaterialMappings = new HashMap<>();
         reversibleMaterialMappings.put(Material.COAL, Material.COAL_BLOCK);
-        reversibleMaterialMappings.put(Material.CHARCOAL, Material.COAL_BLOCK);
         reversibleMaterialMappings.put(Material.RAW_GOLD, Material.RAW_GOLD_BLOCK);
         reversibleMaterialMappings.put(Material.COPPER_INGOT, Material.COPPER_BLOCK);
         reversibleMaterialMappings.put(Material.IRON_INGOT, Material.IRON_BLOCK);

@@ -55,7 +55,8 @@ public class LimitsCommand extends BaseCommand {
             EntityType.STRAY, EntityType.STRIDER, EntityType.TADPOLE, EntityType.TRADER_LLAMA, EntityType.TROPICAL_FISH,
             EntityType.TURTLE, EntityType.VEX, EntityType.VILLAGER, EntityType.VINDICATOR, EntityType.WANDERING_TRADER,
             EntityType.WARDEN, EntityType.WITCH, EntityType.WITHER, EntityType.WITHER_SKELETON, EntityType.WOLF,
-            EntityType.ZOGLIN, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN
+            EntityType.ZOGLIN, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN,
+            EntityType.MINECART, EntityType.HOPPER_MINECART, EntityType.CHEST_MINECART
     );
 
     // Cache for max counts to avoid repeated calculations
@@ -242,7 +243,7 @@ public class LimitsCommand extends BaseCommand {
         // Return appropriate limits for entity types
         // This is a placeholder - replace with actual logic
         return switch (entityType) {
-            case ALLAY -> 8;
+            case ALLAY, MINECART, HOPPER_MINECART, CHEST_MINECART -> 8;
 
             // Entities with limit 16
             case ARROW, EGG, GIANT, ENDER_PEARL, SNOWBALL, SPECTRAL_ARROW, FIREBALL -> 16;
