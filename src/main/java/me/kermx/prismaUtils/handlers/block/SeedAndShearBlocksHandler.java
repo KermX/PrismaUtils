@@ -28,6 +28,9 @@ public class SeedAndShearBlocksHandler implements Listener {
     private final Map<Material, Material> seedTransformMap = new HashMap<>();
     private final Map<Material, Material> shearTransformMap = new HashMap<>();
 
+    private static final Material SEED_MATERIAL = Material.WHEAT_SEEDS;
+    private static final Material SHEAR_MATERIAL = Material.SHEARS;
+
     public SeedAndShearBlocksHandler(ProtectionHandler protectionHandler) {
         this.protectionHandler = protectionHandler;
         registerTransformations();
@@ -67,6 +70,11 @@ public class SeedAndShearBlocksHandler implements Listener {
         }
 
         Player player = event.getPlayer();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        Material itemType = itemInHand.getType();
+
+        if (itemType == Material.AIR) return;
+        if (itemType != SHEAR_MATERIAL && itemType != SEED_MATERIAL) return;
 
         if (protectionHandler != null &&
                 protectionHandler.isLocationProtected(player, block.getLocation())) {
@@ -74,10 +82,7 @@ public class SeedAndShearBlocksHandler implements Listener {
             return;
         }
 
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        Material itemType = itemInHand.getType();
-
-        if (itemType == Material.WHEAT_SEEDS) {
+        if (itemType == SEED_MATERIAL) {
             Material original = block.getType();
             Material target = seedTransformMap.get(original);
             if (target == null) return;
@@ -85,18 +90,13 @@ public class SeedAndShearBlocksHandler implements Listener {
             transformBlock(block, target);
             itemInHand.setAmount(itemInHand.getAmount() - 1);
             event.setCancelled(true);
-        }
-
-        if (itemType == Material.SHEARS) {
+        } else if (itemType == SHEAR_MATERIAL) {
             Material original = block.getType();
             Material target = shearTransformMap.get(original);
             if (target == null) return;
 
             transformBlock(block, target);
 
-//            Damageable shearsMeta = (Damageable) itemInHand.getItemMeta();
-//            shearsMeta.setDamage(shearsMeta.getDamage() + 1);
-//            itemInHand.setItemMeta(shearsMeta);
             ItemUtils.damageItem(itemInHand, 1);
 
             event.setCancelled(true);
