@@ -16,6 +16,11 @@ public class ClimbableChainsHandler implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
 
         Player player = event.getPlayer();
+
+        if (player.isFlying() || player.isSwimming()) {
+            return;
+        }
+
         Block block = player.getLocation().getBlock();
 
         if (block.getType() != Material.CHAIN) {

@@ -1,6 +1,5 @@
 package me.kermx.prismaUtils.utils;
 
-import com.sk89q.worldedit.world.entity.EntityTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -185,8 +184,20 @@ public final class TextUtils {
      * @return the normalized material name
      */
     public static String normalizeEnumName(Material material) {
-        String materialName = material.name();
-        return normalizeEnumName(materialName);
+        if (material == null) return "UNKNOWN";
+        return normalizeEnumName(material.name());
+    }
+
+    /**
+     *
+     * Normalize an Entity name by capitalizing the first letter of each word and replacing underscores with spaces.
+     *
+     * @param entityType the entity type to normalize
+     * @return the normalized entity type name
+     */
+    public static String normalizeEnumName(EntityType entityType) {
+        if (entityType == null) return "UNKNOWN";
+        return normalizeEnumName(entityType.name());
     }
 
 }
