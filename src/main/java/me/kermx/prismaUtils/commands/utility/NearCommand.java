@@ -2,9 +2,12 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.GenUtils;
+import me.kermx.prismaUtils.utils.PlayerUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -45,11 +48,20 @@ public class NearCommand extends BaseCommand {
         boolean found = false;
 
         for (Player onlinePlayer : player.getWorld().getPlayers()) {
+
+            if (PlayerUtils.isVanished(onlinePlayer)) {
+                continue;
+            }
+
+            if (onlinePlayer.getGameMode().equals(GameMode.SPECTATOR)) {
+                continue;
+            }
+
             if (onlinePlayer.getLocation().distance(location) <= radius && !onlinePlayer.equals(player)) {
                 sender.sendMessage(
                         TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().nearNearbyPlayersMessage,
                                 Placeholder.component("player", onlinePlayer.displayName()),
-                                Placeholder.component("distance", Component.text(onlinePlayer.getLocation().distance(location))))
+                                Placeholder.component("distance", Component.text(GenUtils.round(onlinePlayer.getLocation().distance(location), 2))))
                 );
                 found = true;
             }

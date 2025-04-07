@@ -120,4 +120,39 @@ public final class PlayerUtils {
         return player.getInventory().getArmorContents();
     }
 
+    /**
+     * Checks if a player is in vanish mode.
+     * This method attempts to detect vanish status using common methods:
+     * - Checks for metadata set by popular vanish plugins
+     * - Checks if the player is hidden from other players
+     *
+     * @param player The player to check for vanish status
+     * @return true if the player is likely in vanish mode, false otherwise
+     */
+    public static boolean isVanished(Player player) {
+        if (player == null) {
+            return false;
+        }
+
+        if (player.hasMetadata("vanished")) {
+            return true;
+        }
+
+        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
+            if (!otherPlayer.equals(player) && !otherPlayer.hasPermission("vanish.see") && !otherPlayer.canSee(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isConsideredOnline(Player viewer, Player target) {
+        if (target == null || !target.isOnline()) {
+            return false;
+        }
+        if (isVanished(target)) {
+            return viewer == null || !viewer.isOnline();
+        }
+        return true;
+    }
 }
