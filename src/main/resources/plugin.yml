@@ -99,6 +99,12 @@ commands:
     usage: /limits
     permission: prismautils.command.limits
 
+  mail:
+    description: Send, read, and manage mail messages
+    usage: /mail <send|read|clear> [player] [message]
+    permission: prismautils.command.mail
+
+
   # ----- Item Management Commands -----
   itemname:
     description: Renames the item in the player's hand.

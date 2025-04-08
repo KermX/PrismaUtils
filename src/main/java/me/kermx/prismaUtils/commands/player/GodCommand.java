@@ -29,7 +29,7 @@ public class GodCommand extends BaseCommand implements Listener {
         if (args.length == 0) {
             // Toggle god mode for the sender
             if (!(sender instanceof org.bukkit.entity.Player)) {
-                sender.sendMessage("You must specify a state and a plager i.e. /god [on|off] [player_name]!");
+                sender.sendMessage("You must specify a state and a player i.e. /god [on|off] [player_name]!");
                 return false;
             }
             toggleGodMode((Player) sender);

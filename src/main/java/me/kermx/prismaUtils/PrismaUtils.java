@@ -67,6 +67,10 @@ public final class PrismaUtils extends JavaPlugin {
         startTasks();
     }
 
+    public PlayerDataManager getPlayerDataManager() {
+        return playerDataManager;
+    }
+
     @Override
     public void onDisable() {
         for (Player player : getServer().getOnlinePlayers()) {
@@ -170,6 +174,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("extinguish", extinguishCommand, extinguishCommand);
         LimitsCommand limitsCommand = new LimitsCommand(this);
         commandManager.registerCommand("limits", limitsCommand, limitsCommand);
+        MailCommand mailCommand = new MailCommand(this);
+        commandManager.registerCommand("mail", mailCommand, mailCommand);
     }
 
     private void registerEvents(EventManager eventManager) {
