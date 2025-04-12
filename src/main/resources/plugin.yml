@@ -104,6 +104,10 @@ commands:
     usage: /mail <send|read|clear> [player] [message]
     permission: prismautils.command.mail
 
+  playtime:
+    description: View a players playtime
+    usage: /playtime [player]
+    permission: prismautils.command.playtime
 
   # ----- Item Management Commands -----
   itemname:

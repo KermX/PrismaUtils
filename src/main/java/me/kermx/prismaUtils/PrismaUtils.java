@@ -176,6 +176,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("limits", limitsCommand, limitsCommand);
         MailCommand mailCommand = new MailCommand(this);
         commandManager.registerCommand("mail", mailCommand, mailCommand);
+        PlayTimeCommand playTimeCommand = new PlayTimeCommand();
+        commandManager.registerCommand("playtime", playTimeCommand, playTimeCommand);
     }
 
     private void registerEvents(EventManager eventManager) {

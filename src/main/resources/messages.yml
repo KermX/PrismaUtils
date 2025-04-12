@@ -108,6 +108,9 @@ smite_messages:
   smite_message_damage: '<green>Smote <target> for <damage> damage!'
   smite_message_no_damage: '<green>Smote <target>!'
 
+playtime_messages:
+  playtime_message: "<green>Playtime for <player>: <yellow><playtime>"
+
 afk_title_feature:
   afk_placeholder: '%essentials_afk%'
   afk_titles:

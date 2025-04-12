@@ -124,6 +124,9 @@ public class MessagesConfigManager {
     public String smiteMessageDamage;
     public String smiteMessageNoDamage;
 
+    //PlayTime Messages
+    public String playTimeMessage;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -267,6 +270,9 @@ public class MessagesConfigManager {
         //Smite Messages
         smiteMessageDamage = messages.getString("smite_messages.smite_message_damage");
         smiteMessageNoDamage = messages.getString("smite_messages.smite_message_no_damage");
+
+        //PlayTime Messages
+        playTimeMessage = messages.getString("playtime_messages.playtime_message");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
