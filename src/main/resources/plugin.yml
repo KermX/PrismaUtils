@@ -252,20 +252,20 @@ commands:
     aliases:
       - pureload
 
-permissions:
-  prismautils.command.workbenches:
-    description: Allows the player to use workbench commands.
-    default: true
-    children:
-        prismautils.command.craftingtable: true
-        prismautils.command.stonecutter: true
-        prismautils.command.anvil: true
-        prismautils.command.enchantingtable: true
-        prismautils.command.smithingtable: true
-        prismautils.command.grindstone: true
-        prismautils.command.loom: true
-        prismautils.command.cartographytable: true
-        prismautils.command.enderchest: true
+#permissions:
+#  prismautils.command.workbenches:
+#    description: Allows the player to use workbench commands.
+#    default: true
+#    children:
+#        prismautils.command.craftingtable: true
+#        prismautils.command.stonecutter: true
+#        prismautils.command.anvil: true
+#        prismautils.command.enchantingtable: true
+#        prismautils.command.smithingtable: true
+#        prismautils.command.grindstone: true
+#        prismautils.command.loom: true
+#        prismautils.command.cartographytable: true
+#        prismautils.command.enderchest: true
   prismautils.keepinventory:
     description: Allows the player to keep their inventory on death.
     default: op
