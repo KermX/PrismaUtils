@@ -245,6 +245,11 @@ commands:
     usage: /uptime
     permission: prismautils.command.uptime
 
+  patrol:
+    description: Patrol online players.
+    usage: /patrol
+    permission: prismautils.command.patrol
+
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

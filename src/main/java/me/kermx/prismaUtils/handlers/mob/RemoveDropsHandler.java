@@ -32,5 +32,17 @@ public class RemoveDropsHandler implements Listener {
 
             drops.removeIf(drop -> drop.getType() == Material.GOLDEN_SWORD);
         }
+
+        if (entity.getType() == EntityType.VINDICATOR) {
+            List<ItemStack> drops = event.getDrops();
+
+            drops.removeIf(drop -> drop.getType() == Material.IRON_AXE);
+        }
+
+        if (entity.getType() == EntityType.PILLAGER) {
+            List<ItemStack> drops = event.getDrops();
+
+            drops.removeIf(drop -> drop.getType() == Material.CROSSBOW);
+        }
     }
 }
