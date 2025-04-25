@@ -28,6 +28,9 @@ public class MessagesConfigManager {
     public String seenNeverJoinedMessage;
     public String seenOnlineMessage;
 
+    // Spawn Egg Messages
+    public String spawnEggNotCrouchingMessage;
+
     // Spawner Messages
     public String spawnerNoSilkWarningMessage;
     public String spawnerName;
@@ -174,6 +177,9 @@ public class MessagesConfigManager {
         seenOfflineMessage = messages.getString("seen_messages.seen_offline_message");
         seenNeverJoinedMessage = messages.getString("seen_messages.seen_never_joined_message");
         seenOnlineMessage = messages.getString("seen_messages.seen_online_message");
+
+        // Spawn Egg Messages
+        spawnEggNotCrouchingMessage = messages.getString("spawn_egg_messages.not_crouching_message");
 
         // Spawner Messages
         spawnerNoSilkWarningMessage = messages.getString("spawner_messages.no_silk_warning_message");

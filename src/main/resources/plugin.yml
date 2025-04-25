@@ -257,7 +257,13 @@ commands:
     aliases:
       - pureload
 
-#permissions:
+permissions:
+  prismautils.keepinventory:
+    description: Allows the player to keep their inventory on death.
+    default: op
+  prismautils.allowspawneggs:
+    description: Enable the vanilla use of spawn eggs without crouch clicking.
+    default: op
 #  prismautils.command.workbenches:
 #    description: Allows the player to use workbench commands.
 #    default: true
@@ -271,6 +277,3 @@ commands:
 #        prismautils.command.loom: true
 #        prismautils.command.cartographytable: true
 #        prismautils.command.enderchest: true
-  prismautils.keepinventory:
-    description: Allows the player to keep their inventory on death.
-    default: op

@@ -12,8 +12,11 @@ seen_messages:
   seen_online_message: '<green><target> has been online for <time>!'
 
 spawner_messages:
-  no_silk_warning_message: '<red>You must sneak to break a spawner without silk touch'
+  no_silk_warning_message: '<red>You must sneak to break a spawner without silk touch.'
   spawner_name: '<gray><entitytype> Spawner'
+
+spawn_egg_messages:
+  not_crouching_message: '<red>You must sneak to use a spawn egg.'
 
 feed_messages:
   feed_message: '<green>Your hunger has been refilled!'
