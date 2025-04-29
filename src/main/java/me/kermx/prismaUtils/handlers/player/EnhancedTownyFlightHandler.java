@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.player;
 
-import com.gmail.llmdlio.townyflight.PlayerFlightChangeEvent;
+import com.gmail.llmdlio.townyflight.event.PlayerFlightChangeEvent;
 import me.kermx.prismaUtils.integrations.flight.FlightHandler;
 import me.kermx.prismaUtils.integrations.flight.impl.TownyFlightHookImpl;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
@@ -37,11 +37,6 @@ public class EnhancedTownyFlightHandler implements Listener {
     public void onWorldChange(PlayerChangedWorldEvent event) {
         checkAndUpdateFlight(event.getPlayer());
     }
-
-//    @EventHandler
-//    public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
-//        checkAndUpdateFlight(event.getPlayer());
-//    }
 
     private void checkAndUpdateFlight(Player player) {
         PlayerData pData = dataManager.getPlayerData(player.getUniqueId());

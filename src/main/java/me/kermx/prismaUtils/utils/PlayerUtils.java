@@ -138,11 +138,11 @@ public final class PlayerUtils {
             return true;
         }
 
-        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-            if (!otherPlayer.equals(player) && !otherPlayer.hasPermission("vanish.see") && !otherPlayer.canSee(player)) {
-                return true;
-            }
-        }
+//        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
+//            if (!otherPlayer.equals(player) && !otherPlayer.hasPermission("vanish.see") && !otherPlayer.canSee(player)) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

@@ -192,6 +192,7 @@ public final class PrismaUtils extends JavaPlugin {
                 new FirstJoinCommandsHandler(this),
                 new FirstJoinSpawnHandler(),
                 new SilkSpawnerHandler(),
+                new SafeSpawnEggHandler(),
                 seedAndShearBlocksHandler,
                 new CopperOxidationHandler(protectionHandler),
                 new CuffCommand(),

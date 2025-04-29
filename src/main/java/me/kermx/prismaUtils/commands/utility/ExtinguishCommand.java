@@ -18,6 +18,12 @@ public class ExtinguishCommand extends BaseCommand {
 
         if (args.length > 0) return false;
 
+        if (player.getFireTicks() > 0){
+            player.setFireTicks(0);
+            player.sendMessage("You have been extinguished!");
+            return true;
+        }
+
         player.setFireTicks(0);
         return true;
     }

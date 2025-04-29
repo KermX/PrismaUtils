@@ -86,6 +86,8 @@ commands:
     description: Remove fire from yourself
     usage: /extinguish
     permission: prismautils.command.extinguish
+    aliases:
+      - ext
 
   roundrotation:
     description: Rounds the player's rotation.
