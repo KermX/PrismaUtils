@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.ProtectionService;
 import me.kermx.prismaUtils.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class SeedAndShearBlocksHandler implements Listener {
 
-    private final ProtectionHandler protectionHandler;
+    private final ProtectionService protectionService;
 
     private final Map<Material, Material> seedTransformMap = new HashMap<>();
     private final Map<Material, Material> shearTransformMap = new HashMap<>();
@@ -31,8 +31,8 @@ public class SeedAndShearBlocksHandler implements Listener {
     private static final Material SEED_MATERIAL = Material.WHEAT_SEEDS;
     private static final Material SHEAR_MATERIAL = Material.SHEARS;
 
-    public SeedAndShearBlocksHandler(ProtectionHandler protectionHandler) {
-        this.protectionHandler = protectionHandler;
+    public SeedAndShearBlocksHandler(ProtectionService protectionService) {
+        this.protectionService = protectionService;
         registerTransformations();
     }
 
@@ -76,8 +76,7 @@ public class SeedAndShearBlocksHandler implements Listener {
         if (itemType == Material.AIR) return;
         if (itemType != SHEAR_MATERIAL && itemType != SEED_MATERIAL) return;
 
-        if (protectionHandler != null &&
-                protectionHandler.isLocationProtected(player, block.getLocation())) {
+        if (protectionService.isLocationProtected(player, block.getLocation())) {
             event.setCancelled(true);
             return;
         }

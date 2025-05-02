@@ -11,8 +11,8 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
-import me.kermx.prismaUtils.integrations.flight.FlightHandler;
-import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.FlightService;
+import me.kermx.prismaUtils.integrations.ProtectionService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
@@ -27,8 +27,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PrismaUtils extends JavaPlugin {
 
     private PlayerDataManager playerDataManager;
-    private ProtectionHandler protectionHandler;
-    private FlightHandler flightHandler;
+    private ProtectionService protectionService;
+    private FlightService flightService;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
@@ -37,15 +37,12 @@ public final class PrismaUtils extends JavaPlugin {
     public void onEnable() {
         loadConfigurations();
 
-        // Initialize ProtectionHandler
-        protectionHandler = new ProtectionHandler(getServer().getPluginManager(), getLogger());
-
-        // Initialize FlightHandler (if needed)
-        flightHandler = new FlightHandler(getServer().getPluginManager(), getLogger());
-
+        // Initialize services
+        protectionService = new ProtectionService(getServer().getPluginManager());
+        flightService = new FlightService(getServer().getPluginManager(), getLogger());
 
         // Initialize specific managers / handlers
-        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionHandler);
+        seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionService);
         seenManager = new SeenManager();
 
         // Initialize player data manager
@@ -194,11 +191,11 @@ public final class PrismaUtils extends JavaPlugin {
                 new SilkSpawnerHandler(),
                 new SafeSpawnEggHandler(),
                 seedAndShearBlocksHandler,
-                new CopperOxidationHandler(protectionHandler),
+                new CopperOxidationHandler(protectionService),
                 new CuffCommand(),
                 new HorseZombificationHandler(),
                 new PermissionKeepInvHandler(),
-                new EnhancedTownyFlightHandler(flightHandler,playerDataManager)
+                new EnhancedTownyFlightHandler(flightService,playerDataManager)
         );
 
         // Register config conditional events

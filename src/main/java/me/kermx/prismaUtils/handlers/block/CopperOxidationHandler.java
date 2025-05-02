@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.integrations.protection.ProtectionHandler;
+import me.kermx.prismaUtils.integrations.ProtectionService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,10 +25,10 @@ public class CopperOxidationHandler implements Listener {
     private static final double TRANSFORM_PROBABILITY = 0.5;
     private final Random random = new Random();
 
-    private final ProtectionHandler protectionHandler;
+    private final ProtectionService protectionService;
 
-    public CopperOxidationHandler(ProtectionHandler protectionHandler) {
-        this.protectionHandler = protectionHandler;
+    public CopperOxidationHandler(ProtectionService protectionService) {
+        this.protectionService = protectionService;
     }
 
     @EventHandler
@@ -41,7 +41,7 @@ public class CopperOxidationHandler implements Listener {
                 Block middle = event.getHitBlock();
                 Player thrower = (potion.getShooter() instanceof Player) ? (Player) potion.getShooter() : null;
 
-                if (middle == null || protectionHandler.isLocationProtected(thrower, middle.getLocation())) return;
+                if (middle == null || protectionService.isLocationProtected(thrower, middle.getLocation())) return;
 
                 for (int x = -TRANSFORM_RADIUS; x <= TRANSFORM_RADIUS; x++) {
                     for (int y = -TRANSFORM_RADIUS; y <= TRANSFORM_RADIUS; y++) {
