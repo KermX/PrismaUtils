@@ -24,7 +24,6 @@ public class MailCommand extends BaseCommand {
     public MailCommand(PrismaUtils plugin) {
         super("prismautils.command.mail", true, "/mail <send|read|clear> [player] [message]");
         this.playerDataManager = plugin.getPlayerDataManager();
-
     }
 
     @Override
@@ -67,6 +66,7 @@ public class MailCommand extends BaseCommand {
             sender.sendMessage(TextUtils.deserializeString(
                     "<red>You can't send mail to yourself!"
             ));
+            return true; // Added return to avoid further processing
         }
 
         String senderName = (sender instanceof Player) ? sender.getName() : "Console";
@@ -75,15 +75,15 @@ public class MailCommand extends BaseCommand {
         MailMessage mailMessage = new MailMessage(senderUUID, senderName, message);
 
         UUID targetUUID = targetPlayer.getUniqueId();
+
+        // Get the player data - with lazy loading this will load it if needed
         PlayerData targetData = playerDataManager.getPlayerData(targetUUID);
 
-        if (targetData == null) {
-            playerDataManager.loadPlayerData(targetUUID);
-            targetData = playerDataManager.getPlayerData(targetUUID);
-        }
-
+        // Add the message - this will trigger the change listener automatically
         targetData.addMailMessage(mailMessage);
-        playerDataManager.savePlayerData(targetUUID);
+
+        // No need to explicitly save - the change listener will mark it as dirty
+        // The scheduled task will save it, or it will be saved when the player logs out
 
         sender.sendMessage(TextUtils.deserializeString(
                 "<green>Message sent to " + targetName + "!"
@@ -143,8 +143,10 @@ public class MailCommand extends BaseCommand {
         Player player = (Player) sender;
         PlayerData playerData = playerDataManager.getPlayerData(player.getUniqueId());
 
+        // This will trigger the change listener automatically
         playerData.clearMailbox();
-        playerDataManager.savePlayerData(player.getUniqueId());
+
+        // No need to explicitly save - the change listener will mark it as dirty
 
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Your mailbox has been cleared!"
@@ -170,5 +172,18 @@ public class MailCommand extends BaseCommand {
         return completions.stream()
                 .filter(s -> s.toLowerCase().startsWith(input.toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Create a specialized mail notification listener for the target player
+     * This could be used if you want to implement special notification behaviors
+     */
+    private void notifyMailReceived(UUID targetUUID, String senderName) {
+        Player online = Bukkit.getPlayer(targetUUID);
+        if (online != null && online.isOnline()) {
+            online.sendMessage(TextUtils.deserializeString(
+                    "<green>You received a new mail from " + senderName + "!"
+            ));
+        }
     }
 }

@@ -5,6 +5,7 @@ import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -18,29 +19,33 @@ public class PlayerDataListener implements Listener {
         this.dataManager = dataManager;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
-        dataManager.loadPlayerData(playerId);
 
+        // Data will be loaded lazily when needed and listener is registered internally
         PlayerData playerData = dataManager.getPlayerData(playerId);
-        if (playerData != null && !playerData.getMailbox().isEmpty()) {
+        if (!playerData.getMailbox().isEmpty()) {
             player.sendMessage(TextUtils.deserializeString("<green>You have " +
                     playerData.getMailbox().size() + " unread messages. Use /mail read to view them."));
         }
-
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerData data = dataManager.getPlayerData(player.getUniqueId());
+        UUID playerId = player.getUniqueId();
+
+        PlayerData data = dataManager.getPlayerData(playerId);
         if (data != null) {
-            // Optionally capture the final native flight flag, if desired.
+            // Update any final state - this will automatically trigger listeners
             data.setFlyEnabled(player.getAllowFlight());
-            dataManager.savePlayerData(player.getUniqueId());
-            dataManager.removePlayerData(player.getUniqueId());
+
+            // The actual savePlayerData and removePlayerData calls will
+            // handle unregistering listeners and persisting data
+            dataManager.savePlayerData(playerId);
+            dataManager.removePlayerData(playerId);
         }
     }
 }

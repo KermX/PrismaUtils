@@ -70,9 +70,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Player player : getServer().getOnlinePlayers()) {
-            playerDataManager.savePlayerData(player.getUniqueId());
-        }
+        playerDataManager.saveAllData();
     }
 
     private void loadConfigurations() {
