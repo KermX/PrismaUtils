@@ -3,6 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.commands.admin.*;
 import me.kermx.prismaUtils.commands.crafting.*;
 import me.kermx.prismaUtils.commands.player.*;
+import me.kermx.prismaUtils.commands.player.homes.AdminHomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
 import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.SetHomeCommand;
@@ -153,6 +154,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("sethome", setHomeCommand, setHomeCommand);
         DelHomeCommand delHomeCommand = new DelHomeCommand(this, homesCommand);
         commandManager.registerCommand("delhome", delHomeCommand, delHomeCommand);
+        AdminHomesCommand adminHomesCommand = new AdminHomesCommand(this, homesCommand);
+        commandManager.registerCommand("adminhome", adminHomesCommand, adminHomesCommand);
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();

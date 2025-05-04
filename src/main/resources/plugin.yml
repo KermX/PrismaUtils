@@ -124,6 +124,10 @@ commands:
     description: Delete a home
     usage: /delhome [name]
     permission: prismautils.command.delhome
+  adminhome:
+    description: Interact with other players' homes
+    usage: /adminhome <list|tp|del> <player> [home]
+    permission: prismautils.command.adminhome
 
   # ----- Item Management Commands -----
   itemname:
