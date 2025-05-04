@@ -111,6 +111,20 @@ commands:
     usage: /playtime [player]
     permission: prismautils.command.playtime
 
+  # ----- Homes Commands -----
+  home:
+    description: Use homes
+    usage: /home [set|del|list|help] [name]
+    permission: prismautils.command.homes
+  sethome:
+    description: Set a home
+    usage: /sethome [name]
+    permission: prismautils.command.sethome
+  delhome:
+    description: Delete a home
+    usage: /delhome [name]
+    permission: prismautils.command.delhome
+
   # ----- Item Management Commands -----
   itemname:
     description: Renames the item in the player's hand.

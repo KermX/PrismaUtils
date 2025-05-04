@@ -1,9 +1,7 @@
 package me.kermx.prismaUtils.managers.PlayerData;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerData {
@@ -12,6 +10,7 @@ public class PlayerData {
     private boolean godEnabled;
     private LocalDateTime firstJoin;
     private List<MailMessage> mailbox;
+    private Map<String, Home> homes;
 
     // Use CopyOnWriteArrayList for thread-safe iteration without explicit synchronization
     private final List<PlayerDataChangeListener> changeListeners = new CopyOnWriteArrayList<>();
@@ -22,6 +21,7 @@ public class PlayerData {
         this.godEnabled = builder.godEnabled;
         this.firstJoin = builder.firstJoin;
         this.mailbox = builder.mailbox;
+        this.homes = builder.homes;
     }
 
     /**
@@ -114,6 +114,32 @@ public class PlayerData {
         }
     }
 
+    public Map<String, Home> getHomes() {
+        return homes;
+    }
+
+    public Home getHome(String name) {
+        return homes.get(name.toLowerCase());
+    }
+
+    public void addHome(String name, Home home) {
+        this.homes.put(name.toLowerCase(), home);
+        notifyListeners("homes.add", home);
+    }
+
+    public boolean removeHome(String name) {
+        Home removed = this.homes.remove(name.toLowerCase());
+        if (removed != null) {
+            notifyListeners("homes.remove", name);
+            return true;
+        }
+        return false;
+    }
+
+    public int getHomesCount() {
+        return homes.size();
+    }
+
     // Builder class stays the same
     public static class Builder {
         private final UUID playerID;
@@ -121,6 +147,7 @@ public class PlayerData {
         private boolean godEnabled = false;
         private LocalDateTime firstJoin = LocalDateTime.now();
         private List<MailMessage> mailbox = new ArrayList<>();
+        private Map<String, Home> homes = new HashMap<>();
 
         public Builder(UUID playerID) {
             this.playerID = playerID;
@@ -143,6 +170,11 @@ public class PlayerData {
 
         public Builder mailbox(List<MailMessage> mailbox) {
             this.mailbox = mailbox;
+            return this;
+        }
+
+        public Builder homes(Map<String, Home> homes) {
+            this.homes = homes;
             return this;
         }
 

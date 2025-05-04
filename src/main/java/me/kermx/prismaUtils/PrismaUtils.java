@@ -3,6 +3,9 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.commands.admin.*;
 import me.kermx.prismaUtils.commands.crafting.*;
 import me.kermx.prismaUtils.commands.player.*;
+import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
+import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
+import me.kermx.prismaUtils.commands.player.homes.SetHomeCommand;
 import me.kermx.prismaUtils.commands.player.restore.*;
 import me.kermx.prismaUtils.commands.utility.*;
 import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
@@ -21,7 +24,6 @@ import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
@@ -143,6 +145,14 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("pweather", pWeatherCommand, pWeatherCommand);
         TopCommand topCommand = new TopCommand();
         commandManager.registerCommand("top", topCommand, topCommand);
+        // Homes Commands
+        HomesCommand homesCommand = new HomesCommand(this);
+        commandManager.registerCommand("homes", homesCommand, homesCommand);
+        commandManager.registerCommand("home", homesCommand, homesCommand);
+        SetHomeCommand setHomeCommand = new SetHomeCommand(this, homesCommand);
+        commandManager.registerCommand("sethome", setHomeCommand, setHomeCommand);
+        DelHomeCommand delHomeCommand = new DelHomeCommand(this, homesCommand);
+        commandManager.registerCommand("delhome", delHomeCommand, delHomeCommand);
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();

@@ -73,6 +73,25 @@ public class PlayerDataManager implements PlayerDataChangeListener {
             builder.firstJoin(LocalDateTime.parse(firstJoinStr, formatter));
         }
 
+        if (config.contains("homes")) {
+            Map<String, Home> homes = new HashMap<>();
+            List<Map<?, ?>> homesList = config.getMapList("homes");
+            for (Map<?, ?> homeMap : homesList) {
+                String name = (String) homeMap.get("name");
+                String worldName = (String) homeMap.get("world");
+                double x = ((Number) homeMap.get("x")).doubleValue();
+                double y = ((Number) homeMap.get("y")).doubleValue();
+                double z = ((Number) homeMap.get("z")).doubleValue();
+                float yaw = ((Number) homeMap.get("yaw")).floatValue();
+                float pitch = ((Number) homeMap.get("pitch")).floatValue();
+
+                Home home = new Home(name, worldName, x, y, z, yaw, pitch);
+                homes.put(name.toLowerCase(), home);
+            }
+            builder.homes(homes);
+        }
+
+
         if (config.contains("mailbox")) {
             List<MailMessage> mailMessages = new ArrayList<>();
             List<Map<?, ?>> mailList = config.getMapList("mailbox");
@@ -111,6 +130,12 @@ public class PlayerDataManager implements PlayerDataChangeListener {
         config.set("flyEnabled", playerData.isFlyEnabled());
         config.set("godMode", playerData.isGodEnabled());
         config.set("firstJoin", playerData.getFirstJoin().format(formatter));
+
+        List<Map<String, Object>> homesList = new ArrayList<>();
+        for (Home home : playerData.getHomes().values()) {
+            homesList.add(home.toMap());
+        }
+        config.set("homes", homesList);
 
         // Save mail messages
         List<Map<String, Object>> mailList = new ArrayList<>();
