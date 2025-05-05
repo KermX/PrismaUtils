@@ -156,6 +156,9 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("delhome", delHomeCommand, delHomeCommand);
         AdminHomesCommand adminHomesCommand = new AdminHomesCommand(this, homesCommand);
         commandManager.registerCommand("adminhome", adminHomesCommand, adminHomesCommand);
+        // Other Teleport Commands
+        BackCommand backCommand = new BackCommand(playerDataManager);
+        commandManager.registerCommand("back", backCommand, backCommand);
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();
@@ -206,7 +209,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new CuffCommand(),
                 new HorseZombificationHandler(),
                 new PermissionKeepInvHandler(),
-                new EnhancedTownyFlightHandler(flightService,playerDataManager)
+                new EnhancedTownyFlightHandler(flightService,playerDataManager),
+                new LastLocationHandler(playerDataManager)
         );
 
         // Register config conditional events

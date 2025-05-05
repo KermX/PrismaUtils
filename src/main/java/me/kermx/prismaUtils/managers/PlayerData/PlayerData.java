@@ -1,5 +1,7 @@
 package me.kermx.prismaUtils.managers.PlayerData;
 
+import org.bukkit.Location;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,6 +13,7 @@ public class PlayerData {
     private LocalDateTime firstJoin;
     private List<MailMessage> mailbox;
     private Map<String, Home> homes;
+    private Location lastLocation;
 
     // Use CopyOnWriteArrayList for thread-safe iteration without explicit synchronization
     private final List<PlayerDataChangeListener> changeListeners = new CopyOnWriteArrayList<>();
@@ -22,6 +25,7 @@ public class PlayerData {
         this.firstJoin = builder.firstJoin;
         this.mailbox = builder.mailbox;
         this.homes = builder.homes;
+        this.lastLocation = builder.lastLocation;
     }
 
     /**
@@ -140,6 +144,17 @@ public class PlayerData {
         return homes.size();
     }
 
+    public Location getLastLocation() {
+        return lastLocation;
+    }
+
+    public void setLastLocation(Location lastLocation) {
+        if (this.lastLocation != lastLocation) {
+            this.lastLocation = lastLocation;
+            notifyListeners("lastLocation", lastLocation);
+        }
+    }
+
     // Builder class stays the same
     public static class Builder {
         private final UUID playerID;
@@ -148,6 +163,7 @@ public class PlayerData {
         private LocalDateTime firstJoin = LocalDateTime.now();
         private List<MailMessage> mailbox = new ArrayList<>();
         private Map<String, Home> homes = new HashMap<>();
+        private Location lastLocation;
 
         public Builder(UUID playerID) {
             this.playerID = playerID;
@@ -175,6 +191,11 @@ public class PlayerData {
 
         public Builder homes(Map<String, Home> homes) {
             this.homes = homes;
+            return this;
+        }
+
+        public Builder lastLocation(Location lastLocation) {
+            this.lastLocation = lastLocation;
             return this;
         }
 

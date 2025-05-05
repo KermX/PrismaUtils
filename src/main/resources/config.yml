@@ -13,6 +13,14 @@ first_join_commands:
     - 'lp user %player_name% parent settrack gamerank rank0'
     - 'give %player_name% minecraft:stone 1'
 
+back_world_whitelist:
+  - 'world'
+  - 'world_nether'
+  - 'world_the_end'
+  - 'resource_overworld'
+  - 'resource_nether'
+  - 'resource_the_end'
+
 health_scale:
   enabled: true
   value: 20

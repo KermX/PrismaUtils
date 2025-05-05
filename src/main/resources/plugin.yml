@@ -129,6 +129,11 @@ commands:
     usage: /adminhome <list|tp|del> <player> [home]
     permission: prismautils.command.adminhome
 
+  back:
+    description: Teleport to previous known location
+    usage: /back
+    permission: prismautils.command.back
+
   # ----- Item Management Commands -----
   itemname:
     description: Renames the item in the player's hand.

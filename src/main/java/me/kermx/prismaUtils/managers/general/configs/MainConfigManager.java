@@ -25,6 +25,9 @@ public class MainConfigManager {
     public float firstJoinSpawnYaw;
     public float firstJoinSpawnPitch;
 
+    // Back Config
+    public List<String> backWhitelistedWorlds;
+
     // First Join Commands
     public boolean firstJoinCommandsEnabled;
     public List<String> firstJoinCommands;
@@ -89,6 +92,9 @@ public class MainConfigManager {
         // First Join Commands
         firstJoinCommandsEnabled = config.getBoolean("first_join_commands.enabled");
         firstJoinCommands = config.getStringList("first_join_commands.commands");
+
+        // Back Config
+        backWhitelistedWorlds = config.getStringList("back_world_whitelist");
 
         // Health Scale
         healthScaleEnabled = config.getBoolean("health_scale.enabled");
