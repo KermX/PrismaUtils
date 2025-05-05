@@ -20,7 +20,6 @@ public class FlightService {
     public FlightService(PluginManager pluginManager, Logger logger) {
         this.logger = logger;
         registerTownyFlight(pluginManager);
-        // Future flight plugins can be added here
     }
 
     private void registerTownyFlight(PluginManager pm) {
@@ -28,7 +27,6 @@ public class FlightService {
         if (townyFlightPlugin != null && townyFlightPlugin.isEnabled()) {
             flightCheckers.add((player, location) -> {
                 try {
-                    // Direct call to TownyFlight API - same as in TownyFlightHookImpl
                     com.gmail.llmdlio.townyflight.TownyFlightAPI api =
                             com.gmail.llmdlio.townyflight.TownyFlightAPI.getInstance();
                     return api.canFly(player, true);
@@ -49,10 +47,6 @@ public class FlightService {
      * @return true if the player can fly, false otherwise
      */
     public boolean canPlayerFly(Player player, Location location) {
-        // Admin override check
-        if (player.hasPermission("prismautils.bypass.flight")) {
-            return true;
-        }
 
         // If no flight plugins, default to false
         if (!hasFlightPlugins) {
