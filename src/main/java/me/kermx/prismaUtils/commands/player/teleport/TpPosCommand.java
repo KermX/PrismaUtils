@@ -77,7 +77,26 @@ public class TpPosCommand extends BaseCommand {
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        if (args.length == 4) {
+        if (!(sender instanceof Player player)) {
+            return new ArrayList<>();
+        }
+
+        if (args.length <= 3) {
+            Location loc = player.getLocation();
+            String suggestion = "";
+
+            switch (args.length) {
+                case 1 -> suggestion = String.valueOf(Math.round(loc.getX()));
+                case 2 -> suggestion = String.valueOf(Math.round(loc.getY()));
+                case 3 -> suggestion = String.valueOf(Math.round(loc.getZ()));
+            }
+
+            List<String> result = new ArrayList<>();
+            if (!suggestion.isEmpty()) {
+                result.add(suggestion);
+            }
+            return result;
+        } else if (args.length == 4) {
             String partial = args[3].toLowerCase();
             return Bukkit.getWorlds().stream()
                     .map(World::getName)
@@ -87,4 +106,3 @@ public class TpPosCommand extends BaseCommand {
         return new ArrayList<>();
     }
 }
-
