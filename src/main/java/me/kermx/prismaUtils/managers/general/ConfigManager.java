@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.managers.general.configs.DeathMessagesConfigManager;
 import me.kermx.prismaUtils.managers.general.configs.MainConfigManager;
 import me.kermx.prismaUtils.managers.general.configs.MessagesConfigManager;
+import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
 
 public class ConfigManager {
 
@@ -13,6 +14,7 @@ public class ConfigManager {
     private MainConfigManager mainConfigManager;
     private MessagesConfigManager messagesConfigManager;
     private DeathMessagesConfigManager deathMessagesConfigManager;
+    private WarpsConfigManager warpsConfigManager;
 
     private ConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -36,16 +38,19 @@ public class ConfigManager {
         mainConfigManager = new MainConfigManager(plugin);
         messagesConfigManager = new MessagesConfigManager(plugin);
         deathMessagesConfigManager = new DeathMessagesConfigManager(plugin);
+        warpsConfigManager = new WarpsConfigManager(plugin);
 
         mainConfigManager.loadConfig();
         messagesConfigManager.loadConfig();
         deathMessagesConfigManager.loadConfig();
+        warpsConfigManager.loadConfig();
     }
 
     public void reloadAll() {
         mainConfigManager.reload();
         messagesConfigManager.reload();
         deathMessagesConfigManager.reload();
+        warpsConfigManager.reload();
     }
 
     public MainConfigManager getMainConfig() {
@@ -59,4 +64,6 @@ public class ConfigManager {
     public DeathMessagesConfigManager getDeathMessagesConfig() {
         return deathMessagesConfigManager;
     }
+
+    public WarpsConfigManager getWarpsConfig() {return warpsConfigManager;}
 }

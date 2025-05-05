@@ -8,6 +8,9 @@ import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
 import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.SetHomeCommand;
 import me.kermx.prismaUtils.commands.player.restore.*;
+import me.kermx.prismaUtils.commands.player.warps.DelWarpCommand;
+import me.kermx.prismaUtils.commands.player.warps.SetWarpCommand;
+import me.kermx.prismaUtils.commands.player.warps.WarpCommand;
 import me.kermx.prismaUtils.commands.utility.*;
 import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
 import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
@@ -22,6 +25,7 @@ import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.features.SeenManager;
+import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
@@ -50,7 +54,6 @@ public final class PrismaUtils extends JavaPlugin {
 
         // Initialize player data manager
         playerDataManager = new PlayerDataManager(this);
-
 
         doStartupOperations();
         registerPlaceholders();
@@ -161,6 +164,15 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("back", backCommand, backCommand);
         SpawnCommand spawnCommand = new SpawnCommand(this);
         commandManager.registerCommand("spawn", spawnCommand, spawnCommand);
+        // Warp Commands
+        WarpsConfigManager warpsConfigManager = ConfigManager.getInstance().getWarpsConfig();
+        WarpCommand warpCommand = new WarpCommand(warpsConfigManager, this);
+        commandManager.registerCommand("warp", warpCommand, warpCommand);
+        SetWarpCommand setWarpCommand = new SetWarpCommand(warpsConfigManager);
+        commandManager.registerCommand("setwarp", setWarpCommand, setWarpCommand);
+        DelWarpCommand delWarpCommand = new DelWarpCommand(warpsConfigManager);
+        commandManager.registerCommand("delwarp", delWarpCommand, delWarpCommand);
+
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();

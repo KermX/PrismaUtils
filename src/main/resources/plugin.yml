@@ -138,6 +138,19 @@ commands:
     usage: /spawn
     permission: prismautils.command.spawn
 
+  # ----- Warps Commands -----
+  warp:
+    description: Teleport to a saved warp point.
+    usage: /warp <name>
+    aliases: [ warps ]
+  setwarp:
+    description: Create a new warp point at your current location.
+    usage: /setwarp <name>
+  delwarp:
+    description: Delete an existing warp point.
+    usage: /delwarp <name>
+
+
   # ----- Item Management Commands -----
   itemname:
     description: Renames the item in the player's hand.
