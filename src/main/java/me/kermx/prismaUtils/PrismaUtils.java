@@ -3,11 +3,16 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.commands.admin.*;
 import me.kermx.prismaUtils.commands.crafting.*;
 import me.kermx.prismaUtils.commands.player.*;
+import me.kermx.prismaUtils.commands.player.Tpask.TpAcceptCommand;
+import me.kermx.prismaUtils.commands.player.Tpask.TpDenyCommand;
+import me.kermx.prismaUtils.commands.player.Tpask.TpaCommand;
+import me.kermx.prismaUtils.commands.player.Tpask.TpaHereCommand;
 import me.kermx.prismaUtils.commands.player.homes.AdminHomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
 import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.SetHomeCommand;
 import me.kermx.prismaUtils.commands.player.restore.*;
+import me.kermx.prismaUtils.commands.player.teleport.*;
 import me.kermx.prismaUtils.commands.player.warps.DelWarpCommand;
 import me.kermx.prismaUtils.commands.player.warps.SetWarpCommand;
 import me.kermx.prismaUtils.commands.player.warps.WarpCommand;
@@ -26,6 +31,7 @@ import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
+import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
@@ -36,6 +42,7 @@ public final class PrismaUtils extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private ProtectionService protectionService;
     private FlightService flightService;
+    private TeleportRequestManager teleportRequestManager;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
@@ -49,6 +56,7 @@ public final class PrismaUtils extends JavaPlugin {
         flightService = new FlightService(getServer().getPluginManager(), getLogger());
 
         // Initialize specific managers / handlers
+        teleportRequestManager = new TeleportRequestManager(this);
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionService);
         seenManager = new SeenManager();
 
@@ -164,6 +172,12 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("back", backCommand, backCommand);
         SpawnCommand spawnCommand = new SpawnCommand(this);
         commandManager.registerCommand("spawn", spawnCommand, spawnCommand);
+        TpCommand tpCommand = new TpCommand(this);
+        commandManager.registerCommand("tp", tpCommand, tpCommand);
+        TpHereCommand tpHereCommand = new TpHereCommand(this);
+        commandManager.registerCommand("tphere", tpHereCommand, tpHereCommand);
+        TpPosCommand tpPosCommand = new TpPosCommand(this);
+        commandManager.registerCommand("tppos", tpPosCommand, tpPosCommand);
         // Warp Commands
         WarpsConfigManager warpsConfigManager = ConfigManager.getInstance().getWarpsConfig();
         WarpCommand warpCommand = new WarpCommand(warpsConfigManager, this);
@@ -172,6 +186,15 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("setwarp", setWarpCommand, setWarpCommand);
         DelWarpCommand delWarpCommand = new DelWarpCommand(warpsConfigManager);
         commandManager.registerCommand("delwarp", delWarpCommand, delWarpCommand);
+        // Teleport request commands
+        TpaCommand tpaCommand = new TpaCommand(teleportRequestManager);
+        commandManager.registerCommand("tpa", tpaCommand, tpaCommand);
+        TpaHereCommand tpaHereCommand = new TpaHereCommand(teleportRequestManager);
+        commandManager.registerCommand("tpahere", tpaHereCommand, tpaHereCommand);
+        TpAcceptCommand tpAcceptCommand = new TpAcceptCommand(teleportRequestManager, this);
+        commandManager.registerCommand("tpaccept", tpAcceptCommand, tpAcceptCommand);
+        TpDenyCommand tpDenyCommand = new TpDenyCommand(teleportRequestManager);
+        commandManager.registerCommand("tpdeny", tpDenyCommand, tpDenyCommand);
 
 
         // Utility Commands

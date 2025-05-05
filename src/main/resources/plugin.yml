@@ -129,6 +129,7 @@ commands:
     usage: /adminhome <list|tp|del> <player> [home]
     permission: prismautils.command.adminhome
 
+  # ----- Other Teleport Commands -----
   back:
     description: Teleport to previous known location
     usage: /back
@@ -137,18 +138,62 @@ commands:
     description: Teleport to spawn
     usage: /spawn
     permission: prismautils.command.spawn
+  tp:
+    description: Teleport to another player.
+    usage: /tp <player>
+    permission: prismautils.command.tp
+    aliases: [teleport]
+  tphere:
+    description: Teleport another player to your location.
+    usage: /tphere <player>
+    permission: prismautils.command.tphere
+    aliases: [teleporthere]
+  tppos:
+    description: Teleport to specific coordinates, optionally in a specific world.
+    usage: /tppos <x> <y> <z> [world]
+    permission: prismautils.command.tppos
+    aliases: [teleportpos]
+  tpoffline:
+    description: Teleport to an offline player's last known location.
+    usage: /tpoffline <player>
+    permission: prismautils.command.tpo
+    aliases: [teleportoffline]
+
 
   # ----- Warps Commands -----
   warp:
     description: Teleport to a saved warp point.
     usage: /warp <name>
+    permission: prismautils.command.warp
     aliases: [ warps ]
   setwarp:
     description: Create a new warp point at your current location.
     usage: /setwarp <name>
+    permission: prismautils.command.setwarp
   delwarp:
     description: Delete an existing warp point.
     usage: /delwarp <name>
+    permission: prismautils.command.delwarp
+
+  # ----- Teleport Request Commands -----
+  tpa:
+    description: Request to teleport to another player.
+    usage: /tpa <player>
+    permission: prismautils.command.tpa
+  tpahere:
+    description: Request another player to teleport to you.
+    usage: /tpahere <player>
+    permission: prismautils.command.tpahere
+  tpaccept:
+    description: Accept a teleport request.
+    usage: /tpaccept
+    permission: prismautils.command.tpaccept
+    aliases: [tpyes]
+  tpdeny:
+    description: Deny a teleport request.
+    usage: /tpdeny
+    permission: prismautils.command.tpdeny
+    aliases: [tpno]
 
 
   # ----- Item Management Commands -----

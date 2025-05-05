@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.commands.player;
+package me.kermx.prismaUtils.commands.player.teleport;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.BaseCommand;
@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class SpawnCommand extends BaseCommand {
         }
 
         // Teleport player to spawn
-        player.teleport(spawnLocation);
+        player.teleportAsync(spawnLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Teleported to spawn."
         ));

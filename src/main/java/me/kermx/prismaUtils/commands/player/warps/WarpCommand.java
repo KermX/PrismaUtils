@@ -59,7 +59,7 @@ public class WarpCommand extends BaseCommand {
         }
 
         // Teleport player to warp
-        player.teleport(warpLocation);
+        player.teleportAsync(warpLocation);
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Teleported to warp '<white>" + warpName + "<green>'."
         ));

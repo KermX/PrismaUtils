@@ -174,7 +174,7 @@ public class HomesCommand extends BaseCommand {
             return true;
         }
 
-        player.teleport(location);
+        player.teleportAsync(location);
         player.sendMessage(TextUtils.deserializeString("<green>Teleported to home '" + homeName + "'."));
         return true;
     }
@@ -218,7 +218,7 @@ public class HomesCommand extends BaseCommand {
             return true;
         }
 
-        player.teleport(location);
+        player.teleportAsync(location);
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Teleported to " + targetName + "'s home '" + homeName + "'."
         ));

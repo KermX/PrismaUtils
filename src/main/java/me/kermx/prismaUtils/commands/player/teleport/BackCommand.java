@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.commands.player;
+package me.kermx.prismaUtils.commands.player.teleport;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
@@ -8,6 +8,7 @@ import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BackCommand extends BaseCommand {
         Location currentLocation = player.getLocation().clone();
 
         // Teleport the player
-        player.teleport(lastLocation);
+        player.teleportAsync(lastLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Teleported to your previous location."
         ));
