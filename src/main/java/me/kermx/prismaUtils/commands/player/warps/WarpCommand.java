@@ -47,7 +47,7 @@ public class WarpCommand extends BaseCommand {
 
         if (warpLocation == null) {
             player.sendMessage(TextUtils.deserializeString(
-                    "<red>Warp '<white>" + warpName + "<red>' doesn't exist."
+                    "<red>Warp [<white>" + warpName + "<red>] doesn't exist."
             ));
             return true;
         }
@@ -61,7 +61,7 @@ public class WarpCommand extends BaseCommand {
         // Teleport player to warp
         player.teleportAsync(warpLocation);
         player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleported to warp '<white>" + warpName + "<green>'."
+                "<green>Teleported to warp [<white>" + warpName + "<green>]."
         ));
 
         return true;

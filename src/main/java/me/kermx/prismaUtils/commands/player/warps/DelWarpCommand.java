@@ -31,14 +31,14 @@ public class DelWarpCommand extends BaseCommand {
 
         if (!warpsConfigManager.warpExists(warpName)) {
             player.sendMessage(TextUtils.deserializeString(
-                    "<red>Warp '<white>" + warpName + "<red>' doesn't exist."
+                    "<red>Warp [<white>" + warpName + "<red>] doesn't exist."
             ));
             return true;
         }
 
         warpsConfigManager.deleteWarp(warpName);
         player.sendMessage(TextUtils.deserializeString(
-                "<green>Deleted warp '<white>" + warpName + "<green>'."
+                "<green>Deleted warp [<white>" + warpName + "<green>]."
         ));
 
         return true;

@@ -42,11 +42,11 @@ public class SetWarpCommand extends BaseCommand {
 
         if (overwriting) {
             player.sendMessage(TextUtils.deserializeString(
-                    "<green>Updated warp '<white>" + warpName + "<green>'."
+                    "<green>Updated warp [<white>" + warpName + "<green>]."
             ));
         } else {
             player.sendMessage(TextUtils.deserializeString(
-                    "<green>Created warp '<white>" + warpName + "<green>'."
+                    "<green>Created warp [<white>" + warpName + "<green>]."
             ));
         }
 

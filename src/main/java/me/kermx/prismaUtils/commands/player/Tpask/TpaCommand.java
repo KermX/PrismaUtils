@@ -5,6 +5,7 @@ import me.kermx.prismaUtils.managers.teleport.TeleportRequest;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.utils.PlayerUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -57,7 +58,8 @@ public class TpaCommand extends BaseCommand {
 
         // Notify the requester
         player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleport request sent to <white>" + target.getName() + "<green>."
+                "<green>Teleport request sent to <white><target><green>.",
+                Placeholder.component("target", target.displayName())
         ));
 
         return true;

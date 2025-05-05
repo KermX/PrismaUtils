@@ -5,6 +5,8 @@ import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -48,16 +50,16 @@ public class TeleportRequestManager {
                 Player sender = Bukkit.getPlayer(request.getSender());
                 if (sender != null && sender.isOnline()) {
                     sender.sendMessage(TextUtils.deserializeString(
-                            "<red>Your teleport request to <white>" +
-                                    request.getTargetName() + "<red> has expired."
+                            "<red>Your teleport request to <white><target> <red>has expired.",
+                            Placeholder.component("target", request.getTargetDisplayName())
                     ));
                 }
 
                 Player target = Bukkit.getPlayer(request.getTarget());
                 if (target != null && target.isOnline()) {
                     target.sendMessage(TextUtils.deserializeString(
-                            "<red>Teleport request from <white>" +
-                                    request.getSenderName() + "<red> has expired."
+                            "<red>Teleport request from <white><sender> <red>has expired.",
+                            Placeholder.component("sender", request.getSenderDisplayName())
                     ));
                 }
 
@@ -91,15 +93,18 @@ public class TeleportRequestManager {
         // Create the request message with clickable elements
         String message;
         if (request.getType() == TeleportRequest.Type.TPA) {
-            message = "<yellow>" + request.getSenderName() + " <white>has requested to teleport to you.";
+            message = "<white><sender> <green>has requested to teleport to you.";
         } else {
-            message = "<yellow>" + request.getSenderName() + " <white>has requested that you teleport to them.";
+            message = "<white><sender> <green>has requested that you teleport to them.";
         }
 
-        target.sendMessage(TextUtils.deserializeString(message));
+        target.sendMessage(TextUtils.deserializeString(message,
+                Placeholder.component("sender",request.getSenderDisplayName())
+        ));
 
         // Create clickable accept button
         Component acceptButton = Component.text("[Accept]")
+                .color(NamedTextColor.GREEN)
                 .clickEvent(ClickEvent.runCommand("/tpaccept"))
                 .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(
                         "<green>Click to accept the teleport request"
@@ -107,6 +112,7 @@ public class TeleportRequestManager {
 
         // Create clickable deny button
         Component denyButton = Component.text("[Deny]")
+                .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/tpdeny"))
                 .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(
                         "<red>Click to deny the teleport request"
@@ -114,13 +120,13 @@ public class TeleportRequestManager {
 
         // Combine components
         Component buttons = Component.empty()
-                .append(TextUtils.deserializeString("<green>"))
                 .append(acceptButton)
-                .append(TextUtils.deserializeString(" <red>"))
+                .append(Component.text(" "))
                 .append(denyButton);
 
+
         // Send clickable buttons
-        target.sendMessage(buttons);
+        target.sendMessage(TextUtils.centerComponent(buttons));
 
         // Add info on expiry
         target.sendMessage(TextUtils.deserializeString(

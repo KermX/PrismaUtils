@@ -1,6 +1,7 @@
 package me.kermx.prismaUtils.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -87,6 +88,33 @@ public final class TextUtils {
     public static String serializeToMini(Component component) {
         Objects.requireNonNull(component, "Component cannot be null");
         return MINI_MESSAGE.serialize(component);
+    }
+
+    /**
+     * Creates a centered component by adding appropriate spacing
+     * @param component The component to center
+     * @return A component with spacing for centering
+     */
+    public static Component centerComponent(Component component) {
+        int textLength = 0;
+
+        if (component instanceof TextComponent textComponent) {
+            textLength += textComponent.content().length();
+
+            for (Component child : textComponent.children()) {
+                if (child instanceof TextComponent childTextComponent) {
+                    textLength += childTextComponent.content().length();
+                }
+            }
+        }
+
+        if (!component.children().isEmpty()) {
+            textLength += component.children().size();
+        }
+
+        int spaces = Math.max(0, (53 - textLength) / 2);
+
+        return Component.text(" ".repeat(spaces)).append(component);
     }
 
     /**

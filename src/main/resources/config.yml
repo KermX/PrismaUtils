@@ -16,6 +16,21 @@ spawn:
   yaw: -45
   pitch: 0
 
+home_name_blacklist:
+  - 'set'
+  - 'sethome'
+  - 'del'
+  - 'delete'
+  - 'delhome'
+  - 'list'
+  - 'help'
+  - 'tp'
+  - 'teleport'
+  - 'admindel'
+  - 'adelete'
+  - 'alist'
+  - 'adminlist'
+
 first_join_commands:
   enabled: true
   commands:

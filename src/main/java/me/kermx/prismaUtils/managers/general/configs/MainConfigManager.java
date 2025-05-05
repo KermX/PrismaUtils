@@ -34,6 +34,9 @@ public class MainConfigManager {
     public float spawnYaw;
     public float spawnPitch;
 
+    // Home Name Blacklist
+    public List<String> homeNameBlacklist;
+
     // Back Config
     public List<String> backWhitelistedWorlds;
 
@@ -110,6 +113,9 @@ public class MainConfigManager {
         // First Join Commands
         firstJoinCommandsEnabled = config.getBoolean("first_join_commands.enabled");
         firstJoinCommands = config.getStringList("first_join_commands.commands");
+
+        // Home Name Blacklist
+        homeNameBlacklist = config.getStringList("home_name_blacklist");
 
         // Back Config
         backWhitelistedWorlds = config.getStringList("back_world_whitelist");

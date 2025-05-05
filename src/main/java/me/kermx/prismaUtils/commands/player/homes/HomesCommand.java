@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.Home;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -100,6 +101,11 @@ public class HomesCommand extends BaseCommand {
         // Default home name is "home" if not specified
         String homeName = args.length > 1 ? args[1] : DEFAULT_HOME_NAME;
 
+        if (ConfigManager.getInstance().getMainConfig().homeNameBlacklist.contains(homeName)) {
+            player.sendMessage(TextUtils.deserializeString("<red>You cannot use that home name."));
+            return true;
+        }
+
         // Check if player has reached their home limit
         int currentHomes = playerData.getHomesCount();
         int homeLimit = getHomeLimit(player);
@@ -115,7 +121,7 @@ public class HomesCommand extends BaseCommand {
         Home home = new Home(homeName, player.getLocation());
         playerData.addHome(homeName, home);
 
-        player.sendMessage(TextUtils.deserializeString("<green>Home '" + homeName + "' has been set."));
+        player.sendMessage(TextUtils.deserializeString("<green>Home [<white>" + homeName + "<green>] has been set."));
         return true;
     }
 
@@ -135,9 +141,9 @@ public class HomesCommand extends BaseCommand {
 
         boolean removed = playerData.removeHome(homeName);
         if (removed) {
-            player.sendMessage(TextUtils.deserializeString("<green>Home '" + homeName + "' has been deleted."));
+            player.sendMessage(TextUtils.deserializeString("<green>Home [<white>" + homeName + "<green>] has been deleted."));
         } else {
-            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named '" + homeName + "'."));
+            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named [<white>" + homeName + "<green>]."));
         }
         return true;
     }
@@ -158,7 +164,7 @@ public class HomesCommand extends BaseCommand {
         for (Home home : homes.values()) {
             Location loc = home.getLocation();
             if (loc != null) {
-                String message = "<yellow>" + home.getName() + ": <white>" +
+                String message = "<green>[<white>" + home.getName() + "<green>] : <gray>" +
                         loc.getWorld().getName() + " (" +
                         Math.round(loc.getX()) + ", " +
                         Math.round(loc.getY()) + ", " +
@@ -166,7 +172,7 @@ public class HomesCommand extends BaseCommand {
 
                 Component component = TextUtils.deserializeString(message)
                         .clickEvent(ClickEvent.runCommand("/home " + home.getName()))
-                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to teleport to <yellow>" + home.getName())));
+                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to teleport to [<white>" + home.getName() + "<green>]")));
 
                 player.sendMessage(component);
             }
@@ -179,7 +185,7 @@ public class HomesCommand extends BaseCommand {
         Home home = playerData.getHome(homeName);
 
         if (home == null) {
-            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named '" + homeName + "'."));
+            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named  [<white>" + homeName + "<red>] ."));
             return true;
         }
 
@@ -190,7 +196,7 @@ public class HomesCommand extends BaseCommand {
         }
 
         player.teleportAsync(location);
-        player.sendMessage(TextUtils.deserializeString("<green>Teleported to home '" + homeName + "'."));
+        player.sendMessage(TextUtils.deserializeString("<green>Teleported to home  [<white>" + homeName + "<green>] ."));
         return true;
     }
 

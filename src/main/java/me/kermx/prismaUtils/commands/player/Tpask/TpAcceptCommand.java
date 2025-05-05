@@ -6,6 +6,7 @@ import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequest;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -56,11 +57,13 @@ public class TpAcceptCommand extends BaseCommand {
             requester.teleportAsync(player.getLocation());
 
             requester.sendMessage(TextUtils.deserializeString(
-                    "<green>Teleported to <white>" + player.getName() + "<green>."
+                    "<green>Teleported to <white><player><green>.",
+                    Placeholder.component("player",player.displayName())
             ));
 
             player.sendMessage(TextUtils.deserializeString(
-                    "<green><white>" + requester.getName() + "<green> has been teleported to you."
+                    "<white><requester> <green>has been teleported to you.",
+                    Placeholder.component("requester", requester.displayName())
             ));
         } else {
             // Save target's location for /back command
@@ -73,11 +76,13 @@ public class TpAcceptCommand extends BaseCommand {
             player.teleportAsync(requester.getLocation());
 
             player.sendMessage(TextUtils.deserializeString(
-                    "<green>Teleported to <white>" + requester.getName() + "<green>."
+                    "<green>Teleported to <white><requester><green>.",
+                    Placeholder.component("requester", requester.displayName())
             ));
 
             requester.sendMessage(TextUtils.deserializeString(
-                    "<green><white>" + player.getName() + "<green> has been teleported to you."
+                    "<white><player><green> has been teleported to you.",
+                    Placeholder.component("player", player.displayName())
             ));
         }
 

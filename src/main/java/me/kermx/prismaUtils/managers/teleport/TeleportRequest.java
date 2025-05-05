@@ -1,5 +1,8 @@
 package me.kermx.prismaUtils.managers.teleport;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Objects;
@@ -35,12 +38,30 @@ public class TeleportRequest {
         return senderName;
     }
 
+    public Component getSenderDisplayName() {
+        Player player = Bukkit.getPlayer(sender);
+        if (player != null && player.isOnline()) {
+            return player.displayName();
+        } else {
+            return Component.text(senderName);
+        }
+    }
+
     public UUID getTarget() {
         return target;
     }
 
     public String getTargetName() {
         return targetName;
+    }
+
+    public Component getTargetDisplayName() {
+        Player player = Bukkit.getPlayer(target);
+        if (player != null && player.isOnline()) {
+            return player.displayName();
+        } else {
+            return Component.text(targetName);
+        }
     }
 
     public Type getType() {

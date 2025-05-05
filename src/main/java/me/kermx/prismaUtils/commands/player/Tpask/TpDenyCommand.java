@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequest;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.utils.TextUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,13 +36,15 @@ public class TpDenyCommand extends BaseCommand {
         // Notify requester if they're online
         if (requester != null && requester.isOnline()) {
             requester.sendMessage(TextUtils.deserializeString(
-                    "<red><white>" + player.getName() + "<red> denied your teleport request."
+                    "<red><white><player> <red>denied your teleport request.",
+                    Placeholder.component("player", player.displayName())
             ));
         }
 
         // Notify the target
         player.sendMessage(TextUtils.deserializeString(
-                "<green>You denied the teleport request from <white>" + request.getSenderName() + "<green>."
+                "<green>You denied the teleport request from <white><sender><green>.",
+                Placeholder.component("sender", request.getSenderDisplayName())
         ));
 
         // Remove the request
