@@ -4,7 +4,6 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
-import me.kermx.prismaUtils.managers.general.configs.MainConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -32,6 +31,7 @@ public class BackCommand extends BaseCommand {
             ));
             return true;
         }
+
         if (!ConfigManager.getInstance().getMainConfig().backWhitelistedWorlds.contains(lastLocation.getWorld().getName())) {
             player.sendMessage(TextUtils.deserializeString(
                     "<red>You can't return to that world."

@@ -133,6 +133,10 @@ commands:
     description: Teleport to previous known location
     usage: /back
     permission: prismautils.command.back
+  spawn:
+    description: Teleport to spawn
+    usage: /spawn
+    permission: prismautils.command.spawn
 
   # ----- Item Management Commands -----
   itemname:

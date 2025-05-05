@@ -7,6 +7,15 @@ first_join_spawn:
   yaw: 0
   pitch: 0
 
+spawn:
+  enabled: true
+  world: world
+  x: -79.5
+  y: 82.0
+  z: 299.5
+  yaw: -45
+  pitch: 0
+
 first_join_commands:
   enabled: true
   commands:

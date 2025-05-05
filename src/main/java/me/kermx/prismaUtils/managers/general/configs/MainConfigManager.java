@@ -25,6 +25,15 @@ public class MainConfigManager {
     public float firstJoinSpawnYaw;
     public float firstJoinSpawnPitch;
 
+    // Spawn
+    public boolean spawnEnabled;
+    public String spawnWorld;
+    public double spawnX;
+    public double spawnY;
+    public double spawnZ;
+    public float spawnYaw;
+    public float spawnPitch;
+
     // Back Config
     public List<String> backWhitelistedWorlds;
 
@@ -88,6 +97,15 @@ public class MainConfigManager {
         firstJoinSpawnZ = config.getDouble("first_join_spawn.z");
         firstJoinSpawnYaw = (float) config.getDouble("first_join_spawn.yaw");
         firstJoinSpawnPitch = (float) config.getDouble("first_join_spawn.pitch");
+
+        // Spawn
+        spawnEnabled = config.getBoolean("spawn.enabled");
+        spawnWorld = config.getString("spawn.world");
+        spawnX = config.getDouble("spawn.x");
+        spawnY = config.getDouble("spawn.y");
+        spawnZ = config.getDouble("spawn.z");
+        spawnYaw = (float) config.getDouble("spawn.yaw");
+        spawnPitch = (float) config.getDouble("spawn.pitch");
 
         // First Join Commands
         firstJoinCommandsEnabled = config.getBoolean("first_join_commands.enabled");

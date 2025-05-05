@@ -159,6 +159,8 @@ public final class PrismaUtils extends JavaPlugin {
         // Other Teleport Commands
         BackCommand backCommand = new BackCommand(playerDataManager);
         commandManager.registerCommand("back", backCommand, backCommand);
+        SpawnCommand spawnCommand = new SpawnCommand(this);
+        commandManager.registerCommand("spawn", spawnCommand, spawnCommand);
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();
