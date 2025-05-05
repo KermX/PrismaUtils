@@ -63,7 +63,21 @@ public class HomesCommand extends BaseCommand {
             }
             default -> {
                 if (subCommand.isEmpty() && args.length == 0) {
-                    // Default to teleporting to "home" if it exists
+                    // Check if command is "homes" or if there's no home named "home"
+                    if (label.equalsIgnoreCase("homes")) {
+                        return handleListHomes(player, args);
+                    }
+
+                    // Get player data to check if "home" exists
+                    PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
+                    Home defaultHome = playerData.getHome(DEFAULT_HOME_NAME);
+
+                    // If there's no default home, show the home list instead
+                    if (defaultHome == null) {
+                        return handleListHomes(player, args);
+                    }
+
+                    // Otherwise, teleport to the default home
                     return handleTeleport(player, DEFAULT_HOME_NAME);
                 } else {
                     // Treat the first arg as home name for teleportation
@@ -72,6 +86,7 @@ public class HomesCommand extends BaseCommand {
             }
         }
     }
+
 
     private boolean handleSetHome(Player player, String[] args) {
         if (!player.hasPermission("prismautils.command.sethome")) {
