@@ -11,9 +11,9 @@ public class CooldownManager {
     private static CooldownManager instance;
 
     // Default cooldown values in seconds
-    private final int defaultHomeCooldownSeconds = 10;
-    private final int defaultWarpCooldownSeconds = 15;
-    private final int defaultBackCooldownSeconds = 30;
+    private final int defaultHomeCooldownSeconds = 5;
+    private final int defaultWarpCooldownSeconds = 5;
+    private final int defaultBackCooldownSeconds = 300;
 
     // Maps to store cooldown timestamps for each player and command type
     private final Map<UUID, Long> homeCooldowns = new HashMap<>();
@@ -179,7 +179,7 @@ public class CooldownManager {
     }
 
     /**
-     * Helper method to get remaining cooldown time in seconds
+     * Helper method to get the remaining cooldown time in seconds
      */
     private int getRemainingCooldown(UUID playerUUID, Map<UUID, Long> cooldownMap, int cooldownSeconds) {
         if (!cooldownMap.containsKey(playerUUID)) {
