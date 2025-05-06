@@ -116,19 +116,22 @@ commands:
     description: Use homes
     usage: /home [set|del|list|help] [name]
     permission: prismautils.command.homes
-    aliases: [homes]
+    aliases: [homes, prismahome]
   sethome:
     description: Set a home
     usage: /sethome [name]
     permission: prismautils.command.sethome
+    aliases: [prismasethome]
   delhome:
     description: Delete a home
     usage: /delhome [name]
     permission: prismautils.command.delhome
+    aliases: [prismadelhome]
   adminhome:
     description: Interact with other players' homes
     usage: /adminhome <list|tp|del> <player> [home]
     permission: prismautils.command.adminhome
+    aliases: [prismaadminhome]
 
   # ----- Other Teleport Commands -----
   back:
