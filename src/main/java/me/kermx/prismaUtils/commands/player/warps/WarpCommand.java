@@ -78,31 +78,51 @@ public class WarpCommand extends BaseCommand {
         }
 
         player.sendMessage(TextUtils.deserializeString(
-                "<green>Available warps: <gray>(click to teleport)"
+                "<green>Available warps:"
         ));
 
-        // Instead of just joining the names, create a component for each warp
-        Component message = Component.empty();
-        boolean first = true;
+        // Create a list of all warp components
+        List<Component> warpComponents = new ArrayList<>();
 
+        // Create a clickable component for each warp
         for (String warpName : warpNames) {
-            if (!first) {
-                message = message.append(Component.text(", ").color(NamedTextColor.GRAY));
+            Location loc = warpsConfigManager.getWarp(warpName);
+            if (loc != null) {
+                // Format coordinates to be more readable
+                String coords = String.format("%.0f, %.0f, %.0f", loc.getX(), loc.getY(), loc.getZ());
+
+                // Create hover text with world and coordinates
+                String hoverText = String.format("<green>World: <white>%s\n<green>Coordinates: <white>%s\n<yellow>Click to teleport!",
+                        loc.getWorld().getName(), coords);
+
+                // Create the clickable warp component
+                Component warpComponent = TextUtils.deserializeString("<green>[<white>" + warpName + "<green>]")
+                        .clickEvent(ClickEvent.runCommand("/warp " + warpName))
+                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(hoverText)));
+
+                warpComponents.add(warpComponent);
             }
-
-            // Create a clickable component for each warp
-            Component warpComponent = Component.text(warpName)
-                    .color(NamedTextColor.WHITE)
-                    .clickEvent(ClickEvent.runCommand("/warp " + warpName))
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to teleport to " + warpName)
-                            .color(NamedTextColor.GREEN)));
-
-            message = message.append(warpComponent);
-            first = false;
         }
 
-        player.sendMessage(message);
+        // Display warps in groups of 5 per line
+        int warpsPerLine = 5;
+        for (int i = 0; i < warpComponents.size(); i += warpsPerLine) {
+            Component lineComponent = Component.empty();
+
+            // Add warps to this line
+            for (int j = i; j < Math.min(i + warpsPerLine, warpComponents.size()); j++) {
+                if (j > i) {
+                    // Add space between warps
+                    lineComponent = lineComponent.append(TextUtils.deserializeString(" "));
+                }
+                lineComponent = lineComponent.append(warpComponents.get(j));
+            }
+
+            // Send this line to the player
+            player.sendMessage(lineComponent);
+        }
     }
+
 
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {

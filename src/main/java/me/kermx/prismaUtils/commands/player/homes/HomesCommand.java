@@ -106,6 +106,12 @@ public class HomesCommand extends BaseCommand {
             return true;
         }
 
+        int maxHomeNameLength = 16;
+        if (homeName.length() > maxHomeNameLength) {
+            player.sendMessage(TextUtils.deserializeString("<red>Home names must be less than " + maxHomeNameLength + "<red>characters."));
+            return true;
+        }
+
         // Check if player has reached their home limit
         int currentHomes = playerData.getHomesCount();
         int homeLimit = getHomeLimit(player);
@@ -115,6 +121,21 @@ public class HomesCommand extends BaseCommand {
         if (!homeExists && currentHomes >= homeLimit) {
             player.sendMessage(TextUtils.deserializeString("<red>You have reached your home limit of " + homeLimit + "."));
             return true;
+        }
+
+        if (homeExists) {
+            // If additional argument for confirmation is not provided
+            if (args.length <= 2 || !args[2].equalsIgnoreCase("confirm")) {
+                Component confirmMessage = TextUtils.deserializeString(
+                                "<yellow>A home named [<white>" + homeName + "<yellow>] already exists. " +
+                                        "Click here to overwrite it.")
+                        .clickEvent(ClickEvent.runCommand("/home set " + homeName + " confirm"))
+                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to confirm")));
+
+                player.sendMessage(confirmMessage);
+                return true;
+            }
+            // If confirmation is provided, continue with setting the home
         }
 
         // Create the home
@@ -139,12 +160,30 @@ public class HomesCommand extends BaseCommand {
         String homeName = args[1];
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
 
-        boolean removed = playerData.removeHome(homeName);
-        if (removed) {
-            player.sendMessage(TextUtils.deserializeString("<green>Home [<white>" + homeName + "<green>] has been deleted."));
-        } else {
-            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named [<white>" + homeName + "<green>]."));
+        // Check if the home exists first
+        Home home = playerData.getHome(homeName);
+        if (home == null) {
+            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named [<white>" + homeName + "<red>]."));
+            return true;
         }
+
+        // If confirmation is not provided as third argument
+        if (args.length < 3 || !args[2].equalsIgnoreCase("confirm")) {
+            // Create a clickable confirmation message in the same style as home overwriting
+            Component confirmMessage = TextUtils.deserializeString(
+                            "<yellow>Are you sure you want to delete home [<white>" + homeName + "<yellow>]? " +
+                                    "Click here to confirm.")
+                    .clickEvent(ClickEvent.runCommand("/home del " + homeName + " confirm"))
+                    .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to confirm")));
+
+            player.sendMessage(confirmMessage);
+            return true;
+        }
+
+
+        // If we get here, the player has confirmed the deletion
+        boolean removed = playerData.removeHome(homeName);
+        player.sendMessage(TextUtils.deserializeString("<green>Home [<white>" + homeName + "<green>] has been deleted."));
         return true;
     }
 
@@ -160,23 +199,47 @@ public class HomesCommand extends BaseCommand {
         int homeLimit = getHomeLimit(player);
         player.sendMessage(TextUtils.deserializeString("<green>Your homes (" + homes.size() + "/" + homeLimit + "):"));
 
-        // Send clickable home list
+        // Create a list of all home components
+        List<Component> homeComponents = new ArrayList<>();
+
+        // Create a clickable component for each home
         for (Home home : homes.values()) {
             Location loc = home.getLocation();
             if (loc != null) {
-                String message = "<green>[<white>" + home.getName() + "<green>] : <gray>" +
-                        loc.getWorld().getName() + " (" +
-                        Math.round(loc.getX()) + ", " +
-                        Math.round(loc.getY()) + ", " +
-                        Math.round(loc.getZ()) + ")";
+                // Format coordinates to be more readable
+                String coords = String.format("%.0f, %.0f, %.0f", loc.getX(), loc.getY(), loc.getZ());
 
-                Component component = TextUtils.deserializeString(message)
+                // Create hover text with world and coordinates
+                String hoverText = String.format("<green>World: <white>%s\n<green>Coordinates: <white>%s\n<yellow>Click to teleport!",
+                        loc.getWorld().getName(), coords);
+
+                // Create the clickable home component
+                Component homeComponent = TextUtils.deserializeString("<green>[<white>" + home.getName() + "<green>]")
                         .clickEvent(ClickEvent.runCommand("/home " + home.getName()))
-                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to teleport to [<white>" + home.getName() + "<green>]")));
+                        .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(hoverText)));
 
-                player.sendMessage(component);
+                homeComponents.add(homeComponent);
             }
         }
+
+        // Display homes in groups of 5 per line
+        int homesPerLine = 5;
+        for (int i = 0; i < homeComponents.size(); i += homesPerLine) {
+            Component lineComponent = Component.empty();
+
+            // Add homes to this line
+            for (int j = i; j < Math.min(i + homesPerLine, homeComponents.size()); j++) {
+                if (j > i) {
+                    // Add space between homes
+                    lineComponent = lineComponent.append(TextUtils.deserializeString(" "));
+                }
+                lineComponent = lineComponent.append(homeComponents.get(j));
+            }
+
+            // Send this line to the player
+            player.sendMessage(lineComponent);
+        }
+
         return true;
     }
 
