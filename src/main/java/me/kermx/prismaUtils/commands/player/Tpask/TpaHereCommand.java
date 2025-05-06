@@ -58,7 +58,7 @@ public class TpaHereCommand extends BaseCommand {
 
         // Notify the requester
         player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleport here request sent to <white><target><green>.",
+                "<green>Requested <white><target> <green>to teleport to you.",
                 Placeholder.component("target",target.displayName())
         ));
 
