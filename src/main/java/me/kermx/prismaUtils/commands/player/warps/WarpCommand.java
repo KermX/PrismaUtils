@@ -108,7 +108,7 @@ public class WarpCommand extends BaseCommand {
 
                 // Create the clickable warp component
                 Component warpComponent = TextUtils.deserializeString("<green>[<white>" + warpName + "<green>]")
-                        .clickEvent(ClickEvent.runCommand("/warp " + warpName))
+                        .clickEvent(ClickEvent.runCommand("/prismautils:warp " + warpName))
                         .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(hoverText)));
 
                 warpComponents.add(warpComponent);
