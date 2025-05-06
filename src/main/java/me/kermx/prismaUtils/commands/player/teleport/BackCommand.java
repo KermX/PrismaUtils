@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -40,7 +41,17 @@ public class BackCommand extends BaseCommand {
             return true;
         }
 
+        CooldownManager cooldownManager = CooldownManager.getInstance();
+        if (!cooldownManager.canUseBackCommand(player)) {
+            int remainingSeconds = cooldownManager.getBackCooldownRemaining(player);
+            player.sendMessage(TextUtils.deserializeString("<red>You must wait <white>" + remainingSeconds + " second" + (remainingSeconds == 1 ? "" : "s") + "<red> before using this command again."));
+            return true;
+        }
+
         Location currentLocation = player.getLocation().clone();
+
+        // Apply cooldown
+        cooldownManager.setBackCommandCooldown(player);
 
         // Teleport the player
         player.teleportAsync(lastLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);

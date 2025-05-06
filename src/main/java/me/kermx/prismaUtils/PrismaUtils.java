@@ -27,6 +27,7 @@ import me.kermx.prismaUtils.integrations.FlightService;
 import me.kermx.prismaUtils.integrations.ProtectionService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
+import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
 import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.features.SeenManager;
@@ -59,6 +60,9 @@ public final class PrismaUtils extends JavaPlugin {
         teleportRequestManager = new TeleportRequestManager(this);
         seedAndShearBlocksHandler = new SeedAndShearBlocksHandler(protectionService);
         seenManager = new SeenManager();
+
+        // Initialize CooldownManager singleton
+        CooldownManager.getInstance();
 
         // Initialize player data manager
         playerDataManager = new PlayerDataManager(this);

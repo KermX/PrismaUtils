@@ -5,6 +5,7 @@ import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.Home;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -257,6 +258,17 @@ public class HomesCommand extends BaseCommand {
             player.sendMessage(TextUtils.deserializeString("<red>The world of this home doesn't exist anymore."));
             return true;
         }
+
+        CooldownManager cooldownManager = CooldownManager.getInstance();
+        if (!cooldownManager.canUseHomeTeleport(player)) {
+            int remainingSeconds = cooldownManager.getHomeCooldownRemaining(player);
+            player.sendMessage(TextUtils.deserializeString("<red>You must wait <white>" + remainingSeconds + " second" + (remainingSeconds == 1 ? "" : "s") + "<red> before using this command again."));
+            return true;
+        }
+
+        playerData.setLastLocation(player.getLocation().clone());
+
+        cooldownManager.setHomeTeleportCooldown(player);
 
         player.teleportAsync(location);
         player.sendMessage(TextUtils.deserializeString("<green>Teleported to home  [<white>" + homeName + "<green>] ."));

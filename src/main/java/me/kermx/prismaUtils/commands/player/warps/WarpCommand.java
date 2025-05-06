@@ -3,6 +3,7 @@ package me.kermx.prismaUtils.commands.player.warps;
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
+import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
@@ -52,11 +53,21 @@ public class WarpCommand extends BaseCommand {
             return true;
         }
 
+        CooldownManager cooldownManager = CooldownManager.getInstance();
+        if (!cooldownManager.canUseWarpTeleport(player)) {
+            int remainingSeconds = cooldownManager.getWarpCooldownRemaining(player);
+            player.sendMessage(TextUtils.deserializeString("<red>You must wait <white>" + remainingSeconds + " second" + (remainingSeconds == 1 ? "" : "s") + "<red> before using this command again."));
+            return true;
+        }
+
         // Save the current location for /back command
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
         if (playerData != null) {
             playerData.setLastLocation(player.getLocation().clone());
         }
+
+        // Apply cooldown
+        cooldownManager.setWarpTeleportCooldown(player);
 
         // Teleport player to warp
         player.teleportAsync(warpLocation);
