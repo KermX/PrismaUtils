@@ -43,8 +43,17 @@ public class SilkSpawnerHandler implements Listener {
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
             EntityType spawnedType = spawner.getSpawnedType();
             event.setExpToDrop(0);
-            ItemStack spawnerItem = createSpawnerItem(spawnedType);
-            block.getWorld().dropItemNaturally(block.getLocation(), spawnerItem);
+
+            // Drop a spawner item
+            if (spawnedType != null) {
+                // If the spawner has a defined entity type, create a customized spawner item
+                ItemStack spawnerItem = createSpawnerItem(spawnedType);
+                block.getWorld().dropItemNaturally(block.getLocation(), spawnerItem);
+            } else {
+                // If it's an empty spawner, drop a vanilla spawner item
+                ItemStack vanillaSpawner = new ItemStack(Material.SPAWNER, 1);
+                block.getWorld().dropItemNaturally(block.getLocation(), vanillaSpawner);
+            }
         }
     }
 

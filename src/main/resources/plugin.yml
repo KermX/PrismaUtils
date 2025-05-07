@@ -115,7 +115,7 @@ commands:
   home:
     description: Use homes
     usage: /home [set|del|list|help] [name]
-    permission: prismautils.command.homes
+    permission: prismautils.command.home
     aliases: [homes, prismahome]
   sethome:
     description: Set a home
@@ -355,6 +355,24 @@ permissions:
   prismautils.allowspawneggs:
     description: Enable the vanilla use of spawn eggs without crouch clicking.
     default: op
+  prismautils.cooldown.bypass:
+    description: Byass all cooldowns
+    default: op
+  prismautils.user.teleports:
+    description: Default user permissions for prismautils
+    default: true
+    children:
+        prismautils.command.tpa: true
+        prismautils.command.tpahere: true
+        prismautils.command.tpaccept: true
+        prismautils.command.tpdeny: true
+        prismautils.command.warp: true
+        prisamutils.command.spawn: true
+        prismautils.command.back: true
+        prismautils.command.home: true
+        prismautils.command.sethome: true
+        prismautils.command.delhome: true
+
 #  prismautils.command.workbenches:
 #    description: Allows the player to use workbench commands.
 #    default: true
