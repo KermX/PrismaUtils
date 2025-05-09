@@ -149,7 +149,7 @@ public class CooldownManager {
      */
     private int getPlayerCooldown(Player player, String permissionPrefix, int defaultCooldown) {
         // Maximum cooldown value to check (for performance)
-        final int MAX_COOLDOWN_CHECK = 300; // Check up to 300 seconds/5 minutes
+        final int MAX_COOLDOWN_CHECK = 60; // Check up to 300 seconds/5 minutes
 
         // Check for cooldown values from 0 up to MAX_COOLDOWN_CHECK
         for (int i = 0; i <= MAX_COOLDOWN_CHECK; i++) {
