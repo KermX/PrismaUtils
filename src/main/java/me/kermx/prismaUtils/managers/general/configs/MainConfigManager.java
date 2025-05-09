@@ -37,6 +37,11 @@ public class MainConfigManager {
     // Home Name Blacklist
     public List<String> homeNameBlacklist;
 
+    // Command Cooldowns
+    public int homeCommandCooldown;
+    public int warpCommandCooldown;
+    public int backCommandCooldown;
+
     // Back Config
     public List<String> backWhitelistedWorlds;
 
@@ -116,6 +121,11 @@ public class MainConfigManager {
 
         // Home Name Blacklist
         homeNameBlacklist = config.getStringList("home_name_blacklist");
+
+        // Command Cooldowns
+        homeCommandCooldown = config.getInt("command_cooldowns.home");
+        warpCommandCooldown = config.getInt("command_cooldowns.warp");
+        backCommandCooldown = config.getInt("command_cooldowns.back");
 
         // Back Config
         backWhitelistedWorlds = config.getStringList("back_world_whitelist");

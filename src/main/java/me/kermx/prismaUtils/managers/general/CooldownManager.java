@@ -1,7 +1,6 @@
 package me.kermx.prismaUtils.managers.general;
 
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +10,9 @@ public class CooldownManager {
     private static CooldownManager instance;
 
     // Default cooldown values in seconds
-    private final int defaultHomeCooldownSeconds = 5;
-    private final int defaultWarpCooldownSeconds = 5;
-    private final int defaultBackCooldownSeconds = 300;
+    private final int defaultHomeCooldownSeconds = ConfigManager.getInstance().getMainConfig().homeCommandCooldown;
+    private final int defaultWarpCooldownSeconds = ConfigManager.getInstance().getMainConfig().warpCommandCooldown;
+    private final int defaultBackCooldownSeconds = ConfigManager.getInstance().getMainConfig().backCommandCooldown;
 
     // Maps to store cooldown timestamps for each player and command type
     private final Map<UUID, Long> homeCooldowns = new HashMap<>();

@@ -31,6 +31,11 @@ home_name_blacklist:
   - 'alist'
   - 'adminlist'
 
+command_cooldowns:
+  home: 5
+  warp: 5
+  back: 30
+
 first_join_commands:
   enabled: true
   commands:
