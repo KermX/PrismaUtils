@@ -50,6 +50,13 @@ public class MailCommand extends BaseCommand {
             return false;
         }
 
+        if (!sender.hasPermission("prismautils.command.mail.send")) {
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().noPermissionMessage
+            ));
+            return true;
+        }
+
         String targetName = args[1];
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayerIfCached(targetName);
 
@@ -104,6 +111,13 @@ public class MailCommand extends BaseCommand {
             return false;
         }
 
+        if (!sender.hasPermission("prismautils.command.mail.read")) {
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().noPermissionMessage
+            ));
+            return true;
+        }
+
         Player player = (Player) sender;
         PlayerData playerData = playerDataManager.getPlayerData(player.getUniqueId());
 
@@ -138,6 +152,13 @@ public class MailCommand extends BaseCommand {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only players can clear mail!");
             return false;
+        }
+
+        if (!sender.hasPermission("prismautils.command.mail.clear")) {
+            sender.sendMessage(TextUtils.deserializeString(
+                    ConfigManager.getInstance().getMessagesConfig().noPermissionMessage
+            ));
+            return true;
         }
 
         Player player = (Player) sender;
