@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class PatrolCommand extends BaseCommand {
     private static final Map<UUID, PatrolSession> activeSessions = new HashMap<>();
+    private static final String PATROL_EXCLUDED_PERMISSION = "prismautils.patrol.excluded";
 
     public PatrolCommand() {
         super("prismautils.command.patrol", false, "/patrol");
@@ -20,6 +21,13 @@ public class PatrolCommand extends BaseCommand {
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
         Player staffMember = (Player) sender;
+
+        // Check if staff member is in vanish
+        if (!PlayerUtils.isVanished(staffMember)) {
+            staffMember.sendMessage(TextUtils.deserializeString("<red>You must be vanished to use patrol."));
+            return true;
+        }
+
         UUID staffId = staffMember.getUniqueId();
 
         // Get or create a patrol session for this staff member
@@ -70,7 +78,14 @@ public class PatrolCommand extends BaseCommand {
             UUID nextPlayerId = playersToVisit.removeFirst();
             visitedPlayers.add(nextPlayerId);
 
-            return PlayerUtils.getOnlinePlayer(nextPlayerId);
+            Player nextPlayer = PlayerUtils.getOnlinePlayer(nextPlayerId);
+
+            // If player went offline or is no longer valid, try again
+            if (nextPlayer == null || !nextPlayer.isOnline()) {
+                return getNextPlayer(staffMember);
+            }
+
+            return nextPlayer;
         }
 
         // Refreshes the list of players to visit
@@ -78,11 +93,12 @@ public class PatrolCommand extends BaseCommand {
             // Clear the list but keep track of who we've visited this cycle
             playersToVisit.clear();
 
-            // Get all online players excluding staff and those in vanish
+            // Get all online players excluding staff, excluded players, and those in vanish
             List<Player> onlinePlayers = Bukkit.getOnlinePlayers().stream()
                     .filter(player -> !player.hasPermission("prismautils.command.patrol"))  // Exclude staff
-                    .filter(player -> !PlayerUtils.isVanished(player))  // Exclude vanished players
-                    .filter(player -> !player.equals(staffMember))  // Exclude the staff member
+                    .filter(player -> !player.hasPermission(PATROL_EXCLUDED_PERMISSION))    // Exclude players with excluded permission
+                    .filter(player -> !PlayerUtils.isVanished(player))                      // Exclude vanished players
+                    .filter(player -> !player.equals(staffMember))                          // Exclude the staff member
                     .collect(Collectors.toList());
 
             totalPlayers = onlinePlayers.size();
