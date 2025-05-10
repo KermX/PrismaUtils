@@ -116,17 +116,17 @@ commands:
     description: Use homes
     usage: /home [set|del|list|help] [name]
     permission: prismautils.command.home
-    aliases: [homes, prismahome]
+    aliases: [homes, prismahome, h]
   sethome:
     description: Set a home
     usage: /sethome [name]
     permission: prismautils.command.sethome
-    aliases: [prismasethome]
+    aliases: [prismasethome, seth]
   delhome:
     description: Delete a home
     usage: /delhome [name]
     permission: prismautils.command.delhome
-    aliases: [prismadelhome]
+    aliases: [prismadelhome, delh]
   adminhome:
     description: Interact with other players' homes
     usage: /adminhome <list|tp|del> <player> [home]
