@@ -40,6 +40,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
+    // TODO: Major refactor of event handling!! Wooooooo
+    // TODO: Handle AFK stuff
+    // TODO: Fix the stupid patrol command. Always says there are no players
+
     private PlayerDataManager playerDataManager;
     private ProtectionService protectionService;
     private FlightService flightService;
@@ -251,6 +255,7 @@ public final class PrismaUtils extends JavaPlugin {
                 new HorseZombificationHandler(),
                 new PermissionKeepInvHandler(),
                 new EnhancedTownyFlightHandler(flightService,playerDataManager),
+                new RespawnMessageHandler(),
                 new LastLocationHandler(playerDataManager)
         );
 

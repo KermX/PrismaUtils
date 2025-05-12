@@ -114,6 +114,9 @@ smite_messages:
 playtime_messages:
   playtime_message: "<green>Playtime for <player>: <yellow><playtime>"
 
+respawn_messages:
+  - "<green>Return to your death location? <hover:show_text:'<green>Click to teleport'><click:run_command:'/back'>[<white>« Teleport<green>]</click></hover>"
+
 afk_title_feature:
   afk_placeholder: '%essentials_afk%'
   afk_titles:

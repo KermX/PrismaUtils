@@ -130,6 +130,9 @@ public class MessagesConfigManager {
     //PlayTime Messages
     public String playTimeMessage;
 
+    //Respawn Messages
+    public List<String> respawnMessages;
+
     // AFK Title Messages
     public String afkPlaceholder;
     public List<String> afkTitles;
@@ -279,6 +282,9 @@ public class MessagesConfigManager {
 
         //PlayTime Messages
         playTimeMessage = messages.getString("playtime_messages.playtime_message");
+
+        //Respawn Messages
+        respawnMessages = messages.getStringList("respawn_messages");
 
         // AFK Title Messages
         afkPlaceholder = messages.getString("afk_title_feature.afk_placeholder");
