@@ -1,6 +1,9 @@
 package me.kermx.prismaUtils.managers.PlayerData;
 
 import me.kermx.prismaUtils.PrismaUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -91,7 +94,6 @@ public class PlayerDataManager implements PlayerDataChangeListener {
             builder.homes(homes);
         }
 
-
         if (config.contains("mailbox")) {
             List<MailMessage> mailMessages = new ArrayList<>();
             List<Map<?, ?>> mailList = config.getMapList("mailbox");
@@ -105,6 +107,23 @@ public class PlayerDataManager implements PlayerDataChangeListener {
                 mailMessages.add(mail);
             }
             builder.mailbox(mailMessages);
+        }
+
+        // Load last location if exists
+        if (config.contains("lastLocation.world")) {
+            String worldName = config.getString("lastLocation.world");
+            World world = Bukkit.getWorld(worldName);
+
+            if (world != null) {
+                double x = config.getDouble("lastLocation.x");
+                double y = config.getDouble("lastLocation.y");
+                double z = config.getDouble("lastLocation.z");
+                float yaw = (float) config.getDouble("lastLocation.yaw");
+                float pitch = (float) config.getDouble("lastLocation.pitch");
+
+                Location lastLocation = new Location(world, x, y, z, yaw, pitch);
+                builder.lastLocation(lastLocation);
+            }
         }
 
         return builder.build();
@@ -148,6 +167,18 @@ public class PlayerDataManager implements PlayerDataChangeListener {
             mailList.add(mailMap);
         }
         config.set("mailbox", mailList);
+
+        // Save last location
+        Location lastLocation = playerData.getLastLocation();
+        if (lastLocation != null) {
+            config.set("lastLocation.world", lastLocation.getWorld().getName());
+            config.set("lastLocation.x", lastLocation.getX());
+            config.set("lastLocation.y", lastLocation.getY());
+            config.set("lastLocation.z", lastLocation.getZ());
+            config.set("lastLocation.yaw", lastLocation.getYaw());
+            config.set("lastLocation.pitch", lastLocation.getPitch());
+        }
+
 
         try {
             config.save(file);

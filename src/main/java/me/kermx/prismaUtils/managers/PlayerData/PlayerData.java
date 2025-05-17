@@ -1,6 +1,8 @@
 package me.kermx.prismaUtils.managers.PlayerData;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -10,10 +12,18 @@ public class PlayerData {
     private final UUID playerID;
     private boolean flyEnabled;
     private boolean godEnabled;
+    private boolean afkEnabled;
     private LocalDateTime firstJoin;
     private List<MailMessage> mailbox;
     private Map<String, Home> homes;
-    private Location lastLocation;
+    private String lastLocationWorld;
+    private double lastLocationX;
+    private double lastLocationY;
+    private double lastLocationZ;
+    private float lastLocationYaw;
+    private float lastLocationPitch;
+    private boolean hasLastLocation = false;
+
 
     // Use CopyOnWriteArrayList for thread-safe iteration without explicit synchronization
     private final List<PlayerDataChangeListener> changeListeners = new CopyOnWriteArrayList<>();
@@ -22,10 +32,19 @@ public class PlayerData {
         this.playerID = builder.playerID;
         this.flyEnabled = builder.flyEnabled;
         this.godEnabled = builder.godEnabled;
+        this.afkEnabled = builder.afkEnabled;
         this.firstJoin = builder.firstJoin;
         this.mailbox = builder.mailbox;
         this.homes = builder.homes;
-        this.lastLocation = builder.lastLocation;
+
+        // Initialize location fields from builder
+        this.hasLastLocation = builder.hasLastLocation;
+        this.lastLocationWorld = builder.lastLocationWorld;
+        this.lastLocationX = builder.lastLocationX;
+        this.lastLocationY = builder.lastLocationY;
+        this.lastLocationZ = builder.lastLocationZ;
+        this.lastLocationYaw = builder.lastLocationYaw;
+        this.lastLocationPitch = builder.lastLocationPitch;
     }
 
     /**
@@ -91,6 +110,17 @@ public class PlayerData {
         }
     }
 
+    public boolean isAfk() {
+        return afkEnabled;
+    }
+
+    public void setAfk(boolean afkEnabled) {
+        if (this.afkEnabled != afkEnabled) {
+            this.afkEnabled = afkEnabled;
+            notifyListeners("afkEnabled", afkEnabled);
+        }
+    }
+
     public LocalDateTime getFirstJoin() {
         return firstJoin;
     }
@@ -145,25 +175,54 @@ public class PlayerData {
     }
 
     public Location getLastLocation() {
-        return lastLocation;
+        if (!hasLastLocation || lastLocationWorld == null) {
+            return null;
+        }
+        World world = Bukkit.getWorld(lastLocationWorld);
+        if (world == null) {
+            return null;
+        }
+        return new Location(world, lastLocationX, lastLocationY, lastLocationZ, lastLocationYaw, lastLocationPitch);
     }
 
-    public void setLastLocation(Location lastLocation) {
-        if (this.lastLocation != lastLocation) {
-            this.lastLocation = lastLocation;
-            notifyListeners("lastLocation", lastLocation);
+    public void setLastLocation(Location location) {
+        if (location == null) {
+            this.hasLastLocation = false;
+            this.lastLocationWorld = null;
+            notifyListeners("lastLocation", null);
+            return;
         }
+
+        this.hasLastLocation = true;
+        this.lastLocationWorld = location.getWorld().getName();
+        this.lastLocationX = location.getX();
+        this.lastLocationY = location.getY();
+        this.lastLocationZ = location.getZ();
+        this.lastLocationYaw = location.getYaw();
+        this.lastLocationPitch = location.getPitch();
+
+        notifyListeners("lastLocation", location);
     }
+
 
     // Builder class stays the same
     public static class Builder {
         private final UUID playerID;
         private boolean flyEnabled = false;
         private boolean godEnabled = false;
+        private boolean afkEnabled = false;
         private LocalDateTime firstJoin = LocalDateTime.now();
         private List<MailMessage> mailbox = new ArrayList<>();
         private Map<String, Home> homes = new HashMap<>();
         private Location lastLocation;
+        private String lastLocationWorld;
+        private double lastLocationX;
+        private double lastLocationY;
+        private double lastLocationZ;
+        private float lastLocationYaw;
+        private float lastLocationPitch;
+        private boolean hasLastLocation = false;
+
 
         public Builder(UUID playerID) {
             this.playerID = playerID;
@@ -176,6 +235,11 @@ public class PlayerData {
 
         public Builder godEnabled(boolean godEnabled) {
             this.godEnabled = godEnabled;
+            return this;
+        }
+
+        public Builder afkEnabled(boolean afkEnabled) {
+            this.afkEnabled = afkEnabled;
             return this;
         }
 
@@ -194,8 +258,16 @@ public class PlayerData {
             return this;
         }
 
-        public Builder lastLocation(Location lastLocation) {
-            this.lastLocation = lastLocation;
+        public Builder lastLocation(Location location) {
+            if (location != null) {
+                this.hasLastLocation = true;
+                this.lastLocationWorld = location.getWorld().getName();
+                this.lastLocationX = location.getX();
+                this.lastLocationY = location.getY();
+                this.lastLocationZ = location.getZ();
+                this.lastLocationYaw = location.getYaw();
+                this.lastLocationPitch = location.getPitch();
+            }
             return this;
         }
 

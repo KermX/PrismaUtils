@@ -25,7 +25,9 @@ import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
 import me.kermx.prismaUtils.integrations.FlightService;
 import me.kermx.prismaUtils.integrations.ProtectionService;
+import me.kermx.prismaUtils.integrations.SitService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
+import me.kermx.prismaUtils.managers.features.AfkManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
@@ -33,6 +35,7 @@ import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
+import me.kermx.prismaUtils.placeholders.AfkPlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
 import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
@@ -40,17 +43,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
-    // TODO: Major refactor of event handling!! Wooooooo
-    // TODO: Handle AFK stuff
+    // TODO - much later: Major refactor of event handling!! Wooooooo
     // TODO: Fix the stupid patrol command. Always says there are no players
 
     private PlayerDataManager playerDataManager;
     private ProtectionService protectionService;
     private FlightService flightService;
+    private SitService sitService;
     private TeleportRequestManager teleportRequestManager;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
+    private AfkManager afkManager;
 
     @Override
     public void onEnable() {
@@ -59,6 +63,7 @@ public final class PrismaUtils extends JavaPlugin {
         // Initialize services
         protectionService = new ProtectionService(getServer().getPluginManager());
         flightService = new FlightService(getServer().getPluginManager(), getLogger());
+        sitService = new SitService(getServer().getPluginManager(), getLogger());
 
         // Initialize specific managers / handlers
         teleportRequestManager = new TeleportRequestManager(this);
@@ -70,6 +75,8 @@ public final class PrismaUtils extends JavaPlugin {
 
         // Initialize player data manager
         playerDataManager = new PlayerDataManager(this);
+
+        afkManager = new AfkManager(this);
 
         doStartupOperations();
         registerPlaceholders();
@@ -203,7 +210,9 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("tpaccept", tpAcceptCommand, tpAcceptCommand);
         TpDenyCommand tpDenyCommand = new TpDenyCommand(teleportRequestManager);
         commandManager.registerCommand("tpdeny", tpDenyCommand, tpDenyCommand);
-
+        // Afk Commands
+        AfkCommand afkCommand = new AfkCommand(afkManager);
+        commandManager.registerCommand("afk", afkCommand, afkCommand);
 
         // Utility Commands
         ItemNameCommand itemNameCommand = new ItemNameCommand();
@@ -285,6 +294,9 @@ public final class PrismaUtils extends JavaPlugin {
         if (ConfigManager.getInstance().getMainConfig().disableNetherMobZombification) {
             eventManager.registerListeners(new NetherMobZombificationHandler());
         }
+        if (ConfigManager.getInstance().getAfkConfig().afkEnabled) {
+            eventManager.registerListeners(new AfkProtectionListener(afkManager, ConfigManager.getInstance().getAfkConfig()), afkManager);
+        }
     }
 
     private void doStartupOperations() {
@@ -295,6 +307,7 @@ public final class PrismaUtils extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new MiniMessagePlaceholderExpansion().register();
             new UnixLocalTimeExpansion().register();
+            new AfkPlaceholderExpansion(afkManager).register();
         } else {
             getLogger().warning("Placeholder API doesn't exist! HELP!!!");
         }
@@ -302,5 +315,9 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void startTasks() {
         new AfkTitlesHandler().runTaskTimer(this, 0, 80);
+    }
+
+    public SitService getSitService() {
+        return sitService;
     }
 }

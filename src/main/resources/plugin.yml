@@ -5,7 +5,7 @@ api-version: '1.21'
 description: 'Utility plugin providing various core commands'
 
 depend: [PlaceholderAPI]
-softdepend: [Towny, WorldGuard, TownyFlight]
+softdepend: [Towny, WorldGuard, TownyFlight, GSit]
 
 commands:
   # ----- Workstation Interface Commands -----
@@ -110,6 +110,11 @@ commands:
     description: View a players playtime
     usage: /playtime [player]
     permission: prismautils.command.playtime
+
+  afk:
+    description: Set yourself as afk
+    usage: /afk [player]
+    permission: prismautils.command.afk
 
   # ----- Homes Commands -----
   home:

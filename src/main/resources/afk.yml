@@ -1,0 +1,18 @@
+afk:
+  enabled: true
+
+  message: '<white>[<gold>=<white>]<reset> <player><reset> <gray>is now AFK'
+  return_message: '<white>[<gold>=<white>]<reset> <player><reset> <gray>is no longer AFK'
+  threshold_seconds: 600
+  teleport_after_seconds: 300
+  broadcast_messages: true
+  disable_damage: true
+  exclude_creative_players: true
+  exclude_spectator_players: true
+  location:
+    world: 'world'
+    x: -84
+    y: 101
+    z: 276
+    yaw: 90
+    pitch: 0
