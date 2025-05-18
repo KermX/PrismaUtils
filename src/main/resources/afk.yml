@@ -1,6 +1,5 @@
 afk:
   enabled: true
-
   message: '<white>[<gold>=<white>]<reset> <player><reset> <gray>is now AFK'
   return_message: '<white>[<gold>=<white>]<reset> <player><reset> <gray>is no longer AFK'
   threshold_seconds: 600

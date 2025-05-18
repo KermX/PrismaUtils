@@ -249,7 +249,7 @@ public class HomesCommand extends BaseCommand {
         Home home = playerData.getHome(homeName);
 
         if (home == null) {
-            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named  [<white>" + homeName + "<red>] ."));
+            player.sendMessage(TextUtils.deserializeString("<red>You don't have a home named [<white>" + homeName + "<red>] ."));
             return true;
         }
 
@@ -271,7 +271,7 @@ public class HomesCommand extends BaseCommand {
         cooldownManager.setHomeTeleportCooldown(player);
 
         player.teleportAsync(location);
-        player.sendMessage(TextUtils.deserializeString("<green>Teleported to home  [<white>" + homeName + "<green>] ."));
+        player.sendMessage(TextUtils.deserializeString("<green>Teleported to home [<white>" + homeName + "<green>] ."));
         return true;
     }
 
