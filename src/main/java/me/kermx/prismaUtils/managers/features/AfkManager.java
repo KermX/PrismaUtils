@@ -225,7 +225,7 @@ public class AfkManager implements Listener {
             // Return from AFK location if applicable
             if (teleportedToAfk.getOrDefault(uuid, false)) {
                 returnFromAfkLocation(player);
-                teleportedToAfk.put(uuid, false);
+//                teleportedToAfk.put(uuid, false);
             }
         }
 
@@ -288,13 +288,20 @@ public class AfkManager implements Listener {
         Location previousLocation = playerData.getLastLocation();
 
         if (previousLocation != null) {
-            player.teleportAsync(previousLocation);
-
-            // Clear the saved location in player data (or keep it for /back command)
-            // playerData.setLastLocation(null);
-            // plugin.getPlayerDataManager().markDataAsDirty(uuid);
+            player.teleportAsync(previousLocation).thenAccept(success -> {
+                if (success) {
+                    // Only reset the flag if teleport was successful
+                    teleportedToAfk.put(uuid, false);
+                } else {
+                    plugin.getLogger().warning("Failed to teleport " + player.getName() + " back from AFK location");
+                    // Maybe try a fallback teleport or notify the player
+                }
+            });
+        } else {
+            plugin.getLogger().warning("No previous location found for " + player.getName() + " when returning from AFK");
         }
     }
+
 
     public boolean isAfk(UUID uuid) {
         return afkStatus.getOrDefault(uuid, false);
