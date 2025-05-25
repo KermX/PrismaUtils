@@ -57,19 +57,26 @@ public class AntiAutoFishingHandler implements Listener {
 
         if (lastFishingLocations.containsKey(playerId)) {
             Location lastLocation = lastFishingLocations.get(playerId);
-            double distance = lastLocation.distance(bobberLocation);
 
-            if (distance < requiredMoveDistance && playerAreas.get(areaKey) >= maxFishPerArea) {
-                event.setCancelled(true);
+            // Check if the worlds are the same before calculating distance
+            if (lastLocation.getWorld().equals(bobberLocation.getWorld())) {
+                double distance = lastLocation.distance(bobberLocation);
 
-                Component message = TextUtils.deserializeString(
-                        "<green>Looks like you've caught too many fish in this area! Move at least " + requiredMoveDistance + " blocks away to continue fishing."
-                );
-                player.sendMessage(message);
-                return;
-            }
+                if (distance < requiredMoveDistance && playerAreas.get(areaKey) >= maxFishPerArea) {
+                    event.setCancelled(true);
 
-            if (distance > requiredMoveDistance) {
+                    Component message = TextUtils.deserializeString(
+                            "<green>Looks like you've caught too many fish in this area! Move at least " + requiredMoveDistance + " blocks away to continue fishing."
+                    );
+                    player.sendMessage(message);
+                    return;
+                }
+
+                if (distance > requiredMoveDistance) {
+                    playerAreas.put(areaKey, 0);
+                }
+            } else {
+                // They've changed worlds, so reset the counter for this area
                 playerAreas.put(areaKey, 0);
             }
         }
