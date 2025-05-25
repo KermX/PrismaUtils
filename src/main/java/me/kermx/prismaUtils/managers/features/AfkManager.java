@@ -25,6 +25,7 @@ public class AfkManager implements Listener {
     private final Map<UUID, Boolean> afkStatus = new HashMap<>();
     private final Map<UUID, Boolean> teleportedToAfk = new HashMap<>();
     private final Map<UUID, BukkitTask> teleportTasks = new HashMap<>();
+    private final Map<UUID, BukkitTask> warningTasks = new HashMap<>();
 
     private final long afkThreshold;
     private final long teleportThreshold;
@@ -32,6 +33,8 @@ public class AfkManager implements Listener {
 
     private final String afkMessage;
     private final String returnMessage;
+    private final String teleportWarningMessage;
+
 
     public AfkManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -42,6 +45,8 @@ public class AfkManager implements Listener {
         afkLocation = ConfigManager.getInstance().getAfkConfig().afkLocation;
         afkMessage = ConfigManager.getInstance().getAfkConfig().afkMessage;
         returnMessage = ConfigManager.getInstance().getAfkConfig().afkReturnMessage;
+        teleportWarningMessage = "<gold>You will be teleported to the AFK area in</gold> <red><time></red> <gold>seconds!</gold>";
+
 
         // Start the checking task
         startAfkChecker();
@@ -60,6 +65,9 @@ public class AfkManager implements Listener {
                 if (playerData.getLastLocation() != null) {
                     teleportedToAfk.put(playerId, true);
                 }
+            } else {
+                afkStatus.put(playerId, false);
+                teleportedToAfk.put(playerId, false);
             }
 
             lastActivity.put(playerId, System.currentTimeMillis());
@@ -74,6 +82,7 @@ public class AfkManager implements Listener {
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (!player.hasPermission("prismautils.afk")) continue;
+                    if (player.isDead()) continue;
 
                     UUID uuid = player.getUniqueId();
                     if (!lastActivity.containsKey(uuid)) {
@@ -89,9 +98,23 @@ public class AfkManager implements Listener {
                         setAfk(player, true);
                     }
 
+                    // Check if we should warn player about upcoming teleport
+                    if (afkStatus.getOrDefault(uuid, false) &&
+                            !teleportedToAfk.getOrDefault(uuid, false) &&
+                            timeSinceActive >= (afkThreshold + teleportThreshold * 0.5) &&
+                            timeSinceActive < (afkThreshold + teleportThreshold)) {
+
+                        // Send a warning if one isn't already scheduled
+                        if (!warningTasks.containsKey(uuid)) {
+                            long remainingSeconds = (afkThreshold + teleportThreshold - timeSinceActive) / 1000;
+                            sendTeleportWarning(player, remainingSeconds);
+                        }
+                    }
+
                     // Check if player should be teleported
-                    if (afkStatus.getOrDefault(uuid, false) && timeSinceActive >= (afkThreshold + teleportThreshold)
-                            && !teleportedToAfk.getOrDefault(uuid, false)) {
+                    if (afkStatus.getOrDefault(uuid, false) &&
+                            timeSinceActive >= (afkThreshold + teleportThreshold) &&
+                            !teleportedToAfk.getOrDefault(uuid, false)) {
                         teleportToAfkLocation(player);
                     }
                 }
@@ -99,13 +122,45 @@ public class AfkManager implements Listener {
         }.runTaskTimer(plugin, 20L, 20L); // Check every second
     }
 
+    private void sendTeleportWarning(Player player, long seconds) {
+        UUID uuid = player.getUniqueId();
+
+        // Cancel any existing warning task
+        BukkitTask existingTask = warningTasks.remove(uuid);
+        if (existingTask != null) {
+            existingTask.cancel();
+        }
+
+        // Send the initial warning
+        player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
+                Placeholder.unparsed("time", String.valueOf(seconds))));
+
+        // Schedule periodic warnings
+        warningTasks.put(uuid, new BukkitRunnable() {
+            private long countdown = seconds;
+
+            @Override
+            public void run() {
+                countdown -= 5; // Update every 5 seconds
+
+                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false)) {
+                    cancel();
+                    warningTasks.remove(uuid);
+                    return;
+                }
+
+                player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
+                        Placeholder.unparsed("time", String.valueOf(countdown))));
+            }
+        }.runTaskTimer(plugin, 100L, 100L)); // Update every 5 seconds (100 ticks)
+    }
+
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        // Only consider significant movement (not just head rotation)
-        if (!event.hasChangedOrientation()) {
-            return;
+        if (event.hasChangedOrientation()) {
+            updateActivity(event.getPlayer());
         }
-        updateActivity(event.getPlayer());
     }
 
     @EventHandler
@@ -115,13 +170,14 @@ public class AfkManager implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        updateActivity(event.getPlayer());
+        // Schedule a sync task since this event is async
+        Bukkit.getScheduler().runTask(plugin, () -> updateActivity(event.getPlayer()));
     }
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         // Don't count /afk command as activity
-        if (!event.getMessage().toLowerCase().startsWith("afk")) {
+        if (!event.getMessage().toLowerCase().startsWith("/afk")) {
             updateActivity(event.getPlayer());
         }
     }
@@ -160,23 +216,28 @@ public class AfkManager implements Listener {
         boolean isAfk = afkStatus.getOrDefault(uuid, false);
         playerData.setAfk(isAfk);
 
-        // lastLocation is already handled by the LastLocationHandler
-        // or will be saved if they were teleported to AFK location
+        // Clean up tasks
+        BukkitTask teleportTask = teleportTasks.remove(uuid);
+        if (teleportTask != null) {
+            teleportTask.cancel();
+        }
+
+        BukkitTask warningTask = warningTasks.remove(uuid);
+        if (warningTask != null) {
+            warningTask.cancel();
+        }
 
         lastActivity.remove(uuid);
         afkStatus.remove(uuid);
         teleportedToAfk.remove(uuid);
-
-        BukkitTask task = teleportTasks.remove(uuid);
-        if (task != null) {
-            task.cancel();
-        }
 
         // Make sure data is saved
         plugin.getPlayerDataManager().markDataAsDirty(uuid);
     }
 
     public void updateActivity(Player player) {
+        if (player == null || !player.isOnline()) return;
+
         UUID uuid = player.getUniqueId();
         lastActivity.put(uuid, System.currentTimeMillis());
 
@@ -184,56 +245,104 @@ public class AfkManager implements Listener {
         if (afkStatus.getOrDefault(uuid, false)) {
             setAfk(player, false);
         }
+
+        // Cancel warning tasks if they exist
+        BukkitTask warningTask = warningTasks.remove(uuid);
+        if (warningTask != null) {
+            warningTask.cancel();
+        }
     }
 
     public void setAfk(Player player, boolean afk) {
+        if (player == null || !player.isOnline()) return;
+
         UUID uuid = player.getUniqueId();
 
-        if (afkStatus.getOrDefault(uuid, false) == afk) {return;}
+        // Don't do anything if status isn't changing
+        if (afkStatus.getOrDefault(uuid, false) == afk) {
+            return;
+        }
 
         afkStatus.put(uuid, afk);
 
         if (afk) {
+            // Player is now AFK
             PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
             playerData.setAfk(true);
 
-            Bukkit.broadcast(TextUtils.deserializeString(afkMessage, Placeholder.component("player", player.displayName())));
+            // Broadcast AFK message if enabled
+            if (ConfigManager.getInstance().getAfkConfig().broadcastAfkMessages) {
+                Bukkit.broadcast(TextUtils.deserializeString(afkMessage,
+                        Placeholder.component("player", player.displayName())));
+            } else {
+                // Just inform the player
+                player.sendMessage(TextUtils.deserializeString("<gray>You are now AFK.</gray>"));
+            }
 
+            // Schedule teleport task with warning
+            long warningTime = (teleportThreshold / 2) / 50; // Half the teleport threshold in ticks
+            long teleportTime = teleportThreshold / 50; // Convert ms to ticks
+
+            // Schedule warning
             teleportTasks.put(uuid, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (afkStatus.getOrDefault(uuid, false)) {
+                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
+                        // Schedule teleport and start warnings
+                        long secondsUntilTeleport = teleportThreshold / 2000; // Half threshold in seconds
+                        sendTeleportWarning(player, secondsUntilTeleport);
+                    }
+                }
+            }.runTaskLater(plugin, warningTime));
+
+            // Schedule actual teleport
+            teleportTasks.put(uuid, new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
                         teleportToAfkLocation(player);
                     }
                 }
-            }.runTaskLater(plugin, teleportThreshold / 50)); // Convert ms to ticks
-
+            }.runTaskLater(plugin, teleportTime));
         } else {
             // Player is no longer AFK
             PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
             playerData.setAfk(false);
 
-            // Broadcast return message
-            Bukkit.broadcast(TextUtils.deserializeString(returnMessage, Placeholder.component("player", player.displayName())));
+            // Broadcast return message if enabled
+            if (ConfigManager.getInstance().getAfkConfig().broadcastAfkMessages) {
+                Bukkit.broadcast(TextUtils.deserializeString(returnMessage,
+                        Placeholder.component("player", player.displayName())));
+            } else {
+                // Just inform the player
+                player.sendMessage(TextUtils.deserializeString("<gray>You are no longer AFK.</gray>"));
+            }
 
-            // Cancel teleport task if it exists
-            BukkitTask task = teleportTasks.remove(uuid);
-            if (task != null) {
-                task.cancel();
+            // Cancel teleport and warning tasks
+            BukkitTask teleportTask = teleportTasks.remove(uuid);
+            if (teleportTask != null) {
+                teleportTask.cancel();
+            }
+
+            BukkitTask warningTask = warningTasks.remove(uuid);
+            if (warningTask != null) {
+                warningTask.cancel();
             }
 
             // Return from AFK location if applicable
             if (teleportedToAfk.getOrDefault(uuid, false)) {
                 returnFromAfkLocation(player);
-//                teleportedToAfk.put(uuid, false);
             }
         }
 
         // Mark player data as dirty to ensure persistence
         plugin.getPlayerDataManager().markDataAsDirty(uuid);
+        plugin.getPlayerDataManager().savePlayerData(uuid);
     }
 
     private void teleportToAfkLocation(Player player) {
+        if (player == null || !player.isOnline()) return;
+
         UUID uuid = player.getUniqueId();
 
         if (teleportedToAfk.getOrDefault(uuid, false)) {
@@ -249,6 +358,12 @@ public class AfkManager implements Listener {
         // Explicitly save the player data to ensure persistence
         plugin.getPlayerDataManager().markDataAsDirty(uuid);
         plugin.getPlayerDataManager().savePlayerData(uuid);
+
+        // Clear any pending teleport tasks
+        BukkitTask task = teleportTasks.remove(uuid);
+        if (task != null) {
+            task.cancel();
+        }
 
         // Check if player is sitting
         SitService sitService = plugin.getSitService();
@@ -266,6 +381,7 @@ public class AfkManager implements Listener {
                         if (success) {
                             // Set the flag after teleportation is complete
                             teleportedToAfk.put(uuid, true);
+                            player.sendMessage(TextUtils.deserializeString("<yellow>You have been teleported to the AFK area.</yellow>"));
                         }
                     });
                 }
@@ -276,36 +392,51 @@ public class AfkManager implements Listener {
                 if (success) {
                     // Set the flag after teleportation is complete
                     teleportedToAfk.put(uuid, true);
+                    player.sendMessage(TextUtils.deserializeString("<yellow>You have been teleported to the AFK area.</yellow>"));
                 }
             });
         }
     }
 
     private void returnFromAfkLocation(Player player) {
+        if (player == null || !player.isOnline()) return;
+
         UUID uuid = player.getUniqueId();
+
+        // If not actually teleported, do nothing
+        if (!teleportedToAfk.getOrDefault(uuid, false)) {
+            return;
+        }
 
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
         Location previousLocation = playerData.getLastLocation();
 
-        if (previousLocation != null) {
+        if (previousLocation != null && previousLocation.getWorld() != null) {
+            player.sendMessage(TextUtils.deserializeString("<yellow>Returning you to your previous location...</yellow>"));
+
             player.teleportAsync(previousLocation).thenAccept(success -> {
                 if (success) {
                     // Only reset the flag if teleport was successful
                     teleportedToAfk.put(uuid, false);
+                    player.sendMessage(TextUtils.deserializeString("<green>You have been returned to your previous location.</green>"));
+
+                    // Clear the saved location to avoid reusing it
+                    playerData.setLastLocation(null);
+                    plugin.getPlayerDataManager().markDataAsDirty(uuid);
+                    plugin.getPlayerDataManager().savePlayerData(uuid);
                 } else {
+                    player.sendMessage(TextUtils.deserializeString("<red>Failed to return you to your previous location.</red>"));
                     plugin.getLogger().warning("Failed to teleport " + player.getName() + " back from AFK location");
-                    // Maybe try a fallback teleport or notify the player
                 }
             });
         } else {
+            teleportedToAfk.put(uuid, false);
+            player.sendMessage(TextUtils.deserializeString("<red>Could not find your previous location.</red>"));
             plugin.getLogger().warning("No previous location found for " + player.getName() + " when returning from AFK");
         }
     }
-
 
     public boolean isAfk(UUID uuid) {
         return afkStatus.getOrDefault(uuid, false);
     }
 }
-
-

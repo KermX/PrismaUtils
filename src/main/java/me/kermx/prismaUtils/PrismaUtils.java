@@ -45,6 +45,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     // TODO - much later: Major refactor of event handling!! Wooooooo
     // TODO: Fix the stupid patrol command. Always says there are no players
+    // TODO: Add configuration options for AntiAutoFishingHandler
 
     private PlayerDataManager playerDataManager;
     private ProtectionService protectionService;
@@ -265,7 +266,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new PermissionKeepInvHandler(),
                 new EnhancedTownyFlightHandler(flightService,playerDataManager),
                 new RespawnMessageHandler(),
-                new LastLocationHandler(playerDataManager)
+                new LastLocationHandler(playerDataManager),
+                new AntiAutoFishingHandler(this)
         );
 
         // Register config conditional events
