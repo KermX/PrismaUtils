@@ -31,7 +31,7 @@ public class AntiAutoFishingHandler implements Listener {
 
         // Load settings from config (or use defaults for now)
         this.maxFishPerArea = 30; //ConfigManager.getInstance().getMainConfig().antiFishingMaxFish;
-        this.areaRadius = 4; //ConfigManager.getInstance().getMainConfig().antiFishingAreaRadius;
+        this.areaRadius = 7; //ConfigManager.getInstance().getMainConfig().antiFishingAreaRadius;
         this.requiredMoveDistance = 5; //ConfigManager.getInstance().getMainConfig().antiFishingRequiredMoveDistance;
         this.enabled = true; //ConfigManager.getInstance().getMainConfig().antiFishingEnabled;
     }

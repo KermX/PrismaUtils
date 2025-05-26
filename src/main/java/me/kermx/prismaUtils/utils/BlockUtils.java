@@ -1,6 +1,7 @@
 package me.kermx.prismaUtils.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -56,6 +57,34 @@ public final class BlockUtils {
                 block.getRelative(BlockFace.UP),
                 block.getRelative(BlockFace.DOWN)
         };
+    }
+
+    /**
+     * Generates a random location within the specified radius of a center location.
+     * The randomized location will maintain the same yaw and pitch as the center location.
+     *
+     * @param center The center location
+     * @param radius The maximum distance from the center
+     * @return A new randomized location
+     */
+    public static Location getRandomLocationNear(Location center, double radius) {
+        if (radius <= 0) {
+            return center.clone(); // No randomization if radius is 0 or negative
+        }
+
+        // Generate random angle and distance
+        double angle = Math.random() * 2 * Math.PI; // Random angle in radians (0 to 2π)
+        double distance = Math.random() * radius;   // Random distance up to the max radius
+
+        // Convert polar coordinates to Cartesian coordinates
+        double offsetX = distance * Math.cos(angle);
+        double offsetZ = distance * Math.sin(angle);
+
+        // Create a new location with the same world, yaw, and pitch
+        Location newLocation = center.clone();
+        newLocation.add(offsetX, 0, offsetZ);
+
+        return newLocation;
     }
 
     public static Inventory getInventoryFromBlock(Block block) {

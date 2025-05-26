@@ -20,6 +20,7 @@ public class AfkConfigManager {
     public int afkThresholdSeconds;
     public int afkTeleportAfterSeconds;
     public Location afkLocation;
+    public double locationRadius;
     public boolean broadcastAfkMessages;
     public boolean disableAfkDamage;
     public boolean excludeCreativePlayersFromAfk;
@@ -53,6 +54,7 @@ public class AfkConfigManager {
         excludeSpectatorPlayersFromAfk = config.getBoolean("afk.exclude_spectator_players", true);
         afkMessage = config.getString("afk.message", "<red><player> is now AFK!");
         afkReturnMessage = config.getString("afk.return_message", "<red><player>is no longer AFK!");
+        locationRadius = config.getDouble("afk.location_radius", 3);
 
         // Load AFK Location
         String worldName = config.getString("afk.location.world", "world");
@@ -99,6 +101,7 @@ public class AfkConfigManager {
             config.set("afk.disable_damage", disableAfkDamage);
             config.set("afk.exclude_creative_players", excludeCreativePlayersFromAfk);
             config.set("afk.exclude_spectator_players", excludeSpectatorPlayersFromAfk);
+            config.set("afk.location_radius", locationRadius);
 
             config.save(configFile);
         } catch (IOException e) {

@@ -15,3 +15,4 @@ afk:
     z: 276
     yaw: 90
     pitch: 0
+  location_radius: 3

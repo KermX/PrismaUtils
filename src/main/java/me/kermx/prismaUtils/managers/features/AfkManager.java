@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.integrations.SitService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.BlockUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
@@ -107,6 +108,8 @@ public class AfkManager implements Listener {
                         // Send a warning if one isn't already scheduled
                         if (!warningTasks.containsKey(uuid)) {
                             long remainingSeconds = (afkThreshold + teleportThreshold - timeSinceActive) / 1000;
+                            // Cap at 60 seconds to avoid unusually high values
+                            remainingSeconds = Math.min(60, remainingSeconds);
                             sendTeleportWarning(player, remainingSeconds);
                         }
                     }
@@ -131,19 +134,24 @@ public class AfkManager implements Listener {
             existingTask.cancel();
         }
 
+        // Make sure seconds is within a reasonable range (5-60)
+        long adjustedSeconds = Math.min(60, Math.max(5, seconds));
+
         // Send the initial warning
         player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
-                Placeholder.unparsed("time", String.valueOf(seconds))));
+                Placeholder.unparsed("time", String.valueOf(adjustedSeconds))));
 
         // Schedule periodic warnings
         warningTasks.put(uuid, new BukkitRunnable() {
-            private long countdown = seconds;
+            private long countdown = adjustedSeconds;
+            private int messageCount = 1; // We already sent one message
 
             @Override
             public void run() {
                 countdown -= 5; // Update every 5 seconds
+                messageCount++;
 
-                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false)) {
+                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false) || messageCount > 5) {
                     cancel();
                     warningTasks.remove(uuid);
                     return;
@@ -279,21 +287,8 @@ public class AfkManager implements Listener {
                 player.sendMessage(TextUtils.deserializeString("<gray>You are now AFK.</gray>"));
             }
 
-            // Schedule teleport task with warning
-            long warningTime = (teleportThreshold / 2) / 50; // Half the teleport threshold in ticks
+            // Schedule just the teleport task without a separate warning
             long teleportTime = teleportThreshold / 50; // Convert ms to ticks
-
-            // Schedule warning
-            teleportTasks.put(uuid, new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
-                        // Schedule teleport and start warnings
-                        long secondsUntilTeleport = teleportThreshold / 2000; // Half threshold in seconds
-                        sendTeleportWarning(player, secondsUntilTeleport);
-                    }
-                }
-            }.runTaskLater(plugin, warningTime));
 
             // Schedule actual teleport
             teleportTasks.put(uuid, new BukkitRunnable() {
@@ -304,6 +299,8 @@ public class AfkManager implements Listener {
                     }
                 }
             }.runTaskLater(plugin, teleportTime));
+
+            // Warning will be handled by the main checker task
         } else {
             // Player is no longer AFK
             PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
@@ -365,6 +362,10 @@ public class AfkManager implements Listener {
             task.cancel();
         }
 
+        double radius = ConfigManager.getInstance().getAfkConfig().locationRadius;
+
+        Location randomizedLocation = BlockUtils.getRandomLocationNear(afkLocation, radius);
+
         // Check if player is sitting
         SitService sitService = plugin.getSitService();
         boolean wasSitting = sitService != null && sitService.isGSitAvailable() && sitService.isPlayerSitting(player);
@@ -377,7 +378,7 @@ public class AfkManager implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 // Make sure the player is still online and AFK
                 if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
-                    player.teleportAsync(afkLocation).thenAccept(success -> {
+                    player.teleportAsync(randomizedLocation).thenAccept(success -> {
                         if (success) {
                             // Set the flag after teleportation is complete
                             teleportedToAfk.put(uuid, true);
@@ -388,7 +389,7 @@ public class AfkManager implements Listener {
             }, 5L); // Wait 5 ticks (1/4 second) before teleporting
         } else {
             // Player is not sitting, teleport immediately
-            player.teleportAsync(afkLocation).thenAccept(success -> {
+            player.teleportAsync(randomizedLocation).thenAccept(success -> {
                 if (success) {
                     // Set the flag after teleportation is complete
                     teleportedToAfk.put(uuid, true);
