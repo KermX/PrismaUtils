@@ -134,24 +134,43 @@ public class AfkManager implements Listener {
             existingTask.cancel();
         }
 
-        // Make sure seconds is within a reasonable range (5-60)
-        long adjustedSeconds = Math.min(60, Math.max(5, seconds));
+        // We only want to show countdown for the final 5 seconds
+        // If more than 5 seconds remain, just send initial warning
+        if (seconds > 5) {
+            // Send an initial warning without countdown
+            player.sendMessage(TextUtils.deserializeString(
+                    "<gold>You will be teleported to the AFK area soon.</gold>"));
 
-        // Send the initial warning
+            // Schedule the actual countdown to start at 5 seconds
+            warningTasks.put(uuid, new BukkitRunnable() {
+                @Override
+                public void run() {
+                    // Start the 5-second countdown
+                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
+                        sendTeleportWarning(player, 5);
+                    }
+                }
+            }.runTaskLater(plugin, (seconds - 5) * 20)); // Convert seconds to ticks
+
+            return;
+        }
+
+        // For the final 5 seconds, show a countdown every second
         player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
-                Placeholder.unparsed("time", String.valueOf(adjustedSeconds))));
+                Placeholder.unparsed("time", String.valueOf(seconds))));
 
-        // Schedule periodic warnings
+        if (seconds <= 1) {
+            // No need to schedule more messages
+            return;
+        }
+
+        // Schedule countdown messages every second for the final 5 seconds
         warningTasks.put(uuid, new BukkitRunnable() {
-            private long countdown = adjustedSeconds;
-            private int messageCount = 1; // We already sent one message
+            private long countdown = seconds - 1; // Start at seconds-1
 
             @Override
             public void run() {
-                countdown -= 5; // Update every 5 seconds
-                messageCount++;
-
-                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false) || messageCount > 5) {
+                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false)) {
                     cancel();
                     warningTasks.remove(uuid);
                     return;
@@ -159,10 +178,16 @@ public class AfkManager implements Listener {
 
                 player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
                         Placeholder.unparsed("time", String.valueOf(countdown))));
-            }
-        }.runTaskTimer(plugin, 100L, 100L)); // Update every 5 seconds (100 ticks)
-    }
 
+                countdown--;
+
+                if (countdown <= 0) {
+                    cancel();
+                    warningTasks.remove(uuid);
+                }
+            }
+        }.runTaskTimer(plugin, 20L, 20L)); // Run every second (20 ticks)
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {

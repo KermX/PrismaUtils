@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class AfkConfigManager {
     private final PrismaUtils plugin;
@@ -30,19 +32,37 @@ public class AfkConfigManager {
 
     public AfkConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
-        loadConfig();
     }
 
     public void loadConfig() {
-        if (configFile == null) {
-            configFile = new File(plugin.getDataFolder(), "afk.yml");
+        if (!plugin.getDataFolder().exists()) {
+            plugin.getDataFolder().mkdirs();
         }
 
+        configFile = new File(plugin.getDataFolder(), "afk.yml");
         if (!configFile.exists()) {
             plugin.saveResource("afk.yml", false);
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
+
+        // Handle defaults and merging like other config managers
+        InputStream defaultStream = plugin.getResource("afk.yml");
+        if (defaultStream == null) {
+            plugin.getLogger().warning("Default afk.yml not found in the JAR. No defaults to merge!");
+        } else {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            config.setDefaults(defaultConfig);
+            config.options().copyDefaults(true);
+
+            try {
+                config.save(configFile);
+                plugin.getLogger().info("Merged any missing keys into afk.yml (if needed).");
+            } catch (IOException e) {
+                plugin.getLogger().severe("Could not save merged afk.yml!");
+                e.printStackTrace();
+            }
+        }
 
         // Load AFK Settings
         afkEnabled = config.getBoolean("afk.enabled", true);
@@ -53,7 +73,7 @@ public class AfkConfigManager {
         excludeCreativePlayersFromAfk = config.getBoolean("afk.exclude_creative_players", true);
         excludeSpectatorPlayersFromAfk = config.getBoolean("afk.exclude_spectator_players", true);
         afkMessage = config.getString("afk.message", "<red><player> is now AFK!");
-        afkReturnMessage = config.getString("afk.return_message", "<red><player>is no longer AFK!");
+        afkReturnMessage = config.getString("afk.return_message", "<red><player> is no longer AFK!");
         locationRadius = config.getDouble("afk.location_radius", 3);
 
         // Load AFK Location
@@ -71,10 +91,13 @@ public class AfkConfigManager {
         float pitch = (float) config.getDouble("afk.location.pitch", 0);
 
         afkLocation = new Location(world, x, y, z, yaw, pitch);
+
+        plugin.getLogger().info("AFK configuration loaded successfully.");
     }
 
     public void reload() {
         loadConfig();
+        plugin.getLogger().info("AFK configuration reloaded.");
     }
 
     public void save() {
@@ -101,11 +124,22 @@ public class AfkConfigManager {
             config.set("afk.disable_damage", disableAfkDamage);
             config.set("afk.exclude_creative_players", excludeCreativePlayersFromAfk);
             config.set("afk.exclude_spectator_players", excludeSpectatorPlayersFromAfk);
+            config.set("afk.message", afkMessage);
+            config.set("afk.return_message", afkReturnMessage);
             config.set("afk.location_radius", locationRadius);
 
             config.save(configFile);
+            plugin.getLogger().info("AFK configuration saved successfully.");
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save afk.yml: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void setAfkLocation(Location location) {
+        if (location != null) {
+            this.afkLocation = location.clone();
+            save();
         }
     }
 
@@ -113,4 +147,3 @@ public class AfkConfigManager {
         return config;
     }
 }
-

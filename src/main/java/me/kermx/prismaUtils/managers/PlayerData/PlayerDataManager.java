@@ -69,7 +69,8 @@ public class PlayerDataManager implements PlayerDataChangeListener {
 
         PlayerData.Builder builder = new PlayerData.Builder(playerId)
                 .flyEnabled(config.getBoolean("flyEnabled", false))
-                .godEnabled(config.getBoolean("godMode", false));
+                .godEnabled(config.getBoolean("godMode", false))
+                .afkEnabled(config.getBoolean("afkEnabled", false));
 
         String firstJoinStr = config.getString("firstJoin");
         if (firstJoinStr != null) {
@@ -148,6 +149,7 @@ public class PlayerDataManager implements PlayerDataChangeListener {
         YamlConfiguration config = new YamlConfiguration();
         config.set("flyEnabled", playerData.isFlyEnabled());
         config.set("godMode", playerData.isGodEnabled());
+        config.set("afkEnabled", playerData.isAfk());
         config.set("firstJoin", playerData.getFirstJoin().format(formatter));
 
         List<Map<String, Object>> homesList = new ArrayList<>();
