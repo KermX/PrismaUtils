@@ -291,7 +291,7 @@ public final class PrismaUtils extends JavaPlugin {
             eventManager.registerListeners(new ClimbableChainsHandler());
         }
         if (ConfigManager.getInstance().getMainConfig().enableNonLevelBasedEnchanting) {
-            eventManager.registerListeners(new NonLevelBasedEnchantingHandler());
+            eventManager.registerListeners(new AlternativeEnchantingCostHandler());
         }
         if (ConfigManager.getInstance().getMainConfig().disableNetherMobZombification) {
             eventManager.registerListeners(new NetherMobZombificationHandler());
