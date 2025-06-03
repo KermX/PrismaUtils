@@ -4,6 +4,7 @@ import com.gmail.llmdlio.townyflight.event.PlayerFlightChangeEvent;
 import me.kermx.prismaUtils.integrations.FlightService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +41,22 @@ public class EnhancedTownyFlightHandler implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        if(from.getWorld().equals(to.getWorld())) {
+            double distanceSquared = from.distanceSquared(to);
+            if(distanceSquared > 100) {
+                return;
+            }
+        }
+
+        PlayerTeleportEvent.TeleportCause cause = event.getCause();
+        if (cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL ||
+                cause == PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT) {
+            return;
+        }
+
         checkAndUpdateFlight(event.getPlayer());
     }
 
