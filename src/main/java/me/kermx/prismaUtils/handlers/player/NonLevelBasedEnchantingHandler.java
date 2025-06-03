@@ -11,11 +11,29 @@ public class NonLevelBasedEnchantingHandler implements Listener {
     public void onEnchant(EnchantItemEvent event) {
         Player player = event.getEnchanter();
         int buttonPressed = event.whichButton() + 1;
-        int expCost = 133 * buttonPressed;
+
+        int playerLevel = player.getLevel();
+        int expCost = calculateScaledExpCost(playerLevel, buttonPressed);
+
         if (player.getLevel() > 30) {
             int totalExp = getTotalExperience(player, buttonPressed);
             setTotalExperience(player, totalExp - expCost);
         }
+    }
+
+    private int calculateScaledExpCost(int level, int button) {
+        int baseCost = 133 * button;
+
+        double scaleFactor = 1.0;
+        if (level <= 15) {
+            scaleFactor = 1.0 + (level * 0.5);
+        } else if (level <= 30) {
+            scaleFactor = 1.75 + ((level - 15) * 0.1);
+        } else {
+            scaleFactor = 3.25 + ((level - 30) * 0.15);
+        }
+
+        return (int)(baseCost * scaleFactor);
     }
 
     private int getExpAtLevel(int level) {
