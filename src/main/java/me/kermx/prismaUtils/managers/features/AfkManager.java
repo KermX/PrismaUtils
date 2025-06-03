@@ -146,7 +146,9 @@ public class AfkManager implements Listener {
                 @Override
                 public void run() {
                     // Start the 5-second countdown
-                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
+                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false) &&
+                            !teleportedToAfk.getOrDefault(uuid, false)) {
+                        // Only start the 5-second countdown once, right before teleport
                         sendTeleportWarning(player, 5);
                     }
                 }
@@ -155,7 +157,14 @@ public class AfkManager implements Listener {
             return;
         }
 
-        // For the final 5 seconds, show a countdown every second
+        // For the final 5 seconds, show a single countdown sequence
+        // If the final countdown is already running, do nothing
+        if (warningTasks.containsKey(uuid) && seconds == 5) {
+            // Already have a countdown running
+            return;
+        }
+
+        // Start the 5-second countdown sequence
         player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
                 Placeholder.unparsed("time", String.valueOf(seconds))));
 
@@ -164,13 +173,14 @@ public class AfkManager implements Listener {
             return;
         }
 
-        // Schedule countdown messages every second for the final 5 seconds
+        // Schedule the entire countdown at once
         warningTasks.put(uuid, new BukkitRunnable() {
             private long countdown = seconds - 1; // Start at seconds-1
 
             @Override
             public void run() {
-                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false)) {
+                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false) ||
+                        teleportedToAfk.getOrDefault(uuid, false)) {
                     cancel();
                     warningTasks.remove(uuid);
                     return;
