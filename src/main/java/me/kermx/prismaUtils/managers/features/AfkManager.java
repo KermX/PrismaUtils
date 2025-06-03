@@ -36,7 +36,6 @@ public class AfkManager implements Listener {
     private final String returnMessage;
     private final String teleportWarningMessage;
 
-
     public AfkManager(PrismaUtils plugin) {
         this.plugin = plugin;
 
@@ -99,24 +98,32 @@ public class AfkManager implements Listener {
                         setAfk(player, true);
                     }
 
+                    // Calculate when teleport will happen
+                    long teleportTime = afkThreshold + teleportThreshold;
+                    long timeUntilTeleport = teleportTime - timeSinceActive;
+
                     // Check if we should warn player about upcoming teleport
                     if (afkStatus.getOrDefault(uuid, false) &&
-                            !teleportedToAfk.getOrDefault(uuid, false) &&
-                            timeSinceActive >= (afkThreshold + teleportThreshold * 0.5) &&
-                            timeSinceActive < (afkThreshold + teleportThreshold)) {
+                            !teleportedToAfk.getOrDefault(uuid, false)) {
 
-                        // Send a warning if one isn't already scheduled
-                        if (!warningTasks.containsKey(uuid)) {
-                            long remainingSeconds = (afkThreshold + teleportThreshold - timeSinceActive) / 1000;
-                            // Cap at 60 seconds to avoid unusually high values
-                            remainingSeconds = Math.min(60, remainingSeconds);
-                            sendTeleportWarning(player, remainingSeconds);
+                        // When between 60 and 10 seconds remain, send the initial warning
+                        if (timeUntilTeleport <= 60000 && timeUntilTeleport > 59000 &&
+                                !warningTasks.containsKey(uuid)) {
+                            player.sendMessage(TextUtils.deserializeString(
+                                    "<gold>You will be teleported to the AFK area soon.</gold>"));
+                        }
+
+                        // Start the 5-second countdown when exactly 5 seconds remain
+                        // We check a precise range to ensure this only triggers once
+                        if (timeUntilTeleport <= 5500 && timeUntilTeleport > 4500 &&
+                                !warningTasks.containsKey(uuid)) {
+                            startFiveSecondCountdown(player);
                         }
                     }
 
                     // Check if player should be teleported
                     if (afkStatus.getOrDefault(uuid, false) &&
-                            timeSinceActive >= (afkThreshold + teleportThreshold) &&
+                            timeSinceActive >= teleportTime &&
                             !teleportedToAfk.getOrDefault(uuid, false)) {
                         teleportToAfkLocation(player);
                     }
@@ -125,78 +132,50 @@ public class AfkManager implements Listener {
         }.runTaskTimer(plugin, 20L, 20L); // Check every second
     }
 
-    private void sendTeleportWarning(Player player, long seconds) {
+    /**
+     * Start the final 5-second countdown before teleporting to AFK area
+     */
+    private void startFiveSecondCountdown(Player player) {
         UUID uuid = player.getUniqueId();
 
-        // Cancel any existing warning task
-        BukkitTask existingTask = warningTasks.remove(uuid);
-        if (existingTask != null) {
-            existingTask.cancel();
-        }
-
-        // We only want to show countdown for the final 5 seconds
-        // If more than 5 seconds remain, just send initial warning
-        if (seconds > 5) {
-            // Send an initial warning without countdown
-            player.sendMessage(TextUtils.deserializeString(
-                    "<gold>You will be teleported to the AFK area soon.</gold>"));
-
-            // Schedule the actual countdown to start at 5 seconds
-            warningTasks.put(uuid, new BukkitRunnable() {
-                @Override
-                public void run() {
-                    // Start the 5-second countdown
-                    if (player.isOnline() && afkStatus.getOrDefault(uuid, false) &&
-                            !teleportedToAfk.getOrDefault(uuid, false)) {
-                        // Only start the 5-second countdown once, right before teleport
-                        sendTeleportWarning(player, 5);
-                    }
-                }
-            }.runTaskLater(plugin, (seconds - 5) * 20)); // Convert seconds to ticks
-
+        // If there's already a task, don't start another one
+        if (warningTasks.containsKey(uuid)) {
             return;
         }
 
-        // For the final 5 seconds, show a single countdown sequence
-        // If the final countdown is already running, do nothing
-        if (warningTasks.containsKey(uuid) && seconds == 5) {
-            // Already have a countdown running
-            return;
-        }
-
-        // Start the 5-second countdown sequence
+        // Send the first "5 seconds" message
         player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
-                Placeholder.unparsed("time", String.valueOf(seconds))));
+                Placeholder.unparsed("time", "5")));
 
-        if (seconds <= 1) {
-            // No need to schedule more messages
-            return;
-        }
-
-        // Schedule the entire countdown at once
+        // Create a countdown task that runs every second
         warningTasks.put(uuid, new BukkitRunnable() {
-            private long countdown = seconds - 1; // Start at seconds-1
+            private int countdown = 4; // Start at 4 and count down
 
             @Override
             public void run() {
-                if (countdown <= 0 || !player.isOnline() || !afkStatus.getOrDefault(uuid, false) ||
+                // If player is no longer eligible for teleport, cancel the task
+                if (!player.isOnline() ||
+                        !afkStatus.getOrDefault(uuid, false) ||
                         teleportedToAfk.getOrDefault(uuid, false)) {
                     cancel();
                     warningTasks.remove(uuid);
                     return;
                 }
 
+                // Send the current countdown message
                 player.sendMessage(TextUtils.deserializeString(teleportWarningMessage,
                         Placeholder.unparsed("time", String.valueOf(countdown))));
 
+                // Decrement the counter
                 countdown--;
 
-                if (countdown <= 0) {
+                // If we've reached zero, clean up
+                if (countdown < 0) {
                     cancel();
                     warningTasks.remove(uuid);
                 }
             }
-        }.runTaskTimer(plugin, 20L, 20L)); // Run every second (20 ticks)
+        }.runTaskTimer(plugin, 20L, 20L)); // Run every second
     }
 
     @EventHandler
@@ -289,12 +268,13 @@ public class AfkManager implements Listener {
             setAfk(player, false);
         }
 
-        // Cancel warning tasks if they exist
+        // Cancel warning tasks
         BukkitTask warningTask = warningTasks.remove(uuid);
         if (warningTask != null) {
             warningTask.cancel();
         }
     }
+
 
     public void setAfk(Player player, boolean afk) {
         if (player == null || !player.isOnline()) return;
