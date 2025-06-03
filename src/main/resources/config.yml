@@ -50,6 +50,17 @@ back_world_whitelist:
   - 'resource_nether'
   - 'resource_the_end'
 
+fly_world_whitelist:
+  - 'world'
+  - 'world_nether'
+  - 'world_the_end'
+  - 'resource_overworld'
+  - 'resource_nether'
+  - 'resource_the_end'
+  - 'summer2025'
+  - 'FlatWorld'
+  - 'mapart'
+
 health_scale:
   enabled: true
   value: 20

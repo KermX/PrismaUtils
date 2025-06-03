@@ -45,6 +45,9 @@ public class MainConfigManager {
     // Back Config
     public List<String> backWhitelistedWorlds;
 
+    // Fly Config
+    public List<String> flyWhitelistedWorlds;
+
     // First Join Commands
     public boolean firstJoinCommandsEnabled;
     public List<String> firstJoinCommands;
@@ -129,6 +132,9 @@ public class MainConfigManager {
 
         // Back Config
         backWhitelistedWorlds = config.getStringList("back_world_whitelist");
+
+        // Fly Config
+        flyWhitelistedWorlds = config.getStringList("fly_world_whitelist");
 
         // Health Scale
         healthScaleEnabled = config.getBoolean("health_scale.enabled");

@@ -4,6 +4,7 @@ import com.gmail.llmdlio.townyflight.event.PlayerFlightChangeEvent;
 import me.kermx.prismaUtils.integrations.FlightService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
+import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,8 +37,23 @@ public class EnhancedTownyFlightHandler implements Listener {
 
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
-        checkAndUpdateFlight(event.getPlayer());
+        Player player = event.getPlayer();
+        String worldName = player.getWorld().getName();
+
+        // Check if the new world is in the whitelist
+        if (!ConfigManager.getInstance().getMainConfig().flyWhitelistedWorlds.contains(worldName)) {
+            // If not whitelisted, force disable flight regardless of other conditions
+            flightService.disablePlayerFlight(player);
+            PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
+            if (pData != null) {
+                pData.setFlyEnabled(false);
+            }
+            return;
+        }
+
+        checkAndUpdateFlight(player);
     }
+
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -47,6 +63,19 @@ public class EnhancedTownyFlightHandler implements Listener {
         if(from.getWorld().equals(to.getWorld())) {
             double distanceSquared = from.distanceSquared(to);
             if(distanceSquared > 100) {
+                return;
+            }
+        } else {
+            // World changed, check if destination world is whitelisted
+            String destinationWorld = to.getWorld().getName();
+            if (!ConfigManager.getInstance().getMainConfig().flyWhitelistedWorlds.contains(destinationWorld)) {
+                // If destination world is not whitelisted, ensure flight is disabled
+                Player player = event.getPlayer();
+                flightService.disablePlayerFlight(player);
+                PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
+                if (pData != null) {
+                    pData.setFlyEnabled(false);
+                }
                 return;
             }
         }
@@ -62,7 +91,18 @@ public class EnhancedTownyFlightHandler implements Listener {
 
     private void checkAndUpdateFlight(Player player) {
         PlayerData pData = dataManager.getPlayerData(player.getUniqueId());
+        String worldName = player.getWorld().getName();
 
+        // If world is not whitelisted, always disable flight
+        if (!ConfigManager.getInstance().getMainConfig().flyWhitelistedWorlds.contains(worldName)) {
+            flightService.disablePlayerFlight(player);
+            if (pData != null) {
+                pData.setFlyEnabled(false);
+            }
+            return;
+        }
+
+        // Continue with normal checks for whitelisted worlds
         if (pData == null || !pData.isFlyEnabled()) {
             flightService.disablePlayerFlight(player);
             return;
