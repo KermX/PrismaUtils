@@ -31,6 +31,8 @@ public class TeleportRequestManager {
         return requests.get(target);
     }
 
+    public Map<UUID, TeleportRequest> getRequests() { return requests; }
+
     public void addRequest(TeleportRequest request) {
         // Cancel any existing request
         if (requests.containsKey(request.getTarget())) {

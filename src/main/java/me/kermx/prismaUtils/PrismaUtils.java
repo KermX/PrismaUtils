@@ -3,10 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.commands.admin.*;
 import me.kermx.prismaUtils.commands.crafting.*;
 import me.kermx.prismaUtils.commands.player.*;
-import me.kermx.prismaUtils.commands.player.Tpask.TpAcceptCommand;
-import me.kermx.prismaUtils.commands.player.Tpask.TpDenyCommand;
-import me.kermx.prismaUtils.commands.player.Tpask.TpaCommand;
-import me.kermx.prismaUtils.commands.player.Tpask.TpaHereCommand;
+import me.kermx.prismaUtils.commands.player.Tpask.*;
 import me.kermx.prismaUtils.commands.player.homes.AdminHomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
 import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
@@ -211,6 +208,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("tpaccept", tpAcceptCommand, tpAcceptCommand);
         TpDenyCommand tpDenyCommand = new TpDenyCommand(teleportRequestManager);
         commandManager.registerCommand("tpdeny", tpDenyCommand, tpDenyCommand);
+        TpCancelCommand tpCancelCommand = new TpCancelCommand(teleportRequestManager);
+        commandManager.registerCommand("tpcancel", tpCancelCommand, tpCancelCommand);
         // Afk Commands
         AfkCommand afkCommand = new AfkCommand(afkManager);
         commandManager.registerCommand("afk", afkCommand, afkCommand);
@@ -285,7 +284,7 @@ public final class PrismaUtils extends JavaPlugin {
             eventManager.registerListeners(new SpawnerMobItemDropsHandler(this));
         }
         if (ConfigManager.getInstance().getMainConfig().endermitesImmuneToLightning) {
-            eventManager.registerListeners(new EndermiteImmunityHandler());
+            eventManager.registerListeners(new EntityLightningImmunityHandler());
         }
         if (ConfigManager.getInstance().getMainConfig().chainsAreClimbable) {
             eventManager.registerListeners(new ClimbableChainsHandler());

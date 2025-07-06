@@ -203,6 +203,10 @@ commands:
     usage: /tpdeny
     permission: prismautils.command.tpdeny
     aliases: [tpno]
+  tpcanel:
+    description: Cancel a teleport request.
+    usage: /tpcancel
+    permission: prismautils.command.tpcancel
 
 
   # ----- Item Management Commands -----
