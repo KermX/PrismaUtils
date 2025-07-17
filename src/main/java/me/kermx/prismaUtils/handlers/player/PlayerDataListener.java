@@ -39,8 +39,6 @@ public class PlayerDataListener implements Listener {
 
         PlayerData data = dataManager.getPlayerData(playerId);
         if (data != null) {
-            // Update any final state - this will automatically trigger listeners
-            data.setFlyEnabled(player.getAllowFlight());
 
             // The actual savePlayerData and removePlayerData calls will
             // handle unregistering listeners and persisting data

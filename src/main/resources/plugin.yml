@@ -208,7 +208,18 @@ commands:
     usage: /tpcancel
     permission: prismautils.command.tpcancel
     aliases: [tpacancel]
+  #  ----- Fly Commands -----
+  fly:
+    description: Toggle flight mode
+    usage: /fly [player] [on/off]
+    permission: prismautils.command.fly
+    aliases: [flight]
 
+  tempfly:
+    description: Manage temporary flight
+    usage: /tempfly <player> <add/set/check> [seconds]
+    permission: prismautils.command.tempfly
+    aliases: [tf]
 
   # ----- Item Management Commands -----
   itemname:
@@ -382,6 +393,56 @@ permissions:
         prismautils.command.home: true
         prismautils.command.sethome: true
         prismautils.command.delhome: true
+  prismautils.command.fly:
+    description: Toggle own flight
+    default: op
+  prismautils.command.fly.others:
+    description: Toggle flight for other players
+    default: op
+  prismautils.command.tempfly:
+    description: Manage temporary flight
+    default: op
+  prismautils.fly.global:
+    description: Fly anywhere
+    default: op
+  prismautils.fly.admin:
+    description: Admin flight bypass
+    default: op
+  prismautils.fly.town:
+    description: Fly in town plots only (excludes wilderness)
+    default: false
+  prismautils.fly.wilderness:
+    description: Fly in wilderness only
+    default: false
+
+  # Specific plot type permissions for all valid Towny plot types
+  prismautils.fly.plot.arena:
+    description: Fly in arena plots
+    default: false
+  prismautils.fly.plot.bank:
+    description: Fly in bank plots
+    default: false
+  prismautils.fly.plot.commercial:
+    description: Fly in commercial plots
+    default: false
+  prismautils.fly.plot.embassy:
+    description: Fly in embassy plots
+    default: false
+  prismautils.fly.plot.farm:
+    description: Fly in farm plots
+    default: false
+  prismautils.fly.plot.inn:
+    description: Fly in inn plots
+    default: false
+  prismautils.fly.plot.jail:
+    description: Fly in jail plots
+    default: false
+  prismautils.fly.plot.residential:
+    description: Fly in residential plots
+    default: false
+  prismautils.fly.plot.wilds:
+    description: Fly in wilds plots
+    default: false
 
 #  prismautils.command.workbenches:
 #    description: Allows the player to use workbench commands.

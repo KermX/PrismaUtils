@@ -20,11 +20,12 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
-import me.kermx.prismaUtils.integrations.FlightService;
 import me.kermx.prismaUtils.integrations.ProtectionService;
 import me.kermx.prismaUtils.integrations.SitService;
+import me.kermx.prismaUtils.integrations.TerritoryService;
 import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
 import me.kermx.prismaUtils.managers.features.AfkManager;
+import me.kermx.prismaUtils.managers.features.FlightManager;
 import me.kermx.prismaUtils.managers.general.CommandManager;
 import me.kermx.prismaUtils.managers.general.CooldownManager;
 import me.kermx.prismaUtils.managers.general.EventManager;
@@ -46,13 +47,14 @@ public final class PrismaUtils extends JavaPlugin {
 
     private PlayerDataManager playerDataManager;
     private ProtectionService protectionService;
-    private FlightService flightService;
+    private TerritoryService territoryService;
     private SitService sitService;
     private TeleportRequestManager teleportRequestManager;
     private SeedAndShearBlocksHandler seedAndShearBlocksHandler;
     private SeenManager seenManager;
     private GodCommand godCommand;
     private AfkManager afkManager;
+    private FlightManager flightManager;
 
     @Override
     public void onEnable() {
@@ -60,8 +62,8 @@ public final class PrismaUtils extends JavaPlugin {
 
         // Initialize services
         protectionService = new ProtectionService(getServer().getPluginManager());
-        flightService = new FlightService(getServer().getPluginManager(), getLogger());
         sitService = new SitService(getServer().getPluginManager(), getLogger());
+        territoryService = new TerritoryService(getServer().getPluginManager(), getLogger());
 
         // Initialize specific managers / handlers
         teleportRequestManager = new TeleportRequestManager(this);
@@ -75,6 +77,8 @@ public final class PrismaUtils extends JavaPlugin {
         playerDataManager = new PlayerDataManager(this);
 
         afkManager = new AfkManager(this);
+
+        flightManager = new FlightManager(this, territoryService);
 
         doStartupOperations();
         registerPlaceholders();
@@ -180,6 +184,11 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("delhome", delHomeCommand, delHomeCommand);
         AdminHomesCommand adminHomesCommand = new AdminHomesCommand(this, homesCommand);
         commandManager.registerCommand("adminhome", adminHomesCommand, adminHomesCommand);
+        // Fly Commands
+        FlyCommand flyCommand = new FlyCommand(flightManager);
+        commandManager.registerCommand("fly", flyCommand, flyCommand);
+        TempFlyCommand tempFlyCommand = new TempFlyCommand(flightManager);
+        commandManager.registerCommand("tempfly", tempFlyCommand, tempFlyCommand);
         // Other Teleport Commands
         BackCommand backCommand = new BackCommand(playerDataManager);
         commandManager.registerCommand("back", backCommand, backCommand);
@@ -263,7 +272,6 @@ public final class PrismaUtils extends JavaPlugin {
                 new CuffCommand(),
                 new HorseZombificationHandler(),
                 new PermissionKeepInvHandler(),
-                new EnhancedTownyFlightHandler(flightService,playerDataManager),
                 new RespawnMessageHandler(),
                 new LastLocationHandler(playerDataManager),
                 new AntiAutoFishingHandler(this)

@@ -10,7 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerData {
     private final UUID playerID;
-    private boolean flyEnabled;
     private boolean godEnabled;
     private boolean afkEnabled;
     private LocalDateTime firstJoin;
@@ -24,18 +23,24 @@ public class PlayerData {
     private float lastLocationPitch;
     private boolean hasLastLocation = false;
 
+    private boolean flightEnabled = false;
+    private long tempFlightSeconds = 0;
+    private LocalDateTime tempFlightLastUpdated = null;
+
 
     // Use CopyOnWriteArrayList for thread-safe iteration without explicit synchronization
     private final List<PlayerDataChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 
     private PlayerData(Builder builder) {
         this.playerID = builder.playerID;
-        this.flyEnabled = builder.flyEnabled;
         this.godEnabled = builder.godEnabled;
         this.afkEnabled = builder.afkEnabled;
         this.firstJoin = builder.firstJoin;
         this.mailbox = builder.mailbox;
         this.homes = builder.homes;
+        this.flightEnabled = builder.flightEnabled;
+        this.tempFlightSeconds = builder.tempFlightSeconds;
+        this.tempFlightLastUpdated = builder.tempFlightLastUpdated;
 
         // Initialize location fields from builder
         this.hasLastLocation = builder.hasLastLocation;
@@ -85,18 +90,6 @@ public class PlayerData {
     // Getters remain the same
     public UUID getPlayerID() {
         return playerID;
-    }
-
-    public boolean isFlyEnabled() {
-        return flyEnabled;
-    }
-
-    // Update setters to notify listeners
-    public void setFlyEnabled(boolean flyEnabled) {
-        if (this.flyEnabled != flyEnabled) {
-            this.flyEnabled = flyEnabled;
-            notifyListeners("flyEnabled", flyEnabled);
-        }
     }
 
     public boolean isGodEnabled() {
@@ -204,6 +197,45 @@ public class PlayerData {
         notifyListeners("lastLocation", location);
     }
 
+    public boolean isFlightEnabled() {
+        return flightEnabled;
+    }
+
+    public void setFlightEnabled(boolean flightEnabled) {
+        if (this.flightEnabled != flightEnabled) {
+            this.flightEnabled = flightEnabled;
+            notifyListeners("flightEnabled", flightEnabled);
+        }
+    }
+
+    public long getTempFlightSeconds() {
+        return tempFlightSeconds;
+    }
+
+    public void setTempFlightSeconds(long tempFlightSeconds) {
+        if (this.tempFlightSeconds != tempFlightSeconds) {
+            this.tempFlightSeconds = Math.max(0, tempFlightSeconds);
+            this.tempFlightLastUpdated = LocalDateTime.now();
+            notifyListeners("tempFlightSeconds", this.tempFlightSeconds);
+        }
+    }
+
+    public void addTempFlightSeconds(long seconds) {
+        setTempFlightSeconds(this.tempFlightSeconds + seconds);
+    }
+
+    public LocalDateTime getTempFlightLastUpdated() {
+        return tempFlightLastUpdated;
+    }
+
+    public void setTempFlightLastUpdated(LocalDateTime tempFlightLastUpdated) {
+        this.tempFlightLastUpdated = tempFlightLastUpdated;
+        notifyListeners("tempFlightLastUpdated", tempFlightLastUpdated);
+    }
+
+    public boolean hasTempFlight() {
+        return tempFlightSeconds > 0;
+    }
 
     // Builder class stays the same
     public static class Builder {
@@ -222,6 +254,10 @@ public class PlayerData {
         private float lastLocationYaw;
         private float lastLocationPitch;
         private boolean hasLastLocation = false;
+        private boolean flightEnabled = false;
+        private long tempFlightSeconds = 0;
+        private LocalDateTime tempFlightLastUpdated = null;
+
 
 
         public Builder(UUID playerID) {
@@ -268,6 +304,21 @@ public class PlayerData {
                 this.lastLocationYaw = location.getYaw();
                 this.lastLocationPitch = location.getPitch();
             }
+            return this;
+        }
+
+        public Builder flightEnabled(boolean flightEnabled) {
+            this.flightEnabled = flightEnabled;
+            return this;
+        }
+
+        public Builder tempFlightSeconds(long tempFlightSeconds) {
+            this.tempFlightSeconds = tempFlightSeconds;
+            return this;
+        }
+
+        public Builder tempFlightLastUpdated(LocalDateTime tempFlightLastUpdated) {
+            this.tempFlightLastUpdated = tempFlightLastUpdated;
             return this;
         }
 

@@ -68,13 +68,19 @@ public class PlayerDataManager implements PlayerDataChangeListener {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         PlayerData.Builder builder = new PlayerData.Builder(playerId)
-                .flyEnabled(config.getBoolean("flyEnabled", false))
                 .godEnabled(config.getBoolean("godMode", false))
-                .afkEnabled(config.getBoolean("afkEnabled", false));
+                .afkEnabled(config.getBoolean("afkEnabled", false))
+                .flightEnabled(config.getBoolean("flightEnabled", false))
+                .tempFlightSeconds(config.getLong("tempFlightSeconds", 0));
 
         String firstJoinStr = config.getString("firstJoin");
         if (firstJoinStr != null) {
             builder.firstJoin(LocalDateTime.parse(firstJoinStr, formatter));
+        }
+
+        String tempFlightUpdatedStr = config.getString("tempFlightLastUpdated");
+        if (tempFlightUpdatedStr != null) {
+            builder.tempFlightLastUpdated(LocalDateTime.parse(tempFlightUpdatedStr, formatter));
         }
 
         if (config.contains("homes")) {
@@ -147,10 +153,18 @@ public class PlayerDataManager implements PlayerDataChangeListener {
     private void savePlayerDataToDisk(UUID playerId, PlayerData playerData) {
         File file = new File(dataFolder, playerId.toString() + ".yml");
         YamlConfiguration config = new YamlConfiguration();
-        config.set("flyEnabled", playerData.isFlyEnabled());
         config.set("godMode", playerData.isGodEnabled());
         config.set("afkEnabled", playerData.isAfk());
-        config.set("firstJoin", playerData.getFirstJoin().format(formatter));
+        config.set("flightEnabled", playerData.isFlightEnabled());
+        config.set("tempFlightSeconds", playerData.getTempFlightSeconds());
+
+        if (playerData.getFirstJoin() != null) {
+            config.set("firstJoin", playerData.getFirstJoin().format(formatter));
+        }
+
+        if (playerData.getTempFlightLastUpdated() != null) {
+            config.set("tempFlightLastUpdated", playerData.getTempFlightLastUpdated().format(formatter));
+        }
 
         List<Map<String, Object>> homesList = new ArrayList<>();
         for (Home home : playerData.getHomes().values()) {
