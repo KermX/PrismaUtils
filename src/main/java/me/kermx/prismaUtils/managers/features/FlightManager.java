@@ -338,6 +338,11 @@ public class FlightManager implements Listener {
             return false;
         }
 
+        // Don't count temp flight if the player is not currently flying
+        if (!player.isFlying()) {
+            return false;
+        }
+
         // Don't count down temp flight if player already has location permissions
         if (hasLocationPermission(player)) {
             return false;
