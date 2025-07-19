@@ -250,7 +250,6 @@ public class FlightManager implements Listener {
         }
     }
 
-
     /**
      * Add temporary flight time to a player
      */
@@ -334,10 +333,18 @@ public class FlightManager implements Listener {
 
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
 
-        // Only count down temp flight if they have it and are in a whitelisted world
-        return playerData.hasTempFlight();
-    }
+        // Don't count down temp flight if player doesn't have it
+        if (!playerData.hasTempFlight()) {
+            return false;
+        }
 
+        // Don't count down temp flight if player already has location permissions
+        if (hasLocationPermission(player)) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Start the temporary flight countdown task
