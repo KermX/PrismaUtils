@@ -56,14 +56,15 @@ public class WarpsConfigManager {
             }
         }
 
-        // Load Warps
-        loadWarps();
+        // Delay loading warps to ensure all worlds are loaded
+        Bukkit.getScheduler().runTaskLater(plugin, this::loadWarps, 60L); // 1 second delay
     }
 
     private void loadWarps() {
         ConfigurationSection warpsSection = config.getConfigurationSection("warps");
         if (warpsSection == null) return;
 
+        warps.clear(); // Clear existing warps in case of reload
         for (String warpName : warpsSection.getKeys(false)) {
             String worldName = warpsSection.getString(warpName + ".world");
             double x = warpsSection.getDouble(warpName + ".x");
@@ -124,7 +125,6 @@ public class WarpsConfigManager {
     public void reload() {
         loadConfig();
     }
-
 
     public void save() {
         try {
