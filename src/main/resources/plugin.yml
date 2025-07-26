@@ -214,6 +214,11 @@ commands:
     usage: /fly [player] [on/off]
     permission: prismautils.command.fly
     aliases: [flight]
+  flytime:
+    description: Check your remaining temporary flight time
+    usage: /flytime
+    permission: prismautils.command.flytime
+    aliases: [flighttime]
 
   tempfly:
     description: Manage temporary flight

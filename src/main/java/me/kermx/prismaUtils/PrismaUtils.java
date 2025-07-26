@@ -187,6 +187,8 @@ public final class PrismaUtils extends JavaPlugin {
         // Fly Commands
         FlyCommand flyCommand = new FlyCommand(flightManager);
         commandManager.registerCommand("fly", flyCommand, flyCommand);
+        FlyTimeCommand flyTimeCommand = new FlyTimeCommand(flightManager);
+        commandManager.registerCommand("flytime", flyTimeCommand, flyTimeCommand);
         TempFlyCommand tempFlyCommand = new TempFlyCommand(flightManager);
         commandManager.registerCommand("tempfly", tempFlyCommand, tempFlyCommand);
         // Other Teleport Commands
