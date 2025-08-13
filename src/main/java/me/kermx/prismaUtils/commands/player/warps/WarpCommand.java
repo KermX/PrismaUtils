@@ -43,11 +43,19 @@ public class WarpCommand extends BaseCommand {
     }
 
     private boolean teleportToWarp(Player player, String warpName) {
-        Location warpLocation = warpsConfigManager.getWarp(warpName);
+        WarpsConfigManager.WarpData warpData = warpsConfigManager.getWarpData(warpName);
 
-        if (warpLocation == null) {
+        if (warpData == null) {
             player.sendMessage(TextUtils.deserializeString(
                     "<red>Warp [<white>" + warpName + "<red>] doesn't exist."
+            ));
+            return true;
+        }
+
+        String warpPermission = warpData.getPermission();
+        if (warpPermission != null && !player.hasPermission(warpPermission)) {
+            player.sendMessage(TextUtils.deserializeString(
+                    "<red>You don't have permission to use warp [<white>" + warpName + "<red>]."
             ));
             return true;
         }
@@ -69,7 +77,7 @@ public class WarpCommand extends BaseCommand {
         cooldownManager.setWarpTeleportCooldown(player);
 
         // Teleport player to warp
-        player.teleportAsync(warpLocation);
+        player.teleportAsync(warpData.getLocation());
         player.sendMessage(TextUtils.deserializeString(
                 "<green>Teleported to warp [<white>" + warpName + "<green>]."
         ));
@@ -96,8 +104,16 @@ public class WarpCommand extends BaseCommand {
 
         // Create a clickable component for each warp
         for (String warpName : warpNames) {
-            Location loc = warpsConfigManager.getWarp(warpName);
-            if (loc != null) {
+            WarpsConfigManager.WarpData warpData = warpsConfigManager.getWarpData(warpName);
+
+            if (warpData != null) {
+                // Check if player has permission for this warp (only show if they can use it)
+                String warpPermission = warpData.getPermission();
+                if (warpPermission != null && !player.hasPermission(warpPermission)) {
+                    continue; // Skip this warp if player doesn't have permission
+                }
+
+                Location loc = warpData.getLocation();
                 // Format coordinates to be more readable
                 String coords = String.format("%.0f, %.0f, %.0f", loc.getX(), loc.getY(), loc.getZ());
 
@@ -112,6 +128,13 @@ public class WarpCommand extends BaseCommand {
 
                 warpComponents.add(warpComponent);
             }
+        }
+
+        if (warpComponents.isEmpty()) {
+            player.sendMessage(TextUtils.deserializeString(
+                    "<red>You don't have permission to use any warps."
+            ));
+            return;
         }
 
         // Display warps in groups of 5 per line
@@ -133,15 +156,23 @@ public class WarpCommand extends BaseCommand {
         }
     }
 
-
     @Override
     protected List<String> onTabCompleteExecute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if (args.length == 1 && sender instanceof Player) {
+            Player player = (Player) sender;
             String partial = args[0].toLowerCase();
             return warpsConfigManager.getWarpNames().stream()
                     .filter(warp -> warp.toLowerCase().startsWith(partial))
+                    .filter(warp -> {
+                        // Only show warps the player has permission to use
+                        WarpsConfigManager.WarpData warpData = warpsConfigManager.getWarpData(warp);
+                        if (warpData == null) return false;
+                        String permission = warpData.getPermission();
+                        return permission == null || player.hasPermission(permission);
+                    })
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
 }
+

@@ -27,6 +27,7 @@ public class SetWarpCommand extends BaseCommand {
         }
 
         String warpName = args[0];
+        String permission = args.length >= 2 ? args[1] : null;
 
         if (!warpName.matches("[a-zA-Z0-9_-]+")) {
             player.sendMessage(TextUtils.deserializeString(
@@ -38,16 +39,28 @@ public class SetWarpCommand extends BaseCommand {
         Location playerLocation = player.getLocation();
         boolean overwriting = warpsConfigManager.warpExists(warpName);
 
-        warpsConfigManager.setWarp(warpName, playerLocation);
+        warpsConfigManager.setWarp(warpName, playerLocation, permission);
 
         if (overwriting) {
-            player.sendMessage(TextUtils.deserializeString(
-                    "<green>Updated warp [<white>" + warpName + "<green>]."
-            ));
+            if (permission != null && !permission.isEmpty()) {
+                player.sendMessage(TextUtils.deserializeString(
+                        "<green>Updated warp [<white>" + warpName + "<green>] with permission [<white>" + permission + "<green>]."
+                ));
+            } else {
+                player.sendMessage(TextUtils.deserializeString(
+                        "<green>Updated warp [<white>" + warpName + "<green>] with no permission requirement."
+                ));
+            }
         } else {
-            player.sendMessage(TextUtils.deserializeString(
-                    "<green>Created warp [<white>" + warpName + "<green>]."
-            ));
+            if (permission != null && !permission.isEmpty()) {
+                player.sendMessage(TextUtils.deserializeString(
+                        "<green>Created warp [<white>" + warpName + "<green>] with permission [<white>" + permission + "<green>]."
+                ));
+            } else {
+                player.sendMessage(TextUtils.deserializeString(
+                        "<green>Created warp [<white>" + warpName + "<green>] with no permission requirement."
+                ));
+            }
         }
 
         return true;

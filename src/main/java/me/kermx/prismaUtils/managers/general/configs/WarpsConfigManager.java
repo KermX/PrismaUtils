@@ -21,8 +21,19 @@ public class WarpsConfigManager {
     private FileConfiguration config;
     private File configFile;
 
-    // Declare Warps
-    private final Map<String, Location> warps = new HashMap<>();
+    public static class WarpData {
+        private final Location location;
+        private final String permission;
+
+        public WarpData(Location location, String permission) {
+            this.location = location;
+            this.permission = permission;
+        }
+        public Location getLocation() {return location;}
+        public String getPermission() {return permission;}
+    }
+
+    private final Map<String, WarpData> warps = new HashMap<>();
 
     public WarpsConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -65,6 +76,7 @@ public class WarpsConfigManager {
         if (warpsSection == null) return;
 
         warps.clear(); // Clear existing warps in case of reload
+
         for (String warpName : warpsSection.getKeys(false)) {
             String worldName = warpsSection.getString(warpName + ".world");
             double x = warpsSection.getDouble(warpName + ".x");
@@ -72,21 +84,26 @@ public class WarpsConfigManager {
             double z = warpsSection.getDouble(warpName + ".z");
             float yaw = (float) warpsSection.getDouble(warpName + ".yaw");
             float pitch = (float) warpsSection.getDouble(warpName + ".pitch");
+            String permission = warpsSection.getString(warpName + ".permission");
 
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
-                warps.put(warpName.toLowerCase(), new Location(world, x, y, z, yaw, pitch));
+                Location location = new Location(world, x, y, z, yaw, pitch);
+                warps.put(warpName.toLowerCase(), new WarpData(location, permission));
             } else {
                 plugin.getLogger().warning("Could not load warp '" + warpName + "' because world '" + worldName + "' does not exist.");
             }
         }
-
         plugin.getLogger().info("Loaded " + warps.size() + " warps from config.");
     }
 
     public void setWarp(String name, Location location) {
+        setWarp(name, location, null);
+    }
+
+    public void setWarp(String name, Location location, String permission) {
         String warpName = name.toLowerCase();
-        warps.put(warpName, location.clone());
+        warps.put(warpName, new WarpData(location.clone(), permission));
 
         // Save to config
         config.set("warps." + warpName + ".world", location.getWorld().getName());
@@ -95,6 +112,12 @@ public class WarpsConfigManager {
         config.set("warps." + warpName + ".z", location.getZ());
         config.set("warps." + warpName + ".yaw", location.getYaw());
         config.set("warps." + warpName + ".pitch", location.getPitch());
+
+        if (permission != null && !permission.isEmpty()) {
+            config.set("warps." + warpName + ".permission", permission);
+        } else {
+            config.set("warps." + warpName + ".permission", null);
+        }
 
         save();
     }
@@ -111,6 +134,16 @@ public class WarpsConfigManager {
     }
 
     public Location getWarp(String name) {
+        WarpData warpData = warps.get(name.toLowerCase());
+        return warpData != null ? warpData.getLocation() : null;
+    }
+
+    public String getWarpPermission(String name) {
+        WarpData warpData = warps.get(name.toLowerCase());
+        return warpData != null ? warpData.getPermission() : null;
+    }
+
+    public WarpData getWarpData(String name) {
         return warps.get(name.toLowerCase());
     }
 
