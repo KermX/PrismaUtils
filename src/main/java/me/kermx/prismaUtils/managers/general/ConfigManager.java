@@ -13,6 +13,7 @@ public class ConfigManager {
     private DeathMessagesConfigManager deathMessagesConfigManager;
     private WarpsConfigManager warpsConfigManager;
     private AfkConfigManager afkConfigManager;
+    private ChatConfigManager chatConfigManager;
 
     private ConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -38,12 +39,14 @@ public class ConfigManager {
         deathMessagesConfigManager = new DeathMessagesConfigManager(plugin);
         warpsConfigManager = new WarpsConfigManager(plugin);
         afkConfigManager = new AfkConfigManager(plugin);
+        chatConfigManager = new ChatConfigManager(plugin);
 
         mainConfigManager.loadConfig();
         messagesConfigManager.loadConfig();
         deathMessagesConfigManager.loadConfig();
         warpsConfigManager.loadConfig();
         afkConfigManager.loadConfig();
+        chatConfigManager.loadConfig();
     }
 
     public void reloadAll() {
@@ -52,6 +55,7 @@ public class ConfigManager {
         deathMessagesConfigManager.reload();
         warpsConfigManager.reload();
         afkConfigManager.reload();
+        chatConfigManager.reload();
     }
 
     public MainConfigManager getMainConfig() {
@@ -69,4 +73,6 @@ public class ConfigManager {
     public WarpsConfigManager getWarpsConfig() {return warpsConfigManager;}
 
     public AfkConfigManager getAfkConfig() {return afkConfigManager;}
+
+    public ChatConfigManager getChatConfig() {return chatConfigManager;}
 }

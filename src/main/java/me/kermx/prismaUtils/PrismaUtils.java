@@ -55,6 +55,7 @@ public final class PrismaUtils extends JavaPlugin {
     private GodCommand godCommand;
     private AfkManager afkManager;
     private FlightManager flightManager;
+    private ChatHandler chatHandler;
 
     @Override
     public void onEnable() {
@@ -79,6 +80,8 @@ public final class PrismaUtils extends JavaPlugin {
         afkManager = new AfkManager(this);
 
         flightManager = new FlightManager(this, territoryService);
+
+        chatHandler = new ChatHandler(this);
 
         doStartupOperations();
         registerPlaceholders();
@@ -276,7 +279,8 @@ public final class PrismaUtils extends JavaPlugin {
                 new PermissionKeepInvHandler(),
                 new RespawnMessageHandler(),
                 new LastLocationHandler(playerDataManager),
-                new AntiAutoFishingHandler(this)
+                new AntiAutoFishingHandler(this),
+                chatHandler
         );
 
         // Register config conditional events
@@ -330,5 +334,9 @@ public final class PrismaUtils extends JavaPlugin {
 
     public SitService getSitService() {
         return sitService;
+    }
+
+    public ChatHandler getChatHandler() {
+        return chatHandler;
     }
 }

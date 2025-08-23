@@ -3,6 +3,7 @@ package me.kermx.prismaUtils.commands.admin;
 import me.kermx.prismaUtils.commands.BaseCommand;
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -18,12 +19,32 @@ public class ReloadConfigCommand extends BaseCommand {
 
     @Override
     protected boolean onCommandExecute(CommandSender sender, String label, String[] args) {
-        if (args.length > 0) {
-            return false;
-        }
-        ConfigManager.getInstance().reloadAll();
+        long startTime = System.currentTimeMillis();
 
-        sender.sendMessage("PrismaUtils config reloaded!");
+        sender.sendMessage(TextUtils.deserializeString("<yellow>Reloading PrismaUtils configuration..."));
+
+        try {
+            // Reload all configurations
+            ConfigManager.getInstance().reloadAll();
+
+            // Reload chat handler if it exists
+            if (plugin.getChatHandler() != null) {
+                plugin.getChatHandler().reload();
+            }
+
+            long duration = System.currentTimeMillis() - startTime;
+            sender.sendMessage(TextUtils.deserializeString(
+                    "<green>Configuration reloaded successfully in " + duration + "ms!"
+            ));
+
+        } catch (Exception e) {
+            sender.sendMessage(TextUtils.deserializeString(
+                    "<red>Error reloading configuration: " + e.getMessage()
+            ));
+            plugin.getLogger().severe("Error reloading configuration:");
+            e.printStackTrace();
+        }
+
         return true;
     }
 
