@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -187,7 +188,9 @@ public class AfkManager implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        updateActivity(event.getPlayer());
+        if (event.getAction() != Action.PHYSICAL) {
+            updateActivity(event.getPlayer());
+        }
     }
 
     @EventHandler
