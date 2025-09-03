@@ -107,7 +107,7 @@ public class TeleportRequestManager {
         // Create clickable accept button
         Component acceptButton = Component.text("[Accept]")
                 .color(NamedTextColor.GREEN)
-                .clickEvent(ClickEvent.runCommand("/prismautils:tpaccept"))
+                .clickEvent(ClickEvent.runCommand("/tpaccept"))
                 .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(
                         "<green>Click to accept the teleport request"
                 )));
@@ -115,7 +115,7 @@ public class TeleportRequestManager {
         // Create clickable deny button
         Component denyButton = Component.text("[Deny]")
                 .color(NamedTextColor.RED)
-                .clickEvent(ClickEvent.runCommand("/prismautils:tpdeny"))
+                .clickEvent(ClickEvent.runCommand("/tpdeny"))
                 .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(
                         "<red>Click to deny the teleport request"
                 )));

@@ -130,7 +130,7 @@ public class HomesCommand extends BaseCommand {
                 Component confirmMessage = TextUtils.deserializeString(
                                 "<yellow>A home named [<white>" + homeName + "<yellow>] already exists. " +
                                         "Click here to overwrite it.")
-                        .clickEvent(ClickEvent.runCommand("/prismautils:home set " + homeName + " confirm"))
+                        .clickEvent(ClickEvent.runCommand("/home set " + homeName + " confirm"))
                         .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to confirm")));
 
                 player.sendMessage(confirmMessage);
@@ -174,7 +174,7 @@ public class HomesCommand extends BaseCommand {
             Component confirmMessage = TextUtils.deserializeString(
                             "<yellow>Are you sure you want to delete home [<white>" + homeName + "<yellow>]? " +
                                     "Click here to confirm.")
-                    .clickEvent(ClickEvent.runCommand("/prismautils:home del " + homeName + " confirm"))
+                    .clickEvent(ClickEvent.runCommand("/home del " + homeName + " confirm"))
                     .hoverEvent(HoverEvent.showText(TextUtils.deserializeString("<green>Click to confirm")));
 
             player.sendMessage(confirmMessage);
@@ -216,7 +216,7 @@ public class HomesCommand extends BaseCommand {
 
                 // Create the clickable home component
                 Component homeComponent = TextUtils.deserializeString("<green>[<white>" + home.getName() + "<green>]")
-                        .clickEvent(ClickEvent.runCommand("/prismautils:home " + home.getName()))
+                        .clickEvent(ClickEvent.runCommand("/home " + home.getName()))
                         .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(hoverText)));
 
                 homeComponents.add(homeComponent);
@@ -409,7 +409,7 @@ public class HomesCommand extends BaseCommand {
                         Math.round(loc.getZ()) + ")";
 
                 Component component = TextUtils.deserializeString(message)
-                        .clickEvent(ClickEvent.runCommand("/prismautils:home tp " + targetName + " " + home.getName()))
+                        .clickEvent(ClickEvent.runCommand("/home tp " + targetName + " " + home.getName()))
                         .hoverEvent(HoverEvent.showText(TextUtils.deserializeString(
                                 "<green>Click to teleport to this home\n" +
                                         "<red>Use /home admindel " + targetName + " " + home.getName() + " to delete"
