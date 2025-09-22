@@ -96,6 +96,14 @@ commands:
     aliases:
       - snapneck
 
+  centerblock:
+    description: Teleports the player to the center of the block they are standing on.
+    usage: /centerblock
+    permission: prismautils.command.centerblock
+    aliases:
+      - snaplegs
+      - middle
+
   limits:
     description: Show block and entity limits.
     usage: /limits

@@ -157,6 +157,8 @@ public final class PrismaUtils extends JavaPlugin {
         commandManager.registerCommand("uptime", uptimeCommand, uptimeCommand);
         RoundRotationCommand roundRotationCommand = new RoundRotationCommand();
         commandManager.registerCommand("roundrotation", roundRotationCommand, roundRotationCommand);
+        CenterBlockCommand centerBlockCommand = new CenterBlockCommand();
+        commandManager.registerCommand("centerblock", centerBlockCommand, centerBlockCommand);
         PatrolCommand patrolCommand = new PatrolCommand();
         commandManager.registerCommand("patrol", patrolCommand, patrolCommand);
 

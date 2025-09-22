@@ -24,10 +24,18 @@ public class LastLocationHandler implements Listener {
 
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             PlayerData playerData = dataManager.getPlayerData(player.getUniqueId());
+            Location currentLastLocation = playerData.getLastLocation();
 
-            Location storedLocation = fromLocation.clone();
-            playerData.setLastLocation(storedLocation);
-        } return;
+            boolean shouldUpdate = currentLastLocation == null ||
+                    !fromLocation.getWorld().getName().equals(currentLastLocation.getWorld().getName()) ||
+                    (Math.abs(fromLocation.getX() - currentLastLocation.getX()) > 1.0 ||
+                            Math.abs(fromLocation.getZ() - currentLastLocation.getZ()) > 1.0);
+
+            if (shouldUpdate) {
+                Location storedLocation = fromLocation.clone();
+                playerData.setLastLocation(storedLocation);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
