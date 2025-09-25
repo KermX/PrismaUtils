@@ -38,9 +38,9 @@ public class HorseZombificationHandler implements Listener {
             if (random.nextDouble() < TRANSFORMATION_CHANCE) {
 
                 double health = skeletonHorse.getHealth();
-                double maxHealth = skeletonHorse.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-                double speed = skeletonHorse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue();
-                double jumpHeight = skeletonHorse.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).getValue();
+                double maxHealth = skeletonHorse.getAttribute(Attribute.MAX_HEALTH).getValue();
+                double speed = skeletonHorse.getAttribute(Attribute.MOVEMENT_SPEED).getValue();
+                double jumpHeight = skeletonHorse.getAttribute(Attribute.JUMP_STRENGTH).getValue();
                 boolean hasSaddle = skeletonHorse.getInventory().getSaddle() != null;
                 Component customName = skeletonHorse.customName();
                 boolean customNameVisible = skeletonHorse.isCustomNameVisible();
@@ -48,9 +48,9 @@ public class HorseZombificationHandler implements Listener {
                 skeletonHorse.remove();
 
                 ZombieHorse zombieHorse = (ZombieHorse) loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE_HORSE);
-                zombieHorse.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
-                zombieHorse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
-                zombieHorse.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).setBaseValue(jumpHeight);
+                zombieHorse.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
+                zombieHorse.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(speed);
+                zombieHorse.getAttribute(Attribute.JUMP_STRENGTH).setBaseValue(jumpHeight);
                 zombieHorse.setHealth(health);
                 zombieHorse.setTamed(true);
                 if (hasSaddle) {
@@ -71,9 +71,9 @@ public class HorseZombificationHandler implements Listener {
 
             Location loc = zombieHorse.getLocation();
             double health = zombieHorse.getHealth();
-            double maxHealth = zombieHorse.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-            double speed = zombieHorse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue();
-            double jumpHeight = zombieHorse.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).getValue();
+            double maxHealth = zombieHorse.getAttribute(Attribute.MAX_HEALTH).getValue();
+            double speed = zombieHorse.getAttribute(Attribute.MOVEMENT_SPEED).getValue();
+            double jumpHeight = zombieHorse.getAttribute(Attribute.JUMP_STRENGTH).getValue();
             boolean hasSaddle = zombieHorse.getInventory().getSaddle() != null;
             Component customName = zombieHorse.customName();
             boolean customNameVisible = zombieHorse.isCustomNameVisible();
@@ -81,9 +81,9 @@ public class HorseZombificationHandler implements Listener {
             zombieHorse.remove();
 
             SkeletonHorse skeletonHorse = (SkeletonHorse) loc.getWorld().spawnEntity(loc, EntityType.SKELETON_HORSE);
-            skeletonHorse.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
-            skeletonHorse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
-            skeletonHorse.getAttribute(Attribute.GENERIC_JUMP_STRENGTH).setBaseValue(jumpHeight);
+            skeletonHorse.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
+            skeletonHorse.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(speed);
+            skeletonHorse.getAttribute(Attribute.JUMP_STRENGTH).setBaseValue(jumpHeight);
             skeletonHorse.setHealth(health);
             skeletonHorse.setTamed(true);
             if (hasSaddle) {

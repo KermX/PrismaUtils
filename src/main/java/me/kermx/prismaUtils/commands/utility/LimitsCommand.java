@@ -56,7 +56,7 @@ public class LimitsCommand extends BaseCommand {
             EntityType.TURTLE, EntityType.VEX, EntityType.VILLAGER, EntityType.VINDICATOR, EntityType.WANDERING_TRADER,
             EntityType.WARDEN, EntityType.WITCH, EntityType.WITHER, EntityType.WITHER_SKELETON, EntityType.WOLF,
             EntityType.ZOGLIN, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER, EntityType.ZOMBIFIED_PIGLIN,
-            EntityType.MINECART, EntityType.HOPPER_MINECART, EntityType.CHEST_MINECART
+            EntityType.MINECART, EntityType.HOPPER_MINECART, EntityType.CHEST_MINECART, EntityType.CREAKING, EntityType.HAPPY_GHAST
     );
 
     // Cache for max counts to avoid repeated calculations
@@ -264,7 +264,7 @@ public class LimitsCommand extends BaseCommand {
                  SLIME, SNIFFER, SNOW_GOLEM, SPIDER, SQUID, STRAY, STRIDER, TADPOLE, TRADER_LLAMA,
                  TROPICAL_FISH, TURTLE, VEX, VILLAGER, VINDICATOR, WANDERING_TRADER, WARDEN,
                  WITCH, WITHER, WITHER_SKELETON, WOLF, ZOGLIN, ZOMBIE, ZOMBIE_HORSE, ZOMBIE_VILLAGER,
-                 ZOMBIFIED_PIGLIN -> 32;
+                 ZOMBIFIED_PIGLIN, CREAKING -> 32;
             default -> 32; // Default limit for other entities
         };
     }

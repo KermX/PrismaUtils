@@ -28,10 +28,12 @@ public class AfkManager implements Listener {
     private final Map<UUID, Boolean> teleportedToAfk = new HashMap<>();
     private final Map<UUID, BukkitTask> teleportTasks = new HashMap<>();
     private final Map<UUID, BukkitTask> warningTasks = new HashMap<>();
+    private final Map<UUID, Long> joinTimes = new HashMap<>();
 
     private final long afkThreshold;
     private final long teleportThreshold;
     private final Location afkLocation;
+    private final long gracePeriodAfterJoin = 30000L;
 
     private final String afkMessage;
     private final String returnMessage;
@@ -212,6 +214,8 @@ public class AfkManager implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
+        joinTimes.put(uuid, System.currentTimeMillis());
+
         // Get the player data to check if they were AFK when the server stopped
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
 
@@ -255,6 +259,7 @@ public class AfkManager implements Listener {
         lastActivity.remove(uuid);
         afkStatus.remove(uuid);
         teleportedToAfk.remove(uuid);
+        joinTimes.remove(uuid);
 
         // Make sure data is saved
         plugin.getPlayerDataManager().markDataAsDirty(uuid);
@@ -324,11 +329,14 @@ public class AfkManager implements Listener {
             PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
             playerData.setAfk(false);
 
+            long joinTime = joinTimes.getOrDefault(uuid, 0L);
+            boolean recentlyJoined = (System.currentTimeMillis() - joinTime) < gracePeriodAfterJoin;
+
             // Broadcast return message if enabled
-            if (ConfigManager.getInstance().getAfkConfig().broadcastAfkMessages) {
+            if (!recentlyJoined && ConfigManager.getInstance().getAfkConfig().broadcastAfkMessages) {
                 Bukkit.broadcast(TextUtils.deserializeString(returnMessage,
                         Placeholder.component("player", player.displayName())));
-            } else {
+            } else if (!recentlyJoined) {
                 // Just inform the player
                 player.sendMessage(TextUtils.deserializeString("<gray>You are no longer AFK.</gray>"));
             }

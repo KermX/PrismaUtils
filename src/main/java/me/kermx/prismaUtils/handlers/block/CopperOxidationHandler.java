@@ -33,7 +33,7 @@ public class CopperOxidationHandler implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
-        if (event.getEntityType() == EntityType.POTION) {
+        if (event.getEntityType() == EntityType.SPLASH_POTION) {
             ThrownPotion potion = (ThrownPotion) event.getEntity();
 
             if (potion.getEffects().stream().anyMatch(effect -> effect.getType().equals(PotionEffectType.SPEED))) {
