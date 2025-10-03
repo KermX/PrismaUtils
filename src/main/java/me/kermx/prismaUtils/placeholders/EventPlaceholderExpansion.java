@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -85,6 +86,11 @@ public class EventPlaceholderExpansion extends PlaceholderExpansion {
             return resolveTimePlaceholder(event, property.substring(5)); // Remove "time_" prefix
         }
 
+        // Handle formatted date placeholders
+        if (property.startsWith("formatted_")) {
+            return resolveFormattedDatePlaceholder(event, property.substring(10));
+        }
+
         // Handle regular properties
         return resolveEventProperty(event, property);
     }
@@ -114,6 +120,56 @@ public class EventPlaceholderExpansion extends PlaceholderExpansion {
                 return event.getStatus();
             default:
                 return null;
+        }
+    }
+
+    private String resolveFormattedDatePlaceholder(EventData event, String dataType) {
+        String dateStr;
+
+        if (dataType.startsWith("start_")) {
+            dateStr = event.getStartDate();
+            dataType = dataType.substring(6);
+        } else if (dataType.startsWith("end_")) {
+            dateStr = event.getEndDate();
+            dataType = dataType.substring(4);
+        } else {
+            return null;
+        }
+
+        if (dateStr.equalsIgnoreCase("TBD")) {
+            return "TBD";
+        }
+
+        try {
+            LocalDateTime date = TimeUtils.parseDate(dateStr);
+            DateTimeFormatter formatter;
+
+            switch (dataType.toLowerCase()) {
+                case "short":
+                    // Format: Oct 17
+                    formatter = DateTimeFormatter.ofPattern("MMM d");
+                    break;
+                case "long":
+                    // Format: October 17, 2025
+                    formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+                    break;
+                case "full":
+                    // Format: Friday, October 17, 2025
+                    formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+                    break;
+                case "month_day":
+                    // Format: October 17
+                    formatter = DateTimeFormatter.ofPattern("MMMM d");
+                    break;
+                default:
+                    return null;
+            }
+            return date.format(formatter);
+        } catch (Exception e) {
+            if (eventPlaceholderConfig.debug) {
+                System.err.println("Error formatting date for event: " + e.getMessage());
+            }
+            return "Invalid date";
         }
     }
 
