@@ -6,6 +6,13 @@ settings:
   # Cache duration in seconds (0 = no cache)
   cache_duration: 30
 
+# Date formats accepted for start_date and end_date:
+# - yyyy-MM-dd (e.g., "2025-10-17")
+# - yyyy-MM-dd HH:mm:ss (e.g., "2025-10-17 14:30:00")
+# - MM/dd/yyyy (e.g., "10/17/2025")
+# - MM/dd/yyyy HH:mm:ss (e.g., "10/17/2025 14:30:00")
+# - "TBD" for to-be-determined dates
+
 events:
   event1:
     name: "Halloween"
