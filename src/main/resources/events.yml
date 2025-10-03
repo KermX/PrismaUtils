@@ -1,0 +1,41 @@
+# Event Placeholders Configuration
+settings:
+  enabled: true
+  # Debug logging
+  debug: false
+  # Cache duration in seconds (0 = no cache)
+  cache_duration: 30
+
+events:
+  event1:
+    name: "Halloween"
+    description: "Catch ghosts and stuff!"
+    start_date: "2025-10-17"
+    end_date: "2025-10-31"
+    location: "/warp halloween"
+    host: "PrismaStaff"
+    max_participants: 100
+    rewards: "many many things"
+    status: "upcoming" # upcoming, active, ended, cancelled
+
+  event2:
+    name: "Haunted House Build Comp"
+    description: "Build the most haunted house!"
+    start_date: "2025-10-01"
+    end_date: "2025-10-31"
+    location: "/warp buildcomp"
+    host: "PrismaStaff"
+    max_participants: 100
+    rewards: "Trophy and stuff"
+    status: "active"
+
+  event3:
+    name: "TBD"
+    description: "TBD"
+    start_date: "TBD"
+    end_date: "TBD"
+    location: "TBD"
+    host: "PrismaStaff"
+    max_participants: 100
+    rewards: "TBD"
+    status: "upcoming"

@@ -2,6 +2,7 @@ package me.kermx.prismaUtils.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.kermx.prismaUtils.external.TimeZoneInfo;
+import me.kermx.prismaUtils.utils.TimeUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +63,7 @@ public class UnixLocalTimeExpansion extends PlaceholderExpansion {
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, playerZone);
 
         return switch (formatType.toLowerCase()) {
-            case "relative" -> formatRelative(zonedDateTime, ZonedDateTime.now(playerZone));
+            case "relative" -> TimeUtils.formatRelativeTime(zonedDateTime, ZonedDateTime.now(playerZone));
             case "time" -> formatTimeOnly(zonedDateTime);
             case "datetime" -> formatDateTime(zonedDateTime);
             case "weekdaydatetime" -> formatWeekdayDateTime(zonedDateTime);
@@ -100,35 +101,6 @@ public class UnixLocalTimeExpansion extends PlaceholderExpansion {
         } catch (IOException e) {
             return ZoneId.of("America/New_York");
         }
-    }
-
-    private String formatRelative(ZonedDateTime targetTime, ZonedDateTime now) {
-        Duration duration = Duration.between(now, targetTime);
-        long seconds = duration.getSeconds();
-
-        if (seconds == 0) {
-            return "now";
-        }
-
-        boolean inFuture = seconds > 0;
-        long absSeconds = Math.abs(seconds);
-
-        long days = absSeconds / 86400;
-        long hours = (absSeconds % 86400) / 3600;
-        long minutes = ((absSeconds % 86400) % 3600) / 60;
-
-        StringBuilder sb = new StringBuilder();
-        if (days > 0) sb.append(days).append(" day").append(days > 1 ? "s" : "");
-        else if (hours > 0) sb.append(hours).append(" hour").append(hours > 1 ? "s" : "");
-        else if (minutes > 0) sb.append(minutes).append(" minute").append(minutes > 1 ? "s" : "");
-        else sb.append(absSeconds).append(" second").append(absSeconds > 1 ? "s" : "");
-
-        if (inFuture) {
-            sb.insert(0, "in ");
-        } else {
-            sb.append(" ago");
-        }
-        return sb.toString();
     }
 
     private String formatTimeOnly(ZonedDateTime dateTime) {

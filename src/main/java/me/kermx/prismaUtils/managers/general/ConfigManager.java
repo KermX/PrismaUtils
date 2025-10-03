@@ -14,6 +14,7 @@ public class ConfigManager {
     private WarpsConfigManager warpsConfigManager;
     private AfkConfigManager afkConfigManager;
     private ChatConfigManager chatConfigManager;
+    private EventPlaceholderConfigManager eventPlaceholderConfigManager;
 
     private ConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -40,6 +41,7 @@ public class ConfigManager {
         warpsConfigManager = new WarpsConfigManager(plugin);
         afkConfigManager = new AfkConfigManager(plugin);
         chatConfigManager = new ChatConfigManager(plugin);
+        eventPlaceholderConfigManager = new EventPlaceholderConfigManager(plugin);
 
         mainConfigManager.loadConfig();
         messagesConfigManager.loadConfig();
@@ -47,6 +49,7 @@ public class ConfigManager {
         warpsConfigManager.loadConfig();
         afkConfigManager.loadConfig();
         chatConfigManager.loadConfig();
+        eventPlaceholderConfigManager.loadConfig();
     }
 
     public void reloadAll() {
@@ -56,6 +59,7 @@ public class ConfigManager {
         warpsConfigManager.reload();
         afkConfigManager.reload();
         chatConfigManager.reload();
+        eventPlaceholderConfigManager.reload();
     }
 
     public MainConfigManager getMainConfig() {
@@ -75,4 +79,6 @@ public class ConfigManager {
     public AfkConfigManager getAfkConfig() {return afkConfigManager;}
 
     public ChatConfigManager getChatConfig() {return chatConfigManager;}
+
+    public EventPlaceholderConfigManager getEventPlaceholdersConfig() {return eventPlaceholderConfigManager;}
 }

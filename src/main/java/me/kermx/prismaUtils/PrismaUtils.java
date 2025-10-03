@@ -33,9 +33,7 @@ import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.features.SeenManager;
 import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
-import me.kermx.prismaUtils.placeholders.AfkPlaceholderExpansion;
-import me.kermx.prismaUtils.placeholders.MiniMessagePlaceholderExpansion;
-import me.kermx.prismaUtils.placeholders.UnixLocalTimeExpansion;
+import me.kermx.prismaUtils.placeholders.*;
 import me.kermx.prismaUtils.managers.general.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -325,6 +323,8 @@ public final class PrismaUtils extends JavaPlugin {
             new MiniMessagePlaceholderExpansion().register();
             new UnixLocalTimeExpansion().register();
             new AfkPlaceholderExpansion(afkManager).register();
+            new EventPlaceholderExpansion().register();
+            new TimePlaceholderExpansion().register();
         } else {
             getLogger().warning("Placeholder API doesn't exist! HELP!!!");
         }
