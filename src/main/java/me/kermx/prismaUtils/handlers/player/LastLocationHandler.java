@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.handlers.player;
 
-import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
+import me.kermx.prismaUtils.managers.playerdata.PlayerData;
+import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

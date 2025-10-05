@@ -2,12 +2,12 @@ package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.PlayerData.MailMessage;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
+import me.kermx.prismaUtils.managers.playerdata.MailMessage;
+import me.kermx.prismaUtils.managers.playerdata.PlayerData;
+import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
 import me.kermx.prismaUtils.managers.chat.ChatFilterManager;
 import me.kermx.prismaUtils.managers.chat.EmojiManager;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

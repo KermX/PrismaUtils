@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.features.AfkManager;
+import me.kermx.prismaUtils.managers.feature.AfkManager;
 import me.kermx.prismaUtils.utils.PlayerUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Bukkit;

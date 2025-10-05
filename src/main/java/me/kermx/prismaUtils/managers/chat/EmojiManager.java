@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.managers.chat;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.managers.general.configs.ChatConfigManager;
+import me.kermx.prismaUtils.managers.config.ChatConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.entity.Player;
 

@@ -3,7 +3,7 @@ package me.kermx.prismaUtils;
 import me.kermx.prismaUtils.commands.admin.*;
 import me.kermx.prismaUtils.commands.crafting.*;
 import me.kermx.prismaUtils.commands.player.*;
-import me.kermx.prismaUtils.commands.player.Tpask.*;
+import me.kermx.prismaUtils.commands.player.tpask.*;
 import me.kermx.prismaUtils.commands.player.homes.AdminHomesCommand;
 import me.kermx.prismaUtils.commands.player.homes.DelHomeCommand;
 import me.kermx.prismaUtils.commands.player.homes.HomesCommand;
@@ -23,23 +23,22 @@ import me.kermx.prismaUtils.handlers.player.*;
 import me.kermx.prismaUtils.integrations.ProtectionService;
 import me.kermx.prismaUtils.integrations.SitService;
 import me.kermx.prismaUtils.integrations.TerritoryService;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
-import me.kermx.prismaUtils.managers.features.AfkManager;
-import me.kermx.prismaUtils.managers.features.FlightManager;
-import me.kermx.prismaUtils.managers.general.CommandManager;
-import me.kermx.prismaUtils.managers.general.CooldownManager;
-import me.kermx.prismaUtils.managers.general.EventManager;
-import me.kermx.prismaUtils.managers.features.DisabledCraftingRecipesManager;
-import me.kermx.prismaUtils.managers.features.SeenManager;
-import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
+import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
+import me.kermx.prismaUtils.managers.feature.AfkManager;
+import me.kermx.prismaUtils.managers.feature.FlightManager;
+import me.kermx.prismaUtils.managers.core.CommandManager;
+import me.kermx.prismaUtils.managers.core.CooldownManager;
+import me.kermx.prismaUtils.managers.core.EventManager;
+import me.kermx.prismaUtils.managers.feature.DisabledCraftingRecipesManager;
+import me.kermx.prismaUtils.managers.feature.SeenManager;
+import me.kermx.prismaUtils.managers.config.WarpsConfigManager;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.placeholders.*;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
-    // TODO - much later: Major refactor of event handling!! Wooooooo
     // TODO: Fix the stupid patrol command. Always says there are no players
     // TODO: Add configuration options for AntiAutoFishingHandler
 
@@ -263,7 +262,7 @@ public final class PrismaUtils extends JavaPlugin {
 
     private void registerEvents(EventManager eventManager) {
         eventManager.registerListeners(
-                new PlayerDataListener(playerDataManager),
+                new PlayerDataHandler(playerDataManager),
                 new RemoveDropsHandler(),
                 new SlimeSplitHandler(),
                 new CustomDeathMessageHandler(),
@@ -310,7 +309,7 @@ public final class PrismaUtils extends JavaPlugin {
             eventManager.registerListeners(new NetherMobZombificationHandler());
         }
         if (ConfigManager.getInstance().getAfkConfig().afkEnabled) {
-            eventManager.registerListeners(new AfkProtectionListener(afkManager, ConfigManager.getInstance().getAfkConfig()), afkManager);
+            eventManager.registerListeners(new AfkProtectionHandler(afkManager, ConfigManager.getInstance().getAfkConfig()), afkManager);
         }
     }
 

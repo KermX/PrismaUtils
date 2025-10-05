@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.commands.player.restore;
 
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import org.bukkit.entity.Player;
 
 public class RestoreHungerCommand extends BaseRestoreAction {

@@ -1,10 +1,10 @@
 package me.kermx.prismaUtils.commands.player.teleport;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerDataManager;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
-import me.kermx.prismaUtils.managers.general.CooldownManager;
+import me.kermx.prismaUtils.managers.playerdata.PlayerData;
+import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
+import me.kermx.prismaUtils.managers.core.CooldownManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;

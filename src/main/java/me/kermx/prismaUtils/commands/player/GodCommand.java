@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.player;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;

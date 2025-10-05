@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.managers.chat;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.managers.general.configs.ChatConfigManager;
+import me.kermx.prismaUtils.managers.config.ChatConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

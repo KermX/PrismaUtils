@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.player.warps;
 
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.general.configs.WarpsConfigManager;
+import me.kermx.prismaUtils.managers.config.WarpsConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;

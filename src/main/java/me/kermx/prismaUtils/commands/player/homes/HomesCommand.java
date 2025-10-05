@@ -2,10 +2,10 @@ package me.kermx.prismaUtils.commands.player.homes;
 
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.BaseCommand;
-import me.kermx.prismaUtils.managers.PlayerData.Home;
-import me.kermx.prismaUtils.managers.PlayerData.PlayerData;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
-import me.kermx.prismaUtils.managers.general.CooldownManager;
+import me.kermx.prismaUtils.managers.playerdata.Home;
+import me.kermx.prismaUtils.managers.playerdata.PlayerData;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
+import me.kermx.prismaUtils.managers.core.CooldownManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;

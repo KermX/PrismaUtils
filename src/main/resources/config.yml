@@ -66,7 +66,7 @@ health_scale:
   value: 20
 
 tweaks:
-  ##must restart to toggle these features
+  ##must restart to toggle these feature
   chains_are_climbable: true
   disable_spawner_mob_item_drops: true
   endermites_immune_to_lightning: true

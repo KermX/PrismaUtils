@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.handlers.player;
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

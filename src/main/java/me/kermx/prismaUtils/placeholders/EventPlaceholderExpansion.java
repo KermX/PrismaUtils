@@ -1,9 +1,9 @@
 package me.kermx.prismaUtils.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
-import me.kermx.prismaUtils.managers.general.configs.EventPlaceholderConfigManager;
-import me.kermx.prismaUtils.managers.general.configs.EventPlaceholderConfigManager.EventData;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
+import me.kermx.prismaUtils.managers.config.EventPlaceholderConfigManager;
+import me.kermx.prismaUtils.managers.config.EventPlaceholderConfigManager.EventData;
 import me.kermx.prismaUtils.utils.TimeUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;

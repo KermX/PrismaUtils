@@ -4,7 +4,7 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.managers.chat.ChatFilterManager;
 import me.kermx.prismaUtils.managers.chat.CommandChatProcessor;
 import me.kermx.prismaUtils.managers.chat.EmojiManager;
-import me.kermx.prismaUtils.managers.general.ConfigManager;
+import me.kermx.prismaUtils.managers.core.ConfigManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

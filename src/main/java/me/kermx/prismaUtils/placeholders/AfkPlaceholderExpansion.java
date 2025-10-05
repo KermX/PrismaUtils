@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.placeholders;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.kermx.prismaUtils.managers.features.AfkManager;
+import me.kermx.prismaUtils.managers.feature.AfkManager;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
