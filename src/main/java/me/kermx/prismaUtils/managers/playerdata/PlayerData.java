@@ -36,8 +36,8 @@ public class PlayerData {
         this.godEnabled = builder.godEnabled;
         this.afkEnabled = builder.afkEnabled;
         this.firstJoin = builder.firstJoin;
-        this.mailbox = builder.mailbox;
-        this.homes = builder.homes;
+        this.mailbox = new ArrayList<>(builder.mailbox);
+        this.homes = new HashMap<>(builder.homes);
         this.flightEnabled = builder.flightEnabled;
         this.tempFlightSeconds = builder.tempFlightSeconds;
         this.tempFlightLastUpdated = builder.tempFlightLastUpdated;
@@ -126,7 +126,7 @@ public class PlayerData {
     }
 
     public List<MailMessage> getMailbox() {
-        return mailbox;
+        return Collections.unmodifiableList(mailbox);
     }
 
     public void addMailMessage(MailMessage message) {
@@ -142,7 +142,7 @@ public class PlayerData {
     }
 
     public Map<String, Home> getHomes() {
-        return homes;
+        return Collections.unmodifiableMap(homes);
     }
 
     public Home getHome(String name) {
@@ -237,16 +237,14 @@ public class PlayerData {
         return tempFlightSeconds > 0;
     }
 
-    // Builder class stays the same
+    // Builder class
     public static class Builder {
         private final UUID playerID;
-        private boolean flyEnabled = false;
         private boolean godEnabled = false;
         private boolean afkEnabled = false;
         private LocalDateTime firstJoin = LocalDateTime.now();
         private List<MailMessage> mailbox = new ArrayList<>();
         private Map<String, Home> homes = new HashMap<>();
-        private Location lastLocation;
         private String lastLocationWorld;
         private double lastLocationX;
         private double lastLocationY;
@@ -262,11 +260,6 @@ public class PlayerData {
 
         public Builder(UUID playerID) {
             this.playerID = playerID;
-        }
-
-        public Builder flyEnabled(boolean flyEnabled) {
-            this.flyEnabled = flyEnabled;
-            return this;
         }
 
         public Builder godEnabled(boolean godEnabled) {
@@ -285,12 +278,12 @@ public class PlayerData {
         }
 
         public Builder mailbox(List<MailMessage> mailbox) {
-            this.mailbox = mailbox;
+            this.mailbox = mailbox != null ? new ArrayList<>(mailbox) : new ArrayList<>();
             return this;
         }
 
         public Builder homes(Map<String, Home> homes) {
-            this.homes = homes;
+            this.homes = homes != null ? new HashMap<>(homes) : new HashMap<>();
             return this;
         }
 

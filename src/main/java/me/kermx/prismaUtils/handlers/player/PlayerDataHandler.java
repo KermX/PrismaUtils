@@ -39,9 +39,8 @@ public class PlayerDataHandler implements Listener {
 
         PlayerData data = dataManager.getPlayerData(playerId);
         if (data != null) {
-
-            // The actual savePlayerData and removePlayerData calls will
-            // handle unregistering listeners and persisting data
+            // Force synchronous save on quit to prevent data loss
+            // This happens before the cache is cleaned up
             dataManager.savePlayerData(playerId);
             dataManager.removePlayerData(playerId);
         }
