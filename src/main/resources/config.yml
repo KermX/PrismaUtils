@@ -65,14 +65,6 @@ health_scale:
   enabled: true
   value: 20
 
-tweaks:
-  ##must restart to toggle these feature
-  chains_are_climbable: true
-  disable_spawner_mob_item_drops: true
-  endermites_immune_to_lightning: true
-  non_level_based_enchanting: false
-  disable_nether_mob_zombification: false
-
 disabled_recipes: []
   ##must restart to edit this feature
 #  - SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE

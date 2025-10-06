@@ -375,6 +375,16 @@ commands:
     usage: /patrol
     permission: prismautils.command.patrol
 
+  prismautilsfeatures:
+    description: List or edit the active features of PrismaUtils.
+    usage: /prismautilsfeatures [list|toggle] [feature]
+    permission: prismautils.command.features
+    aliases:
+      - pufeatures
+      - pufeature
+      - puf
+      - prismautilsfeature
+
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
     usage: /prismautilsreload

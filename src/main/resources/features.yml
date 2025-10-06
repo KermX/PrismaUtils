@@ -1,0 +1,134 @@
+# ===================================
+# PrismaUtils Feature Toggle System
+# ===================================
+# Set any feature to 'false' to completely disable it
+# This allows you to use the plugin for different gamemodes
+# without unwanted features interfering with your server
+
+# ==================
+# MAJOR SYSTEMS
+# ==================
+systems:
+  # Home system (sethome, home, delhome, adminhome)
+  homes: true
+
+  # Warp system (warp, setwarp, delwarp)
+  warps: true
+
+  # Teleport request system (tpa, tpahere, tpaccept, tpdeny, tpcancel)
+  teleport_requests: true
+
+  # Teleport commands (tp, tphere, tppos, spawn, back)
+  teleport_commands: true
+
+  # AFK system with auto-teleport and protection
+  afk: true
+
+  # Flight system (fly, flytime, tempfly)
+  flight: true
+
+  # Mail system for player messaging
+  mail: true
+
+  # Chat formatting, filters, and emojis
+  chat: true
+
+  # God mode system
+  god_mode: true
+
+# ==================
+# COMMAND CATEGORIES
+# ==================
+commands:
+  # Portable crafting stations (anvil, cartographytable, craftingtable, etc)
+  crafting_stations: true
+
+  # Admin commands (blockinfo, entityinfo, iteminfo, patrol, etc)
+  admin: true
+
+  # Utility commands (near, ping, repair, trash, condense, etc)
+  utility: true
+
+  # Player commands (top, bottom, heal, feed, ptime, pweather)
+  player: true
+
+# ==================
+# TWEAKS & HANDLERS
+# ==================
+tweaks:
+  # Allow silk touch on spawners
+  silk_spawners: true
+
+  # Disable drops from spawner mobs (unless damaged by player)
+  spawner_mob_drops: true
+
+  # Make chains climbable like ladders
+  climbable_chains: true
+
+  # Convert skeleton/zombie horses with rotten flesh/shears
+  horse_zombification: true
+
+  # Disable piglins/hoglins turning into zombies in overworld
+  nether_mob_zombification: true
+
+  # Make endermites immune to lightning damage
+  endermite_lightning_immunity: true
+
+  # Alternative enchanting cost system (non level-based)
+  non_level_enchanting: true
+
+  # Control copper oxidation with protection plugins
+  copper_oxidation: true
+
+  # Seed and shear custom blocks
+  seed_shear_blocks: true
+
+  # Control slime splitting behavior
+  slime_split: true
+
+  # Remove excess drops from mobs like stone swords from wither skeletons
+  remove_excess_drops: true
+
+  # Prevent auto-fishing machines
+  anti_auto_fishing: true
+
+# ==================
+# FEATURES
+# ==================
+features:
+  # Custom death messages
+  custom_death_messages: true
+
+  # Custom health display scale
+  health_scale: true
+
+  # Run commands on player first join
+  first_join_commands: true
+
+  # Teleport to spawn on first join
+  first_join_spawn: true
+
+  # Track player last location for /back command
+  last_location: true
+
+  # Permission-based keep inventory on death
+  permission_keep_inv: true
+
+  # Custom respawn messages
+  respawn_message: true
+
+  # Prevent spawn egg use in protected areas
+  safe_spawn_egg: true
+
+  # Disable specific crafting recipes
+  disabled_recipes: true
+
+  # Track when players were last seen
+  seen_system: true
+
+# ==================
+# INTEGRATIONS
+# ==================
+integrations:
+  # PlaceholderAPI expansions (time, afk, events, etc)
+  placeholderapi: true
