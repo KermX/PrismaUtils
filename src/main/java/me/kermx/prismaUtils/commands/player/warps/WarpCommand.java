@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.player.warps;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.CooldownManager;
 import me.kermx.prismaUtils.managers.config.WarpsConfigManager;

@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.MailMessage;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;

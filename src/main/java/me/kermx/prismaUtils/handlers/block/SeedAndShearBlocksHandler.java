@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.handlers.block;
 
-import me.kermx.prismaUtils.integrations.ProtectionService;
+import me.kermx.prismaUtils.services.ProtectionService;
 import me.kermx.prismaUtils.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

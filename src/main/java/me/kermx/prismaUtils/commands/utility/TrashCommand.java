@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.commands.utility;
 
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

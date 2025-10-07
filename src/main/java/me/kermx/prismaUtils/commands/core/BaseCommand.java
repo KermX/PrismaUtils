@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.commands;
+package me.kermx.prismaUtils.commands.core;
 
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;

@@ -20,9 +20,9 @@ import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
 import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
-import me.kermx.prismaUtils.integrations.ProtectionService;
-import me.kermx.prismaUtils.integrations.SitService;
-import me.kermx.prismaUtils.integrations.TerritoryService;
+import me.kermx.prismaUtils.services.ProtectionService;
+import me.kermx.prismaUtils.services.SitService;
+import me.kermx.prismaUtils.services.TerritoryService;
 import me.kermx.prismaUtils.managers.core.*;
 import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
 import me.kermx.prismaUtils.managers.feature.AfkManager;
@@ -36,13 +36,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
 
-    // TODO: Improve general structure of the plugin, un-nest some stuff. Consider using services for more stuff.
-    // TODO: Clean up util classes (move time stuff from TextUtils to TimeUtils)
-    // TODO: Add a backup system for playerdata
-    // TODO: Permission caching system to not have to check so often
-    // TODO: Better automatic config updating
-    // TODO: Fix the stupid patrol command. Always says there are no players
-    // TODO: Add configuration options for AntiAutoFishingHandler
 
     private PlayerDataManager playerDataManager;
     private FeatureToggleManager featureToggleManager;

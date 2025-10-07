@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.managers.feature;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.integrations.TerritoryService;
+import me.kermx.prismaUtils.services.TerritoryService;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;

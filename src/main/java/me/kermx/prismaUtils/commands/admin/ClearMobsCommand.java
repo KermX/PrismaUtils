@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.commands.admin;
 
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;

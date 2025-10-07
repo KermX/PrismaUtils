@@ -1,10 +1,8 @@
-package me.kermx.prismaUtils.integrations;
+package me.kermx.prismaUtils.services;
 
 import dev.geco.gsit.api.GSitAPI;
 import dev.geco.gsit.object.GSeat;
 import dev.geco.gsit.object.GStopReason;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.managers.feature;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.integrations.SitService;
+import me.kermx.prismaUtils.services.SitService;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.BlockUtils;

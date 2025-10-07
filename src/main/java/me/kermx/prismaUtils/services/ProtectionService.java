@@ -1,4 +1,4 @@
-package me.kermx.prismaUtils.integrations;
+package me.kermx.prismaUtils.services;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

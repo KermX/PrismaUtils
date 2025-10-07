@@ -60,7 +60,7 @@ public class FeatureToggleManager {
         SAFE_SPAWN_EGG("features.safe_spawn_egg", "Prevent spawn egg use in protected areas"),
 
         // === PLACEHOLDERS ===
-        PLACEHOLDERAPI("integrations.placeholderapi", "PlaceholderAPI expansions"),
+        PLACEHOLDERAPI("services.placeholderapi", "PlaceholderAPI expansions"),
 
         // === MISC ===
         DISABLED_RECIPES("features.disabled_recipes", "Disable specific crafting recipes"),

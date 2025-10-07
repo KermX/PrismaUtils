@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.commands.utility;
 
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.feature.SeenManager;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.PlayerUtils;

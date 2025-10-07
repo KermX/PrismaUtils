@@ -1,7 +1,7 @@
 package me.kermx.prismaUtils.commands.player.teleport;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.TextUtils;

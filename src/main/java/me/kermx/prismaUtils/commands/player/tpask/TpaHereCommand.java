@@ -1,6 +1,6 @@
 package me.kermx.prismaUtils.commands.player.tpask;
 
-import me.kermx.prismaUtils.commands.BaseCommand;
+import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequest;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.utils.PlayerUtils;
