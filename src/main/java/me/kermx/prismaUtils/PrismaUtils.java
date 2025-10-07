@@ -314,80 +314,85 @@ public final class PrismaUtils extends JavaPlugin {
         // Always register player data handler
         eventManager.registerListeners(new PlayerDataHandler(playerDataManager));
 
-        // Tweaks
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.REMOVE_EXCESS_DROPS)) {
-            eventManager.registerListeners(new RemoveDropsHandler());
+        // Register feature-toggled listeners
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.REMOVE_EXCESS_DROPS,
+                new RemoveDropsHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SLIME_SPLIT_CONTROL,
+                new SlimeSplitHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CUSTOM_DEATH_MESSAGES,
+                new CustomDeathMessageHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.HEALTH_SCALE,
+                new HealthScaleHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.FIRST_JOIN_COMMANDS,
+                new FirstJoinCommandsHandler(this));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.FIRST_JOIN_SPAWN,
+                new FirstJoinSpawnHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SILK_SPAWNERS,
+                new SilkSpawnerHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SAFE_SPAWN_EGG,
+                new SafeSpawnEggHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SEED_SHEAR_BLOCKS,
+                seedAndShearBlocksHandler);
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.COPPER_OXIDATION_CONTROL,
+                new CopperOxidationHandler(protectionService));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.HORSE_ZOMBIFICATION,
+                new HorseZombificationHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.PERMISSION_KEEP_INVENTORY,
+                new PermissionKeepInvHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.RESPAWN_MESSAGE,
+                new RespawnMessageHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.LAST_LOCATION_TRACKING,
+                new LastLocationHandler(playerDataManager));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.ANTI_AUTO_FISHING,
+                new AntiAutoFishingHandler(this));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SPAWNER_MOB_DROPS,
+                new SpawnerMobItemDropsHandler(this));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.ENDERMITE_LIGHTNING_IMMUNITY,
+                new EntityLightningImmunityHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CLIMBABLE_CHAINS,
+                new ClimbableChainsHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.NON_LEVEL_ENCHANTING,
+                new AlternativeEnchantingCostHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.NETHER_MOB_ZOMBIFICATION,
+                new NetherMobZombificationHandler());
+
+        // Listeners with null checks
+        if (chatHandler != null) {
+            eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CHAT_MANAGEMENT, chatHandler);
         }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SLIME_SPLIT_CONTROL)) {
-            eventManager.registerListeners(new SlimeSplitHandler());
+
+        if (afkManager != null && ConfigManager.getInstance().getAfkConfig().afkEnabled) {
+            eventManager.registerFeatureListeners(FeatureToggleManager.Feature.AFK_SYSTEM,
+                    new AfkProtectionHandler(afkManager, ConfigManager.getInstance().getAfkConfig()),
+                    afkManager);
         }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.CUSTOM_DEATH_MESSAGES)) {
-            eventManager.registerListeners(new CustomDeathMessageHandler());
+
+        if (seenManager != null) {
+            eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SEEN_SYSTEM,
+                    new SeenEventsHandler(seenManager));
         }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.HEALTH_SCALE)) {
-            eventManager.registerListeners(new HealthScaleHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.FIRST_JOIN_COMMANDS)) {
-            eventManager.registerListeners(new FirstJoinCommandsHandler(this));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.FIRST_JOIN_SPAWN)) {
-            eventManager.registerListeners(new FirstJoinSpawnHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SILK_SPAWNERS)) {
-            eventManager.registerListeners(new SilkSpawnerHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SAFE_SPAWN_EGG)) {
-            eventManager.registerListeners(new SafeSpawnEggHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SEED_SHEAR_BLOCKS)) {
-            eventManager.registerListeners(seedAndShearBlocksHandler);
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.COPPER_OXIDATION_CONTROL)) {
-            eventManager.registerListeners(new CopperOxidationHandler(protectionService));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.HORSE_ZOMBIFICATION)) {
-            eventManager.registerListeners(new HorseZombificationHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.PERMISSION_KEEP_INVENTORY)) {
-            eventManager.registerListeners(new PermissionKeepInvHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.RESPAWN_MESSAGE)) {
-            eventManager.registerListeners(new RespawnMessageHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.LAST_LOCATION_TRACKING)) {
-            eventManager.registerListeners(new LastLocationHandler(playerDataManager));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.ANTI_AUTO_FISHING)) {
-            eventManager.registerListeners(new AntiAutoFishingHandler(this));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.CHAT_MANAGEMENT) && chatHandler != null) {
-            eventManager.registerListeners(chatHandler);
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SPAWNER_MOB_DROPS)) {
-            eventManager.registerListeners(new SpawnerMobItemDropsHandler(this));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.ENDERMITE_LIGHTNING_IMMUNITY)) {
-            eventManager.registerListeners(new EntityLightningImmunityHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.CLIMBABLE_CHAINS)) {
-            eventManager.registerListeners(new ClimbableChainsHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.NON_LEVEL_ENCHANTING)) {
-            eventManager.registerListeners(new AlternativeEnchantingCostHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.NETHER_MOB_ZOMBIFICATION)) {
-            eventManager.registerListeners(new NetherMobZombificationHandler());
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.AFK_SYSTEM)
-                && ConfigManager.getInstance().getAfkConfig().afkEnabled
-                && afkManager != null) {
-            eventManager.registerListeners(new AfkProtectionHandler(afkManager, ConfigManager.getInstance().getAfkConfig()), afkManager);
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.SEEN_SYSTEM) && seenManager != null) {
-            eventManager.registerListeners(new SeenEventsHandler(seenManager));
-        }
-        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.GOD_MODE) && godCommand != null) {
-            eventManager.registerListeners(godCommand);
+
+        if (godCommand != null) {
+            eventManager.registerFeatureListeners(FeatureToggleManager.Feature.GOD_MODE, godCommand);
         }
     }
 
