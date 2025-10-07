@@ -387,10 +387,11 @@ commands:
 
   prismautilsreload:
     description: Reloads PrismaUtils configuration.
-    usage: /prismautilsreload
+    usage: /prismautilsreload [config]
     permission: prismautils.command.reload
     aliases:
       - pureload
+      - pur
 
 permissions:
   prismautils.keepinventory:

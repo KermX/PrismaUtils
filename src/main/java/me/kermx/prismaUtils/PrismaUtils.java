@@ -37,12 +37,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PrismaUtils extends JavaPlugin {
 
     // TODO: Improve general structure of the plugin, un-nest some stuff. Consider using services for more stuff.
-    // TODO: Add reload option for individual config files without having to reload the entire plugin
     // TODO: Clean up util classes (move time stuff from TextUtils to TimeUtils)
     // TODO: Add a backup system for playerdata
     // TODO: Permission caching system to not have to check so often
     // TODO: Better automatic config updating
-    // TODO: Move any time related junk out of TextUtils into TimeUtils (might need some refactoring)
     // TODO: Fix the stupid patrol command. Always says there are no players
     // TODO: Add configuration options for AntiAutoFishingHandler
 
