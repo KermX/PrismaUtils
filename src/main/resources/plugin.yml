@@ -340,6 +340,23 @@ commands:
     usage: /entityinfo
     permission: prismautils.command.entityinfo
 
+  gmc:
+    description: Set player gamemode to creative
+    usage: /gmc [player]
+    permission: prismautils.command.gamemode.creative
+  gms:
+    description: Set player gamemode to survival
+    usage: /gms [player]
+    permission: prismautils.command.gamemode.survival
+  gma:
+    description: Set player gamemode to adventure
+    usage: /gma [player]
+    permission: prismautils.command.gamemode.adventure
+  gmsp:
+    description: Set player gamemode to spectator
+    usage: /gmsp [player]
+    permission: prismautils.command.gamemode.spectator
+
   iteminfo:
     description: Shows information about the item in the player's hand.
     usage: /iteminfo

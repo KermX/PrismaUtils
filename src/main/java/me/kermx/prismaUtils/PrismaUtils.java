@@ -32,6 +32,7 @@ import me.kermx.prismaUtils.managers.feature.SeenManager;
 import me.kermx.prismaUtils.managers.config.WarpsConfigManager;
 import me.kermx.prismaUtils.managers.teleport.TeleportRequestManager;
 import me.kermx.prismaUtils.placeholders.*;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PrismaUtils extends JavaPlugin {
@@ -151,6 +152,14 @@ public final class PrismaUtils extends JavaPlugin {
             EntityInfoCommand entityInfoCommand = new EntityInfoCommand();
             commandManager.registerCommand("entityinfo", entityInfoCommand, entityInfoCommand);
             ItemInfoCommand itemInfoCommand = new ItemInfoCommand();
+            GamemodeCommand gmcCommand = new GamemodeCommand(GameMode.CREATIVE, "prismautils.command.gamemode.creative", "/gmc [player]");
+            commandManager.registerCommand("gmc", gmcCommand, gmcCommand);
+            GamemodeCommand gmsCommand = new GamemodeCommand(GameMode.SURVIVAL, "prismautils.command.gamemode.survival", "/gms [player]");
+            commandManager.registerCommand("gms", gmsCommand, gmsCommand);
+            GamemodeCommand gmaCommand = new GamemodeCommand(GameMode.ADVENTURE, "prismautils.command.gamemode.adventure", "/gma [player]");
+            commandManager.registerCommand("gma", gmaCommand, gmaCommand);
+            GamemodeCommand gmspCommand = new GamemodeCommand(GameMode.SPECTATOR, "prismautils.command.gamemode.spectator", "/gmsp [player]");
+            commandManager.registerCommand("gmsp", gmspCommand, gmspCommand);
             commandManager.registerCommand("iteminfo", itemInfoCommand, itemInfoCommand);
             ReloadConfigCommand reloadConfigCommand = new ReloadConfigCommand(this);
             commandManager.registerCommand("prismautilsreload", reloadConfigCommand, reloadConfigCommand);
