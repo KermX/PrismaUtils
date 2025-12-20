@@ -183,6 +183,8 @@ public final class PrismaUtils extends JavaPlugin {
             commandManager.registerCommand("centerblock", centerBlockCommand, centerBlockCommand);
             PatrolCommand patrolCommand = new PatrolCommand();
             commandManager.registerCommand("patrol", patrolCommand, patrolCommand);
+            NightVisionCommand nightVisionCommand = new NightVisionCommand();
+            commandManager.registerCommand("nightvision", nightVisionCommand, nightVisionCommand);
             FeaturesCommand featuresCommand = new FeaturesCommand(this);
             commandManager.registerCommand("prismautilsfeatures", featuresCommand, featuresCommand);
         }

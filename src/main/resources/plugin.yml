@@ -77,6 +77,13 @@ commands:
     usage: /god
     permission: prismautils.command.god
 
+  nightvision:
+    description: Toggles night vision.
+    usage: /nightvision
+    permission: prismautils.command.nightvision
+    aliases:
+      - nv
+
   flyspeed:
     description: Sets the player's fly speed.
     usage: /flyspeed [speed]

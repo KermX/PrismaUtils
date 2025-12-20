@@ -94,6 +94,12 @@ public class MessagesConfigManager {
     public String godEnabledForPlayerMessage;
     public String godDisabledForPlayerMessage;
 
+    // Nightvision Messages
+    public String nightvisionEnabledMessage;
+    public String nightvisionDisabledMessage;
+    public String nightvisionEnabledForPlayerMessage;
+    public String nightvisionDisabledForPlayerMessage;
+
     // Condense and Uncondense Messages
     public String condenseMessage;
     public String uncondenseMessage;
@@ -246,6 +252,12 @@ public class MessagesConfigManager {
         godDisabledMessage = messages.getString("god_messages.god_disabled_message");
         godEnabledForPlayerMessage = messages.getString("god_messages.god_enabled_for_player_message");
         godDisabledForPlayerMessage = messages.getString("god_messages.god_disabled_for_player_message");
+
+        // Nightvision Messages
+        nightvisionEnabledMessage = messages.getString("nightvision_messages.nightvision_enabled_message");
+        nightvisionDisabledMessage = messages.getString("nightvision_messages.nightvision_disabled_message");
+        nightvisionEnabledForPlayerMessage = messages.getString("nightvision_messages.nightvision_enabled_for_player_message");
+        nightvisionDisabledForPlayerMessage = messages.getString("nightvision_messages.nightvision_disabled_for_player_message");
 
         // Condense and Uncondense Messages
         condenseMessage = messages.getString("condense_uncondense.condense_message");

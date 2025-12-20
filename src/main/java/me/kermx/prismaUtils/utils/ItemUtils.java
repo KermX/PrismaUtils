@@ -8,6 +8,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -259,5 +260,43 @@ public final class ItemUtils {
             base.setAmount(Math.min(totalAmount, maxStack));
         }
         return base;
+    }
+
+    /**
+     * Removes up to {@code amount} of a material from the inventory, but only from "plain" stacks
+     * (no custom display name/lore). This matches the semantics used by {@link #countItems(ItemStack[], Material)}.
+     *
+     * @return how many items were actually removed
+     */
+    public static int removePlainItems(PlayerInventory inventory, Material material, int amount) {
+        Objects.requireNonNull(inventory, "Inventory cannot be null");
+        Objects.requireNonNull(material, "Material cannot be null");
+
+        if (amount <= 0) return 0;
+
+        int remaining = amount;
+
+        ItemStack[] contents = inventory.getStorageContents();
+        for (int slot = 0; slot < contents.length && remaining > 0; slot++) {
+            ItemStack stack = contents[slot];
+            if (stack == null) continue;
+            if (stack.getType() != material) continue;
+            if (itemHasSpecialMeta(stack)) continue;
+
+            int take = Math.min(remaining, stack.getAmount());
+            int newAmount = stack.getAmount() - take;
+
+            if (newAmount <= 0) {
+                contents[slot] = null;
+            } else {
+                stack.setAmount(newAmount);
+                contents[slot] = stack;
+            }
+
+            remaining -= take;
+        }
+
+        inventory.setStorageContents(contents);
+        return amount - remaining;
     }
 }

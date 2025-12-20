@@ -79,6 +79,12 @@ god_messages:
   god_enabled_for_player_message: '<green>God mode enabled for <player>!'
   god_disabled_for_player_message: '<red>God mode disabled for <player>!'
 
+nightvision_messages:
+  nightvision_enabled_message: '<green>Night vision enabled!'
+  nightvision_disabled_message: '<red>Night vision disabled!'
+  nightvision_enabled_for_player_message: '<green>Night vision enabled for <player>!'
+  nightvision_disabled_for_player_message: '<red>Night vision disabled for <player>!'
+
 condense_uncondense:
   condense_message: '<green>Condensed <from> into <to>!'
   uncondense_message: '<green>Uncondensed <from> into <to>!'

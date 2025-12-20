@@ -1,6 +1,7 @@
 package me.kermx.prismaUtils.commands.utility;
 
 import me.kermx.prismaUtils.commands.core.BaseCommand;
+import me.kermx.prismaUtils.managers.feature.CondenseManager;
 import me.kermx.prismaUtils.managers.feature.CondenseMaterialsManager;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.utils.ItemUtils;
@@ -21,11 +22,13 @@ import java.util.Set;
 
 public class UncondenseCommand extends BaseCommand {
 
-    private final CondenseMaterialsManager condenseMaterialsManager;
+    private final CondenseMaterialsManager cmm;
+    private final CondenseManager condenseManager;
 
     public UncondenseCommand() {
         super("prismautils.command.uncondense", false, "/uncondense [all|hand|item]");
-        this.condenseMaterialsManager = new CondenseMaterialsManager();
+        this.cmm = new CondenseMaterialsManager();
+        this.condenseManager = new CondenseManager(cmm);
     }
 
     @Override
@@ -35,7 +38,21 @@ public class UncondenseCommand extends BaseCommand {
         PlayerInventory inventory = player.getInventory();
 
         if (args.length == 0 || args[0].equalsIgnoreCase("all")) {
-            uncondenseInventory(player);
+            List<CondenseManager.Conversion> conversions = condenseManager.uncondense(player, null);
+
+            if (conversions.isEmpty()) {
+                player.sendMessage(TextUtils.deserializeString("You don't have any items to uncondense."));
+                return true;
+            }
+
+            for (CondenseManager.Conversion c : conversions) {
+                player.sendMessage(
+                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                                Placeholder.component("from", Component.text(TextUtils.normalizeEnumName(c.from()))),
+                                Placeholder.component("to", Component.text(TextUtils.normalizeEnumName(c.to()))))
+                );
+            }
+
             player.sendMessage(
                     TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().uncondenseMessage,
                             Placeholder.component("from", Component.text("all reversible items")),
@@ -52,7 +69,16 @@ public class UncondenseCommand extends BaseCommand {
                 );
                 return true;
             }
-            uncondenseItem(player, itemInHand.getType());
+
+            List<CondenseManager.Conversion> conversions = condenseManager.uncondense(player, itemInHand.getType());
+            if (conversions.isEmpty()) return true;
+
+            CondenseManager.Conversion c = conversions.getFirst();
+            player.sendMessage(
+                    TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
+                            Placeholder.component("from", Component.text(TextUtils.normalizeEnumName(c.from()))),
+                            Placeholder.component("to", Component.text(TextUtils.normalizeEnumName(c.to()))))
+            );
             return true;
         }
 
@@ -64,66 +90,16 @@ public class UncondenseCommand extends BaseCommand {
             return true;
         }
 
-        uncondenseItem(player, material);
-        return true;
-    }
+        List<CondenseManager.Conversion> conversions = condenseManager.uncondense(player, material);
+        if (conversions.isEmpty()) return true;
 
-    private void uncondenseInventory(Player player) {
-        Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
-        for (Material blockMaterial : reversibleMappings.keySet()) {
-            int uncondensedItemCount = uncondenseItem(player, blockMaterial);
-            if (uncondensedItemCount > 0) {
-                player.sendMessage(
-                        TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                                Placeholder.component("from", Component.text(TextUtils.normalizeEnumName(blockMaterial))),
-                                Placeholder.component("to", Component.text(TextUtils.normalizeEnumName(condenseMaterialsManager.getReversibleMaterialMappings(false).get(blockMaterial)))))
-                );
-            }
-        }
-    }
-
-    private int uncondenseItem(Player player, Material material) {
-        PlayerInventory inventory = player.getInventory();
-        Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
-        Map<Material, Integer> reversibleRecipes = condenseMaterialsManager.getReversibleRecipes();
-
-        if (!reversibleMappings.containsKey(material) || !reversibleRecipes.containsKey(reversibleMappings.get(material))) {
-            return 0; // No message, return 0 to indicate no uncondensing occurred
-        }
-
-        Material resultMaterial = reversibleMappings.get(material);
-        int outputAmount = reversibleRecipes.get(resultMaterial);
-        int count = ItemUtils.countItems(inventory.getStorageContents(), material);
-
-        if (count < 1) {
-            return 0; // No message, return 0 to indicate no uncondensing occurred
-        }
-
-        int totalUncondensedItems = count * outputAmount;
-        int stacks = totalUncondensedItems / 64;
-        int leftovers = totalUncondensedItems % 64;
-        List<ItemStack> itemsToGive = new ArrayList<>();
-
-        inventory.removeItem(new ItemStack(material, count));
-
-        for (int i = 0; i < stacks; i++) {
-            itemsToGive.add(new ItemStack(resultMaterial, 64));
-        }
-        if (leftovers > 0) {
-            itemsToGive.add(new ItemStack(resultMaterial, leftovers));
-        }
-
-        for (ItemStack itemStack : itemsToGive) {
-            ItemUtils.giveItems(player, itemStack);
-        }
-
+        CondenseManager.Conversion c = conversions.getFirst();
         player.sendMessage(
                 TextUtils.deserializeString(ConfigManager.getInstance().getMessagesConfig().condenseMessage,
-                        Placeholder.component("from", Component.text(TextUtils.normalizeEnumName(material))),
-                        Placeholder.component("to", Component.text(TextUtils.normalizeEnumName(resultMaterial))))
+                        Placeholder.component("from", Component.text(TextUtils.normalizeEnumName(c.from()))),
+                        Placeholder.component("to", Component.text(TextUtils.normalizeEnumName(c.to()))))
         );
-
-        return totalUncondensedItems; // Return the number of uncondensed items
+        return true;
     }
 
     @Override
@@ -135,13 +111,13 @@ public class UncondenseCommand extends BaseCommand {
         if (args.length == 1) {
             Set<String> suggestionSet = new HashSet<>();
 
-            Map<Material, Material> reversibleMappings = condenseMaterialsManager.getReversibleMaterialMappings(true);
-            for (Material material : reversibleMappings.keySet()) {
-                suggestionSet.add(material.name());
+            // Suggest blocks (the "condensed" form) from reversible rules.
+            Map<Material, Material> baseToBlock = cmm.getReversibleMaterialMappings(false);
+            for (Material block : baseToBlock.values()) {
+                suggestionSet.add(block.name());
             }
 
-            List<String> suggestions = new ArrayList<>(suggestionSet);
-            return suggestions;
+            return new ArrayList<>(suggestionSet);
         }
 
         return super.onTabCompleteExecute(sender, args);
