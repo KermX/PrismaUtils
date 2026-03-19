@@ -48,6 +48,9 @@ public class FeatureToggleManager {
         SLIME_SPLIT_CONTROL("tweaks.slime_split", "Control slime splitting behavior"),
         ANTI_AUTO_FISHING("tweaks.anti_auto_fishing", "Prevent auto-fishing machines"),
         REMOVE_EXCESS_DROPS("tweaks.remove_excess_drops", "Remove excess drops from mobs"),
+        SHEAR_ITEM_FRAMES("features.shear_item_frames", "Shear invisible item frames"),
+        CUSTOM_PORTAL_SHAPES("features.custom_portal_shapes", "Make portals of any shape"),
+        FAST_LEAF_DECAY("tweaks.fast_leaf_decay", "Make leaves decay faster"),
 
         // === PLAYER DATA & EVENTS ===
         CUSTOM_DEATH_MESSAGES("features.custom_death_messages", "Custom death messages"),

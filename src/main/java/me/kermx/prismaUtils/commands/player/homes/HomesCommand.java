@@ -6,6 +6,7 @@ import me.kermx.prismaUtils.managers.playerdata.Home;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
 import me.kermx.prismaUtils.managers.core.CooldownManager;
+import me.kermx.prismaUtils.utils.TeleportUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -15,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -254,7 +256,7 @@ public class HomesCommand extends BaseCommand {
         }
 
         Location location = home.getLocation();
-        if (location == null) {
+        if (location == null || location.getWorld() == null) {
             player.sendMessage(TextUtils.deserializeString("<red>The world of this home doesn't exist anymore."));
             return true;
         }
@@ -266,12 +268,30 @@ public class HomesCommand extends BaseCommand {
             return true;
         }
 
-        playerData.setLastLocation(player.getLocation().clone());
+        if (!TeleportUtils.tryBeginTeleport(player)) {
+            player.sendMessage(TextUtils.deserializeString("<red>Teleport already in progress. Please wait.</red>"));
+            return true;
+        }
 
+        Location currentLocation = player.getLocation().clone();
         cooldownManager.setHomeTeleportCooldown(player);
 
-        player.teleportAsync(location);
-        player.sendMessage(TextUtils.deserializeString("<green>Teleported to home [<white>" + homeName + "<green>] ."));
+        TeleportUtils.teleportAsyncWithChunkReady(plugin, player, location, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                .whenComplete((success, throwable) -> {
+                    TeleportUtils.endTeleport(player);
+
+                    if (!player.isOnline()) {
+                        return;
+                    }
+                    if (throwable != null || !Boolean.TRUE.equals(success)) {
+                        player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                        return;
+                    }
+
+                    playerData.setLastLocation(currentLocation);
+                    player.sendMessage(TextUtils.deserializeString("<green>Teleported to home [<white>" + homeName + "<green>] ."));
+                });
+
         return true;
     }
 
@@ -309,15 +329,33 @@ public class HomesCommand extends BaseCommand {
         }
 
         Location location = home.getLocation();
-        if (location == null) {
+        if (location == null || location.getWorld() == null) {
             player.sendMessage(TextUtils.deserializeString("<red>The world of this home doesn't exist anymore."));
             return true;
         }
 
-        player.teleportAsync(location);
-        player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleported to " + targetName + "'s home '" + homeName + "'."
-        ));
+        if (!TeleportUtils.tryBeginTeleport(player)) {
+            player.sendMessage(TextUtils.deserializeString("<red>Teleport already in progress. Please wait.</red>"));
+            return true;
+        }
+
+        TeleportUtils.teleportAsyncWithChunkReady(plugin, player, location, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                .whenComplete((success, throwable) -> {
+                    TeleportUtils.endTeleport(player);
+
+                    if (!player.isOnline()) {
+                        return;
+                    }
+                    if (throwable != null || !Boolean.TRUE.equals(success)) {
+                        player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                        return;
+                    }
+
+                    player.sendMessage(TextUtils.deserializeString(
+                            "<green>Teleported to " + targetName + "'s home '" + homeName + "'."
+                    ));
+                });
+
         return true;
     }
 

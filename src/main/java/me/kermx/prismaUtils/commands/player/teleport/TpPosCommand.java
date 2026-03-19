@@ -3,12 +3,14 @@ package me.kermx.prismaUtils.commands.player.teleport;
 import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
+import me.kermx.prismaUtils.utils.TeleportUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,24 +51,50 @@ public class TpPosCommand extends BaseCommand {
                 world = player.getWorld();
             }
 
-            // Store the player's last location for /back command
-            PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
-            if (playerData != null) {
-                playerData.setLastLocation(player.getLocation().clone());
+            if (!TeleportUtils.tryBeginTeleport(player)) {
+                player.sendMessage(TextUtils.deserializeString("<red>Teleport already in progress. Please wait.</red>"));
+                return true;
             }
 
-            // Create the destination location
-            Location destination = new Location(world, x, y, z, player.getLocation().getYaw(), player.getLocation().getPitch());
+            boolean teleportScheduled = false;
+            try {
+                PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
+                Location currentLocation = player.getLocation().clone();
 
-            // Teleport the player
-            player.teleportAsync(destination);
-            player.sendMessage(TextUtils.deserializeString(
-                    "<green>Teleported to <white>" + String.format("%.1f", x) + ", " +
-                            String.format("%.1f", y) + ", " + String.format("%.1f", z) +
-                            "<green> in world <white>" + world.getName() + "<green>."
-            ));
+                // Create the destination location
+                Location destination = new Location(world, x, y, z, player.getLocation().getYaw(), player.getLocation().getPitch());
 
-            return true;
+                teleportScheduled = true;
+                TeleportUtils.teleportAsyncWithChunkReady(plugin, player, destination, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                        .whenComplete((success, throwable) -> {
+                            TeleportUtils.endTeleport(player);
+
+                            if (!player.isOnline()) {
+                                return;
+                            }
+
+                            if (throwable != null || !Boolean.TRUE.equals(success)) {
+                                player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                                return;
+                            }
+
+                            if (playerData != null) {
+                                playerData.setLastLocation(currentLocation);
+                            }
+
+                            player.sendMessage(TextUtils.deserializeString(
+                                    "<green>Teleported to <white>" + String.format("%.1f", x) + ", " +
+                                            String.format("%.1f", y) + ", " + String.format("%.1f", z) +
+                                            "<green> in world <white>" + world.getName() + "<green>."
+                            ));
+                        });
+
+                return true;
+            } finally {
+                if (!teleportScheduled) {
+                    TeleportUtils.endTeleport(player);
+                }
+            }
         } catch (NumberFormatException e) {
             player.sendMessage(TextUtils.deserializeString(
                     "<red>Invalid coordinates. Use numbers for x, y, and z."

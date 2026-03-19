@@ -4,9 +4,12 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.utils.PlayerUtils;
+import me.kermx.prismaUtils.utils.TeleportUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.List;
 
@@ -45,24 +48,56 @@ public class TpHereCommand extends BaseCommand {
             return true;
         }
 
-        // Save target's location for /back command
-        PlayerData targetData = plugin.getPlayerDataManager().getPlayerData(target.getUniqueId());
-        if (targetData != null) {
-            targetData.setLastLocation(target.getLocation().clone());
+        if (!TeleportUtils.tryBeginTeleport(target)) {
+            player.sendMessage(TextUtils.deserializeString("<red>That player is already teleporting. Please wait.</red>"));
+            return true;
         }
 
-        // Teleport target to player
-        target.teleportAsync(player.getLocation());
+        boolean teleportScheduled = false;
+        try {
+            // Save target's location for /back command (only commit on successful teleport)
+            PlayerData targetData = plugin.getPlayerDataManager().getPlayerData(target.getUniqueId());
+            Location targetCurrentLocation = target.getLocation().clone();
+            Location destination = player.getLocation().clone();
 
-        player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleported <white>" + target.getName() + "<green> to your location."
-        ));
+            teleportScheduled = true;
+            TeleportUtils.teleportAsyncWithChunkReady(plugin, target, destination, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                    .whenComplete((success, throwable) -> {
+                        TeleportUtils.endTeleport(target);
 
-        target.sendMessage(TextUtils.deserializeString(
-                "<green>You were teleported to <white>" + player.getName() + "<green>."
-        ));
+                        if (!target.isOnline()) {
+                            return;
+                        }
 
-        return true;
+                        if (throwable != null || !Boolean.TRUE.equals(success)) {
+                            target.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                            if (player.isOnline()) {
+                                player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                            }
+                            return;
+                        }
+
+                        if (targetData != null) {
+                            targetData.setLastLocation(targetCurrentLocation);
+                        }
+
+                        if (player.isOnline()) {
+                            player.sendMessage(TextUtils.deserializeString(
+                                    "<green>Teleported <white>" + target.getName() + "<green> to your location."
+                            ));
+                        }
+
+                        target.sendMessage(TextUtils.deserializeString(
+                                "<green>You were teleported to <white>" + player.getName() + "<green>."
+                        ));
+                    });
+
+            return true;
+        } finally {
+            if (!teleportScheduled) {
+                TeleportUtils.endTeleport(target);
+            }
+        }
     }
 
     @Override

@@ -1,8 +1,8 @@
 package me.kermx.prismaUtils.services;
 
 import dev.geco.gsit.api.GSitAPI;
-import dev.geco.gsit.object.GSeat;
-import dev.geco.gsit.object.GStopReason;
+import dev.geco.gsit.model.Seat;
+import dev.geco.gsit.model.StopReason;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -71,7 +71,7 @@ public class SitService {
         }
 
         try {
-            GSeat seat = GSitAPI.createSeat(block, player);
+            Seat seat = GSitAPI.createSeat(block, player);
             return seat != null;
         } catch (Exception e) {
             logger.warning("Error making player sit: " + e.getMessage());
@@ -94,7 +94,7 @@ public class SitService {
         }
 
         try {
-            GSeat seat = GSitAPI.createSeat(block, player, canRotate, seatRotation, centered);
+            Seat seat = GSitAPI.createSeat(block, player, canRotate, seatRotation, centered);
             return seat != null;
         } catch (Exception e) {
             logger.warning("Error making player sit with custom parameters: " + e.getMessage());
@@ -120,7 +120,7 @@ public class SitService {
         }
 
         try {
-            GSeat seat = GSitAPI.createSeat(block, player, canRotate, xOffset, yOffset, zOffset, seatRotation, centered);
+            Seat seat = GSitAPI.createSeat(block, player, canRotate, xOffset, yOffset, zOffset, seatRotation, centered);
             return seat != null;
         } catch (Exception e) {
             logger.warning("Error making player sit with detailed positioning: " + e.getMessage());
@@ -145,9 +145,9 @@ public class SitService {
             }
 
             // Get the player's seat and remove it
-            GSeat seat = GSitAPI.getSeatByEntity(player);
+            Seat seat = GSitAPI.getSeatByEntity(player);
             if (seat != null) {
-                return GSitAPI.removeSeat(seat, GStopReason.PLUGIN);
+                return GSitAPI.removeSeat(seat, StopReason.PLUGIN);
             }
             return false;
         } catch (Exception e) {
@@ -174,9 +174,9 @@ public class SitService {
             }
 
             // Get the player's seat and remove it
-            GSeat seat = GSitAPI.getSeatByEntity(player);
+            Seat seat = GSitAPI.getSeatByEntity(player);
             if (seat != null) {
-                return GSitAPI.removeSeat(seat, GStopReason.PLUGIN, useSafeDismount);
+                return GSitAPI.removeSeat(seat, StopReason.PLUGIN, useSafeDismount);
             }
             return false;
         } catch (Exception e) {

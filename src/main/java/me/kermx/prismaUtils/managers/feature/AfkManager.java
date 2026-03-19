@@ -203,8 +203,9 @@ public class AfkManager implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        String message = event.getMessage().toLowerCase();
         // Don't count /afk command as activity
-        if (!event.getMessage().toLowerCase().startsWith("/afk")) {
+        if (!message.startsWith("/afk") && !message.startsWith("/condense")) {
             updateActivity(event.getPlayer());
         }
     }

@@ -4,9 +4,12 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.utils.PlayerUtils;
+import me.kermx.prismaUtils.utils.TeleportUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.List;
 
@@ -45,20 +48,46 @@ public class TpCommand extends BaseCommand {
             return true;
         }
 
-        // Save player's location for /back command
-        PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
-        if (playerData != null) {
-            playerData.setLastLocation(player.getLocation().clone());
+        if (!TeleportUtils.tryBeginTeleport(player)) {
+            player.sendMessage(TextUtils.deserializeString("<red>Teleport already in progress. Please wait.</red>"));
+            return true;
         }
 
-        // Teleport player to target
-        player.teleportAsync(target.getLocation());
+        boolean teleportScheduled = false;
+        try {
+            PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
+            Location currentLocation = player.getLocation().clone();
+            Location destination = target.getLocation().clone();
 
-        player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleported to <white>" + target.getName() + "<green>."
-        ));
+            teleportScheduled = true;
+            TeleportUtils.teleportAsyncWithChunkReady(plugin, player, destination, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                    .whenComplete((success, throwable) -> {
+                        TeleportUtils.endTeleport(player);
 
-        return true;
+                        if (!player.isOnline()) {
+                            return;
+                        }
+
+                        if (throwable != null || !Boolean.TRUE.equals(success)) {
+                            player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                            return;
+                        }
+
+                        if (playerData != null) {
+                            playerData.setLastLocation(currentLocation);
+                        }
+
+                        player.sendMessage(TextUtils.deserializeString(
+                                "<green>Teleported to <white>" + target.getName() + "<green>."
+                        ));
+                    });
+
+            return true;
+        } finally {
+            if (!teleportScheduled) {
+                TeleportUtils.endTeleport(player);
+            }
+        }
     }
 
     @Override
@@ -69,4 +98,3 @@ public class TpCommand extends BaseCommand {
         return List.of();
     }
 }
-

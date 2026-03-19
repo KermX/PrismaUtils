@@ -14,10 +14,7 @@ import me.kermx.prismaUtils.commands.player.warps.DelWarpCommand;
 import me.kermx.prismaUtils.commands.player.warps.SetWarpCommand;
 import me.kermx.prismaUtils.commands.player.warps.WarpCommand;
 import me.kermx.prismaUtils.commands.utility.*;
-import me.kermx.prismaUtils.handlers.block.ClimbableChainsHandler;
-import me.kermx.prismaUtils.handlers.block.CopperOxidationHandler;
-import me.kermx.prismaUtils.handlers.block.SeedAndShearBlocksHandler;
-import me.kermx.prismaUtils.handlers.block.SilkSpawnerHandler;
+import me.kermx.prismaUtils.handlers.block.*;
 import me.kermx.prismaUtils.handlers.mob.*;
 import me.kermx.prismaUtils.handlers.player.*;
 import me.kermx.prismaUtils.services.ProtectionService;
@@ -232,7 +229,7 @@ public final class PrismaUtils extends JavaPlugin {
         }
         // Teleport Commands
         if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.TELEPORT_COMMANDS)) {
-            BackCommand backCommand = new BackCommand(playerDataManager);
+            BackCommand backCommand = new BackCommand(this, playerDataManager);
             commandManager.registerCommand("back", backCommand, backCommand);
             SpawnCommand spawnCommand = new SpawnCommand(this);
             commandManager.registerCommand("spawn", spawnCommand, spawnCommand);
@@ -376,6 +373,15 @@ public final class PrismaUtils extends JavaPlugin {
 
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.NETHER_MOB_ZOMBIFICATION,
                 new NetherMobZombificationHandler());
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SHEAR_ITEM_FRAMES,
+                new InvisItemFrameHandler(this, protectionService));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CUSTOM_PORTAL_SHAPES,
+                new CustomShapedPortalHandler(this));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.FAST_LEAF_DECAY,
+                new FastLeafDecayHandler(this));
 
         // Listeners with null checks
         if (chatHandler != null) {

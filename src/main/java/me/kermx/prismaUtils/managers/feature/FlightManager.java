@@ -338,6 +338,11 @@ public class FlightManager implements Listener {
             return false;
         }
 
+        // Pause temp flight countdown while the player is AFK
+        if (playerData.isAfk()) {
+            return false;
+        }
+
         // Don't count temp flight if the player is not currently flying
         if (!player.isFlying()) {
             return false;

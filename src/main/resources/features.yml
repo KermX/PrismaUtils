@@ -92,6 +92,15 @@ tweaks:
   # Prevent auto-fishing machines
   anti_auto_fishing: true
 
+  # Shear invisible item frames
+  shear_item_frames: true
+
+  # Make portals of any shape
+  custom_portal_shapes: true
+
+  # Make leaves decay faster
+  fast_leaf_decay: true
+
 # ==================
 # FEATURES
 # ==================

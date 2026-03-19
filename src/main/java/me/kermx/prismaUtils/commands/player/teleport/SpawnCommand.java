@@ -4,6 +4,7 @@ import me.kermx.prismaUtils.PrismaUtils;
 import me.kermx.prismaUtils.commands.core.BaseCommand;
 import me.kermx.prismaUtils.managers.playerdata.PlayerData;
 import me.kermx.prismaUtils.managers.core.ConfigManager;
+import me.kermx.prismaUtils.utils.TeleportUtils;
 import me.kermx.prismaUtils.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,19 +53,45 @@ public class SpawnCommand extends BaseCommand {
 
         Location spawnLocation = new Location(world, x, y, z, yaw, pitch);
 
-        // Save the current location for /back command
-        PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
-        if (playerData != null) {
-            playerData.setLastLocation(player.getLocation().clone());
+        if (!TeleportUtils.tryBeginTeleport(player)) {
+            player.sendMessage(TextUtils.deserializeString("<red>Teleport already in progress. Please wait.</red>"));
+            return true;
         }
 
-        // Teleport player to spawn
-        player.teleportAsync(spawnLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
-        player.sendMessage(TextUtils.deserializeString(
-                "<green>Teleported to spawn."
-        ));
+        boolean teleportScheduled = false;
+        try {
+            PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player.getUniqueId());
+            Location currentLocation = player.getLocation().clone();
 
-        return true;
+            teleportScheduled = true;
+            TeleportUtils.teleportAsyncWithChunkReady(plugin, player, spawnLocation, PlayerTeleportEvent.TeleportCause.PLUGIN)
+                    .whenComplete((success, throwable) -> {
+                        TeleportUtils.endTeleport(player);
+
+                        if (!player.isOnline()) {
+                            return;
+                        }
+
+                        if (throwable != null || !Boolean.TRUE.equals(success)) {
+                            player.sendMessage(TextUtils.deserializeString("<red>Teleport failed. Try again in a moment.</red>"));
+                            return;
+                        }
+
+                        if (playerData != null) {
+                            playerData.setLastLocation(currentLocation);
+                        }
+
+                        player.sendMessage(TextUtils.deserializeString(
+                                "<green>Teleported to spawn."
+                        ));
+                    });
+
+            return true;
+        } finally {
+            if (!teleportScheduled) {
+                TeleportUtils.endTeleport(player);
+            }
+        }
     }
 
     @Override
