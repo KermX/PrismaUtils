@@ -101,6 +101,9 @@ tweaks:
   # Make leaves decay faster
   fast_leaf_decay: true
 
+  # Cauldrons transform 'dry' items into 'wet' items
+  cauldron_wet_items: true
+
 # ==================
 # FEATURES
 # ==================

@@ -383,6 +383,9 @@ public final class PrismaUtils extends JavaPlugin {
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.FAST_LEAF_DECAY,
                 new FastLeafDecayHandler(this));
 
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CAULDRON_WET_ITEMS,
+                new CauldronTransformHandler());
+
         // Listeners with null checks
         if (chatHandler != null) {
             eventManager.registerFeatureListeners(FeatureToggleManager.Feature.CHAT_MANAGEMENT, chatHandler);

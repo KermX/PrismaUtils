@@ -51,6 +51,7 @@ public class FeatureToggleManager {
         SHEAR_ITEM_FRAMES("features.shear_item_frames", "Shear invisible item frames"),
         CUSTOM_PORTAL_SHAPES("features.custom_portal_shapes", "Make portals of any shape"),
         FAST_LEAF_DECAY("tweaks.fast_leaf_decay", "Make leaves decay faster"),
+        CAULDRON_WET_ITEMS("tweaks.cauldron_wet_items", "Cauldrons transform 'dry' items into 'wet' items"),
 
         // === PLAYER DATA & EVENTS ===
         CUSTOM_DEATH_MESSAGES("features.custom_death_messages", "Custom death messages"),
