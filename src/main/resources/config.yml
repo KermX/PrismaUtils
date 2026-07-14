@@ -61,6 +61,12 @@ fly_world_whitelist:
   - 'FlatWorld'
   - 'mapart'
 
+mob_ai_restore:
+  trigger_names:
+    - 'smart'
+    - 'restore'
+    - 'awake'
+
 health_scale:
   enabled: true
   value: 20
@@ -87,3 +93,16 @@ disabled_recipes: []
 #  - BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
 
 disenchant_command_exp_per_enchantment: 0
+
+# Extra happy ghast flight speed per level of the Speed effect, as a fraction of base flight
+# speed (0.20 = +20% per level, matching how the Speed effect scales walking). Speed I adds one
+# level, Speed II adds two, and so on. Requires the happy_ghast_speed feature.
+happy_ghast_speed_boost_per_level: 0.20
+
+# Alternative (non level-based) enchanting costs.
+# Each enchantment table button always costs this many experience POINTS,
+# regardless of the player's level. Requires the non_level_enchanting feature.
+enchanting_costs:
+  button_1: 100
+  button_2: 200
+  button_3: 300

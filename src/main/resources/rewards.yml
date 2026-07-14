@@ -1,0 +1,30 @@
+# ===================================
+# PrismaUtils Random Rewards
+# ===================================
+# Each entry under 'reward-lists' is a named pool of commands. Rolling a list
+# picks one or more entries at random and runs each chosen command from console.
+#
+# Selection is weighted: higher = more likely.
+#
+# Placeholders available inside a command:
+#   {player} - the target player's name
+#   {amount} - the number of rewards rolled in this batch
+#
+# Usage: /randomreward give <player> <list> [count]
+#
+reward-lists:
+  quest1:
+    commands:
+      - command: "money grant {player} 500"
+        weight: 10
+      - command: "give {player} diamond 4"
+        weight: 5
+      - command: "give {player} netherite_ingot 1"
+        weight: 1
+
+  quest2:
+    commands:
+      - command: "money grant {player} 100"
+        weight: 1
+      - command: "give {player} cooked_beef 16"
+        weight: 1

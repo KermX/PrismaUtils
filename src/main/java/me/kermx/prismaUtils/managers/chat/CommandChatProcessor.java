@@ -1,195 +1,133 @@
 package me.kermx.prismaUtils.managers.chat;
 
 import me.kermx.prismaUtils.PrismaUtils;
-import me.kermx.prismaUtils.managers.config.ChatConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.*;
+
 public class CommandChatProcessor implements Listener {
 
     private final PrismaUtils plugin;
     private final ChatFilterManager chatFilterManager;
-    private final EmojiManager emojiManager;
-    private final ChatConfigManager chatConfig;
 
-    public CommandChatProcessor(PrismaUtils plugin, ChatFilterManager chatFilterManager, EmojiManager emojiManager) {
+    private Set<String> monitoredRoots = Set.of();
+    private Set<String> pmTwoArgs = Set.of();
+    private Set<String> pmOneArg = Set.of();
+    private Set<String> channelRest = Set.of();
+
+    public CommandChatProcessor(PrismaUtils plugin, ChatFilterManager chatFilterManager) {
         this.plugin = plugin;
         this.chatFilterManager = chatFilterManager;
-        this.emojiManager = emojiManager;
-        this.chatConfig = chatFilterManager.getChatConfig();
+        reloadCommandRoots();
+    }
+
+    private void reloadCommandRoots() {
+        ChatFilterConfig cfg = chatFilterManager.config();
+        ChatFilterConfig.Commands commands = cfg.commands();
+
+        monitoredRoots = toLowerSet(commands.monitoredRoots());
+        pmTwoArgs = toLowerSet(commands.roots().pmTwoArgs());
+        pmOneArg = toLowerSet(commands.roots().pmOneArg());
+        channelRest = toLowerSet(commands.roots().channelRest());
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        String fullCommand = event.getMessage();
+        if (!chatFilterManager.config().commands().enabled()) return;
+
         Player player = event.getPlayer();
+        String fullCommand = event.getMessage();
+        if (fullCommand == null || fullCommand.isBlank() || !fullCommand.startsWith("/")) return;
 
-        // Parse command
-        String[] parts = fullCommand.substring(1).split(" ", 2); // Remove leading slash and split
-        String commandName = parts[0].toLowerCase();
+        ParsedCommand cmd = ParsedCommand.parse(fullCommand);
+        if (cmd == null) return;
 
-        // Check if this command should be monitored
-        if (!chatConfig.monitoredCommands.contains(commandName)) {
-            return;
-        }
+        if (!monitoredRoots.contains(cmd.root())) return;
 
-        // Extract message content based on command type
-        String messageContent = extractMessageContent(commandName, parts);
-        if (messageContent == null || messageContent.trim().isEmpty()) {
-            return; // No message content to process
-        }
+        Extraction extraction = extract(cmd);
+        if (extraction == null || extraction.text().isBlank()) return;
 
-        // Step 1: Check for chat filter violations FIRST on the original message content
-        // This ensures we filter what the player actually typed (e.g., ":smile:")
-        // rather than processed emojis (e.g., "😊")
-        ChatFilterManager.FilterResult filterResult = chatFilterManager.checkMessage(player, messageContent);
+        ChatFilterService.Decision decision = chatFilterManager.checkMessage(player, extraction.text(), extraction.channel());
 
-        if (filterResult.isFiltered()) {
-            // Cancel the command
+        if (decision.blocked()) {
             event.setCancelled(true);
+        }
 
-            // Notify staff and player
+        if (decision.blocked() || decision.flagged()) {
             plugin.getServer().getScheduler().runTask(plugin, () -> {
-                chatFilterManager.notifyStaff(
-                        player,
-                        "Command: /" + commandName + " | " + messageContent,
-                        filterResult.getFilterName(),
-                        filterResult.getReason(),
-                        filterResult.getMatchedText(),
-                        filterResult.getMatchedPattern()
-                );
-                chatFilterManager.notifyPlayer(player);
-            });
-
-            return; // Stop processing if filtered
-        }
-
-        // Step 2: Process emojis ONLY after message passes all filters
-        EmojiManager.ProcessResult emojiResult = emojiManager.processEmojis(player, messageContent);
-
-        String processedMessage = messageContent;
-        if (!emojiResult.isSuccess()) {
-            // Notify about emoji permission but don't cancel command
-            plugin.getServer().getScheduler().runTask(plugin, () -> {
-                emojiManager.notifyPermissionDenied(player, emojiResult.getDeniedEmoji());
-            });
-        } else {
-            processedMessage = emojiResult.getProcessedMessage();
-        }
-
-        // If message was processed (emojis replaced), update the command
-        if (!messageContent.equals(processedMessage)) {
-            String newCommand = reconstructCommand(commandName, parts, processedMessage);
-            event.setMessage(newCommand);
-        }
-    }
-
-    /**
-     * Extract message content from different command formats
-     */
-    private String extractMessageContent(String commandName, String[] parts) {
-        if (parts.length < 2) {
-            return null; // No message content
-        }
-
-        String fullArgs = parts[1];
-
-        switch (commandName.toLowerCase()) {
-            case "msg":
-            case "tell":
-            case "whisper":
-            case "pm":
-            case "message":
-            case "vmessage":
-            case "w":
-            case "m":
-                // Format: /msg <player> <message>
-                String[] msgParts = fullArgs.split(" ", 2);
-                return msgParts.length >= 2 ? msgParts[1] : null;
-
-            case "reply":
-            case "r":
-            case "vreply":
-                // Format: /reply <message>
-                return fullArgs;
-
-            case "me":
-            case "vme":
-                // Format: /me <message>
-                return fullArgs;
-
-            case "say":
-                // Format: /say <message>
-                return fullArgs;
-
-            case "lc":
-            case "local":
-            case "tc":
-            case "nc":
-            case "g":
-            case "global":
-            case "net":
-            case "network":
-            case "tr":
-            case "trade":
-                // Format: /<channel> <message>
-                return fullArgs;
-
-            default:
-                return fullArgs; // Default behavior
-        }
-    }
-
-    /**
-     * Reconstruct command with processed message content
-     */
-    private String reconstructCommand(String commandName, String[] parts, String processedMessage) {
-        if (parts.length < 2) {
-            return "/" + commandName; // Shouldn't happen, but safety check
-        }
-
-        String fullArgs = parts[1];
-
-        switch (commandName.toLowerCase()) {
-            case "msg":
-            case "tell":
-            case "whisper":
-            case "pm":
-            case "message":
-            case "vmessage":
-            case "w":
-            case "m":
-                // Format: /msg <player> <message>
-                String[] msgParts = fullArgs.split(" ", 2);
-                if (msgParts.length >= 2) {
-                    return "/" + commandName + " " + msgParts[0] + " " + processedMessage;
+                chatFilterManager.notifyStaff(player, "Command /" + cmd.root() + ": " + extraction.text(), decision);
+                if (decision.blocked()) {
+                    chatFilterManager.notifyPlayer(player);
                 }
-                break;
+            });
+        }
+    }
 
-            case "reply":
-            case "r":
-            case "vreply":
-            case "me":
-            case "vme":
-            case "say":
-            case "lc":
-            case "local":
-            case "tc":
-            case "nc":
-            case "g":
-            case "global":
-            case "net":
-            case "network":
-            case "tr":
-            case "trade":
-                // Direct message replacement
-                return "/" + commandName + " " + processedMessage;
+    private Extraction extract(ParsedCommand cmd) {
+        String root = cmd.root();
+        List<String> args = cmd.args();
+
+        if (pmTwoArgs.contains(root)) {
+            if (args.size() < 2) return null;
+            return new Extraction(joinFrom(args, 1), ChatFilterService.Channel.COMMAND_PRIVATE);
         }
 
-        // Default fallback
-        return "/" + commandName + " " + processedMessage;
+        if (pmOneArg.contains(root)) {
+            if (args.isEmpty()) return null;
+            return new Extraction(joinFrom(args, 0), ChatFilterService.Channel.COMMAND_PRIVATE);
+        }
+
+        if (channelRest.contains(root)) {
+            if (cmd.argsRaw().isBlank()) return null;
+            return new Extraction(cmd.argsRaw(), ChatFilterService.Channel.COMMAND_CHANNEL);
+        }
+
+        if (cmd.argsRaw().isBlank()) return null;
+        return new Extraction(cmd.argsRaw(), ChatFilterService.Channel.COMMAND_OTHER);
+    }
+
+    private static String joinFrom(List<String> args, int start) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = start; i < args.size(); i++) {
+            if (i > start) sb.append(' ');
+            sb.append(args.get(i));
+        }
+        return sb.toString();
+    }
+
+    private static Set<String> toLowerSet(List<String> list) {
+        if (list == null || list.isEmpty()) return Set.of();
+        Set<String> out = new HashSet<>();
+        for (String s : list) {
+            if (s == null) continue;
+            String t = s.trim();
+            if (!t.isBlank()) out.add(t.toLowerCase(Locale.ROOT));
+        }
+        return Collections.unmodifiableSet(out);
+    }
+
+    private record Extraction(String text, ChatFilterService.Channel channel) {}
+
+    private record ParsedCommand(String root, List<String> args, String argsRaw) {
+        static ParsedCommand parse(String full) {
+            String s = full.trim();
+            if (!s.startsWith("/")) return null;
+
+            s = s.substring(1).trim();
+            if (s.isBlank()) return null;
+
+            String[] parts = s.split("\\s+");
+            String root = parts[0].toLowerCase(Locale.ROOT);
+
+            List<String> args = new ArrayList<>();
+            for (int i = 1; i < parts.length; i++) args.add(parts[i]);
+
+            String argsRaw = (parts.length <= 1) ? "" : s.substring(parts[0].length()).trim();
+            return new ParsedCommand(root, Collections.unmodifiableList(args), argsRaw);
+        }
     }
 }

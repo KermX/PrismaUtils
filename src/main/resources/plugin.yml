@@ -332,6 +332,24 @@ commands:
     permission: prismautils.command.playerhead
     aliases: [skull]
 
+  broadcast:
+    description: Broadcasts a message to all players.
+    usage: /broadcast <message>
+    permission: prismautils.command.broadcast
+    aliases: [bc]
+
+  commandspy:
+    description: View all commands executed by players.
+    usage: /commandspy
+    permission: prismautils.command.commandspy
+    aliases: [cspy]
+
+  randomreward:
+    description: Give a player random reward command(s) from a configured list.
+    usage: /randomreward give <player> <list> [count]
+    permission: prismautils.command.randomreward
+    aliases: [rreward]
+
   setmodeldata:
     description: Sets the model data of the item in the player's hand.
     usage: /setmodeldata <modeldata>

@@ -39,7 +39,7 @@ public class FeatureToggleManager {
         SILK_SPAWNERS("tweaks.silk_spawners", "Allow silk touch on spawners"),
         SPAWNER_MOB_DROPS("tweaks.spawner_mob_drops", "Disable drops from spawner mobs"),
         CLIMBABLE_CHAINS("tweaks.climbable_chains", "Make chains climbable like ladders"),
-        HORSE_ZOMBIFICATION("tweaks.horse_zombification", "Convert skeleton/zombie horses with items"),
+        HORSE_ZOMBIFICATION("tweaks.horse_zombification", "Zombify/cure horses, camels and nautiluses with items"),
         NETHER_MOB_ZOMBIFICATION("tweaks.nether_mob_zombification", "Disable piglins turning to zombies"),
         ENDERMITE_LIGHTNING_IMMUNITY("tweaks.endermite_lightning_immunity", "Make endermites immune to lightning"),
         NON_LEVEL_ENCHANTING("tweaks.non_level_enchanting", "Alternative enchanting cost system"),
@@ -52,6 +52,8 @@ public class FeatureToggleManager {
         CUSTOM_PORTAL_SHAPES("features.custom_portal_shapes", "Make portals of any shape"),
         FAST_LEAF_DECAY("tweaks.fast_leaf_decay", "Make leaves decay faster"),
         CAULDRON_WET_ITEMS("tweaks.cauldron_wet_items", "Cauldrons transform 'dry' items into 'wet' items"),
+        MOB_AI_RESTORE("tweaks.mob_ai_restore", "Re-enable mob AI by renaming with a specific name tag"),
+        HAPPY_GHAST_SPEED("tweaks.happy_ghast_speed", "Speed potions boost happy ghast flight"),
 
         // === PLAYER DATA & EVENTS ===
         CUSTOM_DEATH_MESSAGES("features.custom_death_messages", "Custom death messages"),
@@ -68,7 +70,8 @@ public class FeatureToggleManager {
 
         // === MISC ===
         DISABLED_RECIPES("features.disabled_recipes", "Disable specific crafting recipes"),
-        SEEN_SYSTEM("features.seen_system", "Track player seen times");
+        SEEN_SYSTEM("features.seen_system", "Track player seen times"),
+        RANDOM_REWARDS("features.random_rewards", "Random reward command (/randomreward) with configurable reward lists");
 
         private final String configKey;
         private final String description;

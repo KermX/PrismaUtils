@@ -18,7 +18,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class AfkManager implements Listener {
@@ -29,6 +31,9 @@ public class AfkManager implements Listener {
     private final Map<UUID, BukkitTask> teleportTasks = new HashMap<>();
     private final Map<UUID, BukkitTask> warningTasks = new HashMap<>();
     private final Map<UUID, Long> joinTimes = new HashMap<>();
+    // Players currently being teleported by the AFK system itself; these teleports
+    // must never be blocked by AfkProtectionHandler.
+    private final Set<UUID> systemTeleports = new HashSet<>();
 
     private final long afkThreshold;
     private final long teleportThreshold;
@@ -261,6 +266,7 @@ public class AfkManager implements Listener {
         afkStatus.remove(uuid);
         teleportedToAfk.remove(uuid);
         joinTimes.remove(uuid);
+        systemTeleports.remove(uuid);
 
         // Make sure data is saved
         plugin.getPlayerDataManager().markDataAsDirty(uuid);
@@ -374,6 +380,11 @@ public class AfkManager implements Listener {
             return;
         }
 
+        // Only teleport players who are in a whitelisted world
+        if (!isWorldWhitelisted(player)) {
+            return;
+        }
+
         // Store current location in playerdata
         Location currentLocation = player.getLocation().clone();
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(uuid);
@@ -405,25 +416,27 @@ public class AfkManager implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 // Make sure the player is still online and AFK
                 if (player.isOnline() && afkStatus.getOrDefault(uuid, false)) {
-                    player.teleportAsync(randomizedLocation).thenAccept(success -> {
-                        if (success) {
-                            // Set the flag after teleportation is complete
-                            teleportedToAfk.put(uuid, true);
-                            player.sendMessage(TextUtils.deserializeString("<yellow>You have been teleported to the AFK area.</yellow>"));
-                        }
-                    });
+                    teleportToAfkArea(player, randomizedLocation);
                 }
             }, 5L); // Wait 5 ticks (1/4 second) before teleporting
         } else {
             // Player is not sitting, teleport immediately
-            player.teleportAsync(randomizedLocation).thenAccept(success -> {
-                if (success) {
-                    // Set the flag after teleportation is complete
-                    teleportedToAfk.put(uuid, true);
-                    player.sendMessage(TextUtils.deserializeString("<yellow>You have been teleported to the AFK area.</yellow>"));
-                }
-            });
+            teleportToAfkArea(player, randomizedLocation);
         }
+    }
+
+    private void teleportToAfkArea(Player player, Location destination) {
+        UUID uuid = player.getUniqueId();
+
+        systemTeleports.add(uuid);
+        player.teleportAsync(destination).whenComplete((success, throwable) -> {
+            systemTeleports.remove(uuid);
+            if (Boolean.TRUE.equals(success)) {
+                // Set the flag after teleportation is complete
+                teleportedToAfk.put(uuid, true);
+                player.sendMessage(TextUtils.deserializeString("<yellow>You have been teleported to the AFK area.</yellow>"));
+            }
+        });
     }
 
     private void returnFromAfkLocation(Player player) {
@@ -442,8 +455,10 @@ public class AfkManager implements Listener {
         if (previousLocation != null && previousLocation.getWorld() != null) {
             player.sendMessage(TextUtils.deserializeString("<yellow>Returning you to your previous location...</yellow>"));
 
-            player.teleportAsync(previousLocation).thenAccept(success -> {
-                if (success) {
+            systemTeleports.add(uuid);
+            player.teleportAsync(previousLocation).whenComplete((success, throwable) -> {
+                systemTeleports.remove(uuid);
+                if (Boolean.TRUE.equals(success)) {
                     // Only reset the flag if teleport was successful
                     teleportedToAfk.put(uuid, false);
                     player.sendMessage(TextUtils.deserializeString("<green>You have been returned to your previous location.</green>"));
@@ -464,7 +479,24 @@ public class AfkManager implements Listener {
         }
     }
 
+    private boolean isWorldWhitelisted(Player player) {
+        java.util.List<String> whitelist = ConfigManager.getInstance().getAfkConfig().teleportWorldWhitelist;
+        // An empty whitelist means no world restriction
+        if (whitelist == null || whitelist.isEmpty()) {
+            return true;
+        }
+        return whitelist.contains(player.getWorld().getName());
+    }
+
     public boolean isAfk(UUID uuid) {
         return afkStatus.getOrDefault(uuid, false);
+    }
+
+    /**
+     * Whether the AFK system itself is currently teleporting this player
+     * (to or from the AFK area). Such teleports must not be blocked.
+     */
+    public boolean isSystemTeleporting(UUID uuid) {
+        return systemTeleports.contains(uuid);
     }
 }

@@ -23,6 +23,7 @@ import me.kermx.prismaUtils.services.TerritoryService;
 import me.kermx.prismaUtils.managers.core.*;
 import me.kermx.prismaUtils.managers.playerdata.PlayerDataManager;
 import me.kermx.prismaUtils.managers.feature.AfkManager;
+import me.kermx.prismaUtils.managers.feature.CommandSpyManager;
 import me.kermx.prismaUtils.managers.feature.FlightManager;
 import me.kermx.prismaUtils.managers.feature.DisabledCraftingRecipesManager;
 import me.kermx.prismaUtils.managers.feature.SeenManager;
@@ -47,6 +48,7 @@ public final class PrismaUtils extends JavaPlugin {
     private AfkManager afkManager;
     private FlightManager flightManager;
     private ChatHandler chatHandler;
+    private CommandSpyManager commandSpyManager;
 
     @Override
     public void onEnable() {
@@ -83,6 +85,10 @@ public final class PrismaUtils extends JavaPlugin {
 
         if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.CHAT_MANAGEMENT)) {
             chatHandler = new ChatHandler(this);
+        }
+
+        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.ADMIN_COMMANDS)) {
+            commandSpyManager = new CommandSpyManager();
         }
 
         doStartupOperations();
@@ -182,8 +188,17 @@ public final class PrismaUtils extends JavaPlugin {
             commandManager.registerCommand("patrol", patrolCommand, patrolCommand);
             NightVisionCommand nightVisionCommand = new NightVisionCommand();
             commandManager.registerCommand("nightvision", nightVisionCommand, nightVisionCommand);
+            BroadcastCommand broadcastCommand = new BroadcastCommand();
+            commandManager.registerCommand("broadcast", broadcastCommand, broadcastCommand);
+            CommandSpyCommand commandSpyCommand = new CommandSpyCommand(commandSpyManager);
+            commandManager.registerCommand("commandspy", commandSpyCommand, commandSpyCommand);
             FeaturesCommand featuresCommand = new FeaturesCommand(this);
             commandManager.registerCommand("prismautilsfeatures", featuresCommand, featuresCommand);
+        }
+        // Random Rewards
+        if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.RANDOM_REWARDS)) {
+            RandomRewardCommand randomRewardCommand = new RandomRewardCommand();
+            commandManager.registerCommand("randomreward", randomRewardCommand, randomRewardCommand);
         }
         // General Player Commands
         if (featureToggleManager.isEnabled(FeatureToggleManager.Feature.PLAYER_COMMANDS)) {
@@ -345,7 +360,7 @@ public final class PrismaUtils extends JavaPlugin {
                 new CopperOxidationHandler(protectionService));
 
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.HORSE_ZOMBIFICATION,
-                new HorseZombificationHandler());
+                new HorseZombificationHandler(this));
 
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.PERMISSION_KEEP_INVENTORY,
                 new PermissionKeepInvHandler());
@@ -362,6 +377,13 @@ public final class PrismaUtils extends JavaPlugin {
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.SPAWNER_MOB_DROPS,
                 new SpawnerMobItemDropsHandler(this));
 
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.MOB_AI_RESTORE,
+                new SpawnerMobAIHandler(ConfigManager.getInstance().getMainConfig().mobAiRestoreTriggerNames));
+
+        eventManager.registerFeatureListeners(FeatureToggleManager.Feature.HAPPY_GHAST_SPEED,
+                new HappyGhastSpeedHandler(this,
+                        ConfigManager.getInstance().getMainConfig().happyGhastSpeedBoostPerLevel));
+
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.ENDERMITE_LIGHTNING_IMMUNITY,
                 new EntityLightningImmunityHandler());
 
@@ -369,7 +391,10 @@ public final class PrismaUtils extends JavaPlugin {
                 new ClimbableChainsHandler());
 
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.NON_LEVEL_ENCHANTING,
-                new AlternativeEnchantingCostHandler());
+                new AlternativeEnchantingCostHandler(this,
+                        ConfigManager.getInstance().getMainConfig().enchantingCostButtonOne,
+                        ConfigManager.getInstance().getMainConfig().enchantingCostButtonTwo,
+                        ConfigManager.getInstance().getMainConfig().enchantingCostButtonThree));
 
         eventManager.registerFeatureListeners(FeatureToggleManager.Feature.NETHER_MOB_ZOMBIFICATION,
                 new NetherMobZombificationHandler());
@@ -404,6 +429,11 @@ public final class PrismaUtils extends JavaPlugin {
 
         if (godCommand != null) {
             eventManager.registerFeatureListeners(FeatureToggleManager.Feature.GOD_MODE, godCommand);
+        }
+
+        if (commandSpyManager != null) {
+            eventManager.registerFeatureListeners(FeatureToggleManager.Feature.ADMIN_COMMANDS,
+                    new CommandSpyHandler(commandSpyManager));
         }
     }
 

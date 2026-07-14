@@ -20,6 +20,7 @@ public class ConfigManager {
     private AfkConfigManager afkConfigManager;
     private ChatConfigManager chatConfigManager;
     private EventPlaceholderConfigManager eventPlaceholderConfigManager;
+    private RewardsConfigManager rewardsConfigManager;
 
     public enum ConfigType {
         MAIN("config", "Main configuration file"),
@@ -29,6 +30,7 @@ public class ConfigManager {
         AFK("afk", "AFK system configuration file"),
         CHAT("chat", "Chat system configuration file"),
         EVENTS("events", "Event placeholders configuration file"),
+        REWARDS("rewards", "Random rewards configuration file"),
         FEATURES("features", "Feature toggles configuration file");
 
         private final String name;
@@ -91,6 +93,7 @@ public class ConfigManager {
         afkConfigManager = new AfkConfigManager(plugin);
         chatConfigManager = new ChatConfigManager(plugin);
         eventPlaceholderConfigManager = new EventPlaceholderConfigManager(plugin);
+        rewardsConfigManager = new RewardsConfigManager(plugin);
 
         mainConfigManager.loadConfig();
         messagesConfigManager.loadConfig();
@@ -99,6 +102,7 @@ public class ConfigManager {
         afkConfigManager.loadConfig();
         chatConfigManager.loadConfig();
         eventPlaceholderConfigManager.loadConfig();
+        rewardsConfigManager.loadConfig();
     }
 
     public boolean reload(ConfigType type) {
@@ -128,6 +132,9 @@ public class ConfigManager {
                 case EVENTS:
                     eventPlaceholderConfigManager.reload();
                     break;
+                case REWARDS:
+                    rewardsConfigManager.reload();
+                    break;
                 case FEATURES:
                     plugin.getFeatureToggleManager().reload();
                     break;
@@ -150,6 +157,7 @@ public class ConfigManager {
         afkConfigManager.reload();
         chatConfigManager.reload();
         eventPlaceholderConfigManager.reload();
+        rewardsConfigManager.reload();
 
         if (plugin.getChatHandler() != null) {
             plugin.getChatHandler().reload();
@@ -183,4 +191,6 @@ public class ConfigManager {
     public ChatConfigManager getChatConfig() {return chatConfigManager;}
 
     public EventPlaceholderConfigManager getEventPlaceholdersConfig() {return eventPlaceholderConfigManager;}
+
+    public RewardsConfigManager getRewardsConfig() {return rewardsConfigManager;}
 }

@@ -10,7 +10,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import org.bukkit.event.player.PlayerTeleportEvent;
+
 import java.io.InputStreamReader;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 public class AfkConfigManager {
     private final PrismaUtils plugin;
@@ -29,6 +34,8 @@ public class AfkConfigManager {
     public boolean excludeSpectatorPlayersFromAfk;
     public String afkMessage;
     public String afkReturnMessage;
+    public List<String> teleportWorldWhitelist;
+    public Set<PlayerTeleportEvent.TeleportCause> blockedTeleportCauses = EnumSet.noneOf(PlayerTeleportEvent.TeleportCause.class);
 
     public AfkConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
@@ -75,6 +82,17 @@ public class AfkConfigManager {
         afkMessage = config.getString("afk.message", "<red><player> is now AFK!");
         afkReturnMessage = config.getString("afk.return_message", "<red><player> is no longer AFK!");
         locationRadius = config.getDouble("afk.location_radius", 3);
+        teleportWorldWhitelist = config.getStringList("afk.teleport-world-whitelist");
+
+        // Teleport causes blocked while AFK
+        blockedTeleportCauses = EnumSet.noneOf(PlayerTeleportEvent.TeleportCause.class);
+        for (String causeName : config.getStringList("afk.blocked_teleport_causes")) {
+            try {
+                blockedTeleportCauses.add(PlayerTeleportEvent.TeleportCause.valueOf(causeName.trim().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Unknown teleport cause '" + causeName + "' in afk.blocked_teleport_causes, ignoring.");
+            }
+        }
 
         // Load AFK Location
         String worldName = config.getString("afk.location.world", "world");

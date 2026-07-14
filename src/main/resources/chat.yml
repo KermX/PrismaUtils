@@ -2,325 +2,124 @@
 # CHAT FILTERING SYSTEM
 # =============================================================================
 chat_filter:
-  # Enable/disable the entire chat filter system
   enabled: true
 
-  # Permission required for staff to receive filter notifications
-  # Players with this permission will be notified when messages are filtered
-  staff_notification_permission: "prismautils.chatfilter.notify"
+  permissions:
+    bypass_perm: "prismautils.chatfilter.bypass"
+    notify_perm: "prismautils.chatfilter.notify"
 
-  # Permission to bypass all chat filters
-  bypass_permission: "prismautils.chatfilter.bypass"
+  normalization:
+    nfkc_case_fold: true
+    remove_invisibles: true
+    max_repeat: 2
+    separator_folding: true
+    confusable_folding: true
+    latin_skeleton_folding: true
 
-  # Commands to monitor for filtering (without the leading slash)
-  # Set to empty list [] to disable command filtering
-  monitored_commands:
-    - "me"
-    - "say"
-    - "vmessage"
-    - "message"
-    - "msg"
-    - "tell"
-    - "whisper"
-    - "pm"
-    - "vreply"
-    - "reply"
-    - "r"
-    - "vme"
-    - "g"
-    - "global"
-    - "net"
-    - "network"
-    - "tr"
-    - "trade"
-    - "local"
-    - "lc"
-    - "tc"
-    - "nc"
-    - "w"
-    - "m"
-    - "r"
-    #- "mail send" mail handled in mail classes
+  unicode_policy:
+    mode: "SCRIPT_WHITELIST"
+    allowed_extra_chars: "£§"
 
+  views:
+    wordlists:
+      allow:
+        - spaced
+        - compact
+      block:
+        - spaced
+        - compact
+      block_embedded:
+        - compact
+      flag:
+        - spaced
+        - compact
 
-  # Filter patterns (regex supported)
-  # Each filter can have its own settings
-  filters:
-    profanity:
+  commands:
+    enabled: true
+    monitored_roots:
+      - me
+      - say
+      - vmessage
+      - message
+      - msg
+      - tell
+      - whisper
+      - pm
+      - vreply
+      - reply
+      - r
+      - vme
+      - g
+      - global
+      - net
+      - network
+      - tr
+      - trade
+      - local
+      - lc
+      - tc
+      - nc
+      - w
+      - m
+    roots:
+      pm_two_args:
+        - msg
+        - tell
+        - whisper
+        - pm
+        - message
+        - vmessage
+        - w
+        - m
+      pm_one_arg:
+        - reply
+        - r
+        - vreply
+      channel_rest:
+        - me
+        - vme
+        - say
+        - lc
+        - local
+        - tc
+        - nc
+        - g
+        - global
+        - net
+        - network
+        - tr
+        - trade
+
+  enforcement:
+    cooldown_seconds_on_violation: 5
+    notify_player_on_block: true
+    notify_player_message: "<red>Your message was filtered and not sent.</red>"
+
+  heuristics:
+    enabled: true
+    rate_limit:
       enabled: true
-      # Regex patterns to match
-      patterns:
-        - \b[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ]\b
-        - \b[a4@åäá][\s\-_.~*#@!]*[uúü][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[c(<]\b
-        - \b[b6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[l1|]\b
-        - \b[b6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[b6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[y]\b
-        - \b[c(<][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[k]\b
-        - \b[c(<][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[nñ]\b
-        - \b[d][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[eé3]\b
-        - \b[d][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3]\b
-        - \b[d][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[eé3]\b
-        - \b[f][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6]\b
-        - \b[f][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[t7+]\b
-        - \b[f][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3]\b
-        - \b[f][\s\-_.~*#@!]*[uúü][\s\-_.~*#@!]*[c(<][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[d]\b
-        - \b[g6][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[k]\b
-        - \b[g6][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[eé3]\b
-        - \b[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[h#][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+]\b
-        - \b[h#][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[y]\b
-        - \b[h#][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[m][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[nñ]\b
-        - \b[ií1!|][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[c(<][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+]\b
-        - \b[ií1!|][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[d]\b
-        - \b[j][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[t7+]\b
-        - \b[j][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó]\b
-        - \b[k][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[f][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[r]\b
-        - \b[k][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[eé3]\b
-        - \b[k][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[k]\b
-        - \b[k][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ]\b
-        - \b[k][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[s5$]\b
-        - \b[m][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[uúü][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[eé3]\b
-        - \b[m][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[eé3]\b
-        - \b[m][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+]\b
-        - \b[nñ][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[z2][\s\-_.~*#@!]*[ií1!|]\b
-        - \b[nñ][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[o0öó]\b
-        - \b[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[g6]\b
-        - \b[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó]\b
-        - \b[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[a4@åäá]\b
-        - \b[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[t7+]\b
-        - \b[o0öó][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[m]\b
-        - \b[o0öó][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[y]\b
-        - \b[p][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[ií1!|]\b
-        - \b[p][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[o0öó]\b
-        - \b[p][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[s5$]\b
-        - \b[p][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6]\b
-        - \b[p][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[,,]\b
-        - \b[p][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[c(<][\s\-_.~*#@!]*[k]\b
-        - \b[p][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[nñ]\b
-        - \b[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[d]\b
-        - \b[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[eé3]\b
-        - \b[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+]\b
-        - \b[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[g6]\b
-        - \b[r][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[d]\b
-        - \b[r][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[d]\b
-        - \b[s5$][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[m][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[o0öó]\b
-        - \b[s5$][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[s5$][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[eé3]\b
-        - \b[s5$][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[d][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[m][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[z2][\s\-_.~*#@!]*[eé3]\b
-        - \b[s5$][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[k]\b
-        - \b[s5$][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[c(<]\b
-        - \b[s5$][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[c(<][\s\-_.~*#@!]*[k]\b
-        - \b[s5$][\s\-_.~*#@!]*[w][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[a4@åäá]\b
-        - \b[t7+][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[w][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[d]\b
-        - \b[t7+][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[y]\b
-        - \b[t7+][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[y]\b
-        - \b[uúü][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[s5$][\s\-_.~*#@!]*[k][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[r][\s\-_.~*#@!]*[t7+]\b
-        - \b[v][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[nñ][\s\-_.~*#@!]*[a4@åäá]\b
-        - \b[v][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[j][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[y][\s\-_.~*#@!]*[j][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[y]\b
-        - \b[v][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[j][\s\-_.~*#@!]*[j]\b
-        - \b[w][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[b6][\s\-_.~*#@!]*[a4@åäá][\s\-_.~*#@!]*[c(<][\s\-_.~*#@!]*[k]\b
-        - \b[w][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[t7+][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[w][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[w][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[w][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[g6][\s\-_.~*#@!]*[eé3][\s\-_.~*#@!]*[r]\b
-        - \b[y][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[d]\b
-        - \b[z2][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[eé3]\b
-        - \b[z2][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[o0öó][\s\-_.~*#@!]*[p][\s\-_.~*#@!]*[h#][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[l1|][\s\-_.~*#@!]*[ií1!|][\s\-_.~*#@!]*[a4@åäá]\b
-      # Custom reason shown to staff (optional)
-      reason: Profanity Filter
-
-    unicode:
+      capacity: 6
+      refill_per_second: 1.0
+      action: BLOCK
+    duplicate:
       enabled: true
-      patterns:
-        - '[^a-zA-Z0-9`~!@#$£%^&*åäöáéíóúñü()\-_=+\[\]{}\\|;:''",<.>/?\s]'
-      reason: Non-standard Unicode Characters
+      window_seconds: 10
+      action: BLOCK
+    links:
+      enabled: true
+      detect_urls: true
+      detect_ip: true
+      detect_discord: true
+      action: BLOCK
 
-    advertising:
-      enabled: false
-      patterns:
-        - (?i)\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b
-        - (?i)\b[a-zA-Z0-9.-]+\.(com|net|org|co\.uk)\b
-        - (?i)\b(join|come to|visit)\s+[a-zA-Z0-9.-]+\b
-      reason: Advertising Filter
+  observability:
+    log_violations: true
+    log_flags: true
+    include_normalized_views: true
 
-    spam:
-      enabled: false
-      patterns:
-        - "(?i)\\b([A-Z]\\s*){10,}\\b"  # Excessive caps with spaces
-        - "(?i)\\b(..)\\1{4,}\\b"       # Repeated characters (aaaaa, hehehe, etc.)
-      reason: "Spam Filter"
-
-    # Add custom filters as needed
-    custom:
-      enabled: false
-      patterns: []
-      reason: "Custom Filter"
-
-# =============================================================================
-# EMOJI REPLACEMENT SYSTEM
-# =============================================================================
-emoji_replacement:
-  # Enable/disable the entire emoji system
-  enabled: true
-
-  # Default permission required to use ANY emojis
-  # Set to "" to allow all players to use emojis by default
-  default_permission: ""
-
-  # Emoji categories with individual permissions
-  # Format: "text_to_replace": "unicode_emoji"
-  categories:
-    # Basic emotions - no permission required
-    basic:
-      permission: "prismautils.emoji.basic"  # Empty = no permission required
-      emojis:
-        ":smile:": "😊"
-        ":frown:": "☹️"
-        ":wide_smile:": "😃"
-        ":tongue_out:": "😛"
-        ":heart:": "❤️"
-        ":broken_heart:": "💔"
-        ":thumbs_up:": "👍"
-        ":thumbs_down:": "👎"
-        ":clap:": "👏"
-        ":wave:": "👋"
-
-    # Nature emojis
-    nature:
-      permission: "prismautils.emoji.nature"
-      emojis:
-        ":sun:": "☀️"
-        ":moon:": "🌙"
-        ":star:": "⭐"
-        ":cloud:": "☁️"
-        ":rain:": "🌧️"
-        ":snow:": "❄️"
-        ":fire:": "🔥"
-        ":water:": "💧"
-        ":tree:": "🌳"
-        ":flower:": "🌸"
-
-    # Animals
-    animals:
-      permission: "prismautils.emoji.animals"
-      emojis:
-        ":cat:": "🐱"
-        ":dog:": "🐶"
-        ":pig:": "🐷"
-        ":cow:": "🐮"
-        ":horse:": "🐴"
-        ":sheep:": "🐑"
-        ":chicken:": "🐔"
-        ":fish:": "🐟"
-        ":wolf:": "🐺"
-        ":bear:": "🐻"
-
-    # Food and drinks
-    food:
-      permission: "prismautils.emoji.food"
-      emojis:
-        ":apple:": "🍎"
-        ":bread:": "🍞"
-        ":cake:": "🎂"
-        ":pizza:": "🍕"
-        ":burger:": "🍔"
-        ":fries:": "🍟"
-        ":coffee:": "☕"
-        ":beer:": "🍺"
-        ":wine:": "🍷"
-        ":cookie:": "🍪"
-
-    # Activities and objects
-    activities:
-      permission: "prismautils.emoji.activities"
-      emojis:
-        ":soccer:": "⚽"
-        ":basketball:": "🏀"
-        ":football:": "🏈"
-        ":tennis:": "🎾"
-        ":music:": "🎵"
-        ":guitar:": "🎸"
-        ":car:": "🚗"
-        ":plane:": "✈️"
-        ":ship:": "🚢"
-        ":house:": "🏠"
-
-    # Minecraft-specific emojis
-    minecraft:
-      permission: "prismautils.emoji.minecraft"
-      emojis:
-        ":diamond:": "💎"
-        ":pickaxe:": "⛏️"
-        ":sword:": "⚔️"
-        ":bow:": "🏹"
-        ":shield:": "🛡️"
-        ":potion:": "🧪"
-        ":book:": "📖"
-        ":chest:": "📦"
-        ":tnt:": "🧨"
-        ":redstone:": "🔴"
-
-    # VIP/Premium emojis - require special permission
-    premium:
-      permission: "prismautils.emoji.premium"
-      emojis:
-        ":crown:": "👑"
-        ":gem:": "💎"
-        ":trophy:": "🏆"
-        ":medal:": "🏅"
-        ":ribbon:": "🎀"
-        ":sparkles:": "✨"
-        ":rainbow:": "🌈"
-        ":unicorn:": "🦄"
-        ":dragon:": "🐉"
-        ":magic:": "🪄"
-
-    # Staff-only emojis
-    staff:
-      permission: "prismautils.emoji.staff"
-      emojis:
-        ":warning:": "⚠️"
-        ":stop:": "🛑"
-        ":ban:": "🔨"
-        ":lock:": "🔒"
-        ":key:": "🔑"
-        ":eyes:": "👀"
-        ":police:": "👮"
-        ":scales:": "⚖️"
-        ":megaphone:": "📢"
-        ":clipboard:": "📋"
-
-# =============================================================================
-# MESSAGES AND NOTIFICATIONS
-# =============================================================================
-messages:
-  # Message sent to staff when a filtered message is detected
-  # Placeholders: <player>, <message>, <reason>, <filter_name>
-  staff_notification: "<red>[ChatFilter] <gray>Player <yellow><player> <gray>triggered filter <red><filter_name><gray>: <white><message>"
-
-  # Message sent to player when their message is filtered (optional)
-  # Set to "" to disable player notification
-  player_filtered_message: "<red>Your message was filtered and not sent."
-
-  # Message when player lacks permission for emoji
-  # Placeholders: <emoji>, <permission>
-  emoji_no_permission: "<red>You don't have permission to use the emoji: <white><emoji>"
-
-# =============================================================================
-# ADVANCED SETTINGS
-# =============================================================================
-advanced:
-  # Whether to log filtered messages to console
-  log_filtered_messages: true
-
-  # Whether to check emojis case-sensitively
-  emoji_case_sensitive: false
-
-  # Maximum number of emojis allowed per message (0 = unlimited)
-  max_emojis_per_message: 10
-
-  # Whether to process emojis in order (first match wins) or all matches
-  process_all_emoji_matches: true
-
-  # Cooldown between filtered message attempts (seconds)
-  filter_cooldown: 5
+  wordlists:
+    allow: [ ]
+    block: [ ]
+    block_embedded: [ ]
+    flag: [ ]

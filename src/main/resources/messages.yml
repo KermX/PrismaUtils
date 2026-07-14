@@ -85,6 +85,11 @@ nightvision_messages:
   nightvision_enabled_for_player_message: '<green>Night vision enabled for <player>!'
   nightvision_disabled_for_player_message: '<red>Night vision disabled for <player>!'
 
+commandspy_messages:
+  commandspy_enabled_message: '<green>CommandSpy enabled!'
+  commandspy_disabled_message: '<red>CommandSpy disabled!'
+  commandspy_format_message: '<gray>[CSpy] <player><gray>: <yellow><command>'
+
 condense_uncondense:
   condense_message: '<green>Condensed <from> into <to>!'
   uncondense_message: '<green>Uncondensed <from> into <to>!'
@@ -94,6 +99,9 @@ disenchant_messages:
   disenchant_no_block: '<red>You must be looking at a block with an inventory to use this command!'
   disenchant_success: '<green>Removed <amount> enchants!'
   disenchant_no_enchantments: '<red>No enchants were found!'
+
+enchanting_messages:
+  enchanting_not_enough_exp: '<red>You need <exp> experience points to use this enchantment!'
 
 measure_messages:
   measure_first_position_set: '<green>First position set!'

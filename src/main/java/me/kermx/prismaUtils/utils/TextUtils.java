@@ -9,9 +9,11 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -228,4 +230,29 @@ public final class TextUtils {
         return normalizeEnumName(entityType.name());
     }
 
+    public static Component deserializeFlexible(String message, TagResolver... placeholders) {
+        if (message == null) return Component.empty();
+
+        if (looksLikeMiniMessage(message)) {
+            return deserializeString(message, placeholders);
+        }
+        return deserializeLegacy(message);
+    }
+
+    private static boolean looksLikeMiniMessage(String message) {
+        int lt = message.indexOf('<');
+        if (lt < 0) return false;
+        int gt = message.indexOf('>', lt + 1);
+        return gt > lt;
+    }
+
+    public static String resolvePAPI(@Nullable OfflinePlayer player, String message) {
+        if (message == null || message.isEmpty()) return message;
+        try {
+            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
+        } catch (ClassNotFoundException e) {
+            return message;
+        }
+    }
 }

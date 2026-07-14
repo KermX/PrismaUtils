@@ -16,3 +16,25 @@ afk:
     yaw: 90
     pitch: 0
   location_radius: 3
+  # Teleport causes that are blocked while a player is marked AFK.
+  # Prevents AFK players from being yanked out of the AFK area.
+  # Valid values: any org.bukkit.event.player.PlayerTeleportEvent.TeleportCause
+  # (ENDER_PEARL, CHORUS_FRUIT, NETHER_PORTAL, END_PORTAL, END_GATEWAY, COMMAND,
+  #  PLUGIN, SPECTATE, DISMOUNT, EXIT_BED, UNKNOWN). Leave empty to block nothing.
+  # Note: the AFK system's own to/from AFK-area teleports are never blocked.
+  blocked_teleport_causes:
+    - ENDER_PEARL
+    - CHORUS_FRUIT
+    - NETHER_PORTAL
+    - END_PORTAL
+    - END_GATEWAY
+  # worlds the player can be teleported from when they're afk
+  teleport-world-whitelist:
+    - resource_overworld
+    - resource_nether
+    - resource_the_end
+    - FlatWorld
+    - mapart
+    - world
+    - world_nether
+    - world_the_end

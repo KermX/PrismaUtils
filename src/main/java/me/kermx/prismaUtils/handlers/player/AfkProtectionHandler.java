@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class AfkProtectionHandler implements Listener {
 
@@ -50,6 +52,32 @@ public class AfkProtectionHandler implements Listener {
         if (afkManager.isAfk(player.getUniqueId())) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (shouldBlockTeleport(event.getPlayer(), event.getCause())) {
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * PlayerPortalEvent extends PlayerTeleportEvent but has its own handler list,
+     * so portal teleports never reach onPlayerTeleport and need their own handler.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        if (shouldBlockTeleport(event.getPlayer(), event.getCause())) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean shouldBlockTeleport(Player player, PlayerTeleportEvent.TeleportCause cause) {
+        if (!afkConfig.blockedTeleportCauses.contains(cause)) return false;
+        if (!afkManager.isAfk(player.getUniqueId())) return false;
+
+        // Never block the AFK system's own to/from AFK-area teleports
+        return !afkManager.isSystemTeleporting(player.getUniqueId());
     }
 }
 

@@ -68,6 +68,16 @@ public class MainConfigManager {
 
     public int disenchantCommandExpPerEnchantment;
 
+    // Alternative Enchanting Costs (experience points per button)
+    public int enchantingCostButtonOne;
+    public int enchantingCostButtonTwo;
+    public int enchantingCostButtonThree;
+
+    // Happy Ghast Speed
+    public double happyGhastSpeedBoostPerLevel;
+
+    public List<String> mobAiRestoreTriggerNames;
+
     public MainConfigManager(PrismaUtils plugin) {
         this.plugin = plugin;
     }
@@ -150,8 +160,19 @@ public class MainConfigManager {
         enableNonLevelBasedEnchanting = config.getBoolean("tweaks.non_level_based_enchanting");
         disableNetherMobZombification = config.getBoolean("tweaks.disable_nether_mob_zombification");
 
+        // Mob AI Restore
+        mobAiRestoreTriggerNames = config.getStringList("mob_ai_restore.trigger_names");
+
         // Disenchant Command
         disenchantCommandExpPerEnchantment = config.getInt("disenchant_command_exp_per_enchantment");
+
+        // Alternative Enchanting Costs
+        enchantingCostButtonOne = config.getInt("enchanting_costs.button_1");
+        enchantingCostButtonTwo = config.getInt("enchanting_costs.button_2");
+        enchantingCostButtonThree = config.getInt("enchanting_costs.button_3");
+
+        // Happy Ghast Speed
+        happyGhastSpeedBoostPerLevel = config.getDouble("happy_ghast_speed_boost_per_level");
     }
 
     public void reload() {

@@ -23,7 +23,7 @@ public class ClimbableChainsHandler implements Listener {
 
         Block block = player.getLocation().getBlock();
 
-        if (block.getType() != Material.CHAIN) {
+        if (block.getType() != Material.IRON_CHAIN) {
             return;
         }
 

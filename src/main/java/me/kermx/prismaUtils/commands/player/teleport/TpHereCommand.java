@@ -86,10 +86,6 @@ public class TpHereCommand extends BaseCommand {
                                     "<green>Teleported <white>" + target.getName() + "<green> to your location."
                             ));
                         }
-
-                        target.sendMessage(TextUtils.deserializeString(
-                                "<green>You were teleported to <white>" + player.getName() + "<green>."
-                        ));
                     });
 
             return true;

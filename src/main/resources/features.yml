@@ -65,7 +65,10 @@ tweaks:
   # Make chains climbable like ladders
   climbable_chains: true
 
-  # Convert skeleton/zombie horses with rotten flesh/shears
+  # Zombify mounts with rotten flesh (horse/skeleton horse -> zombie horse, camel -> camel
+  # husk, nautilus -> zombie nautilus), cure them with weakness + a golden apple, and strip a
+  # zombie horse back to a skeleton horse with shears. Coat colour (horses) and temperate/warm
+  # variant (nautiluses) are remembered across the round trip.
   horse_zombification: true
 
   # Disable piglins/hoglins turning into zombies in overworld
@@ -104,6 +107,12 @@ tweaks:
   # Cauldrons transform 'dry' items into 'wet' items
   cauldron_wet_items: true
 
+  # Re-enable mob AI by renaming with a specific name tag (name configured in config.yml)
+  mob_ai_restore: true
+
+  # Speed potions boost happy ghast flight speed (boost amount configured in config.yml)
+  happy_ghast_speed: true
+
 # ==================
 # FEATURES
 # ==================
@@ -137,6 +146,9 @@ features:
 
   # Track when players were last seen
   seen_system: true
+
+  # Random reward command (/randomreward) with configurable reward lists in rewards.yml
+  random_rewards: true
 
 # ==================
 # INTEGRATIONS

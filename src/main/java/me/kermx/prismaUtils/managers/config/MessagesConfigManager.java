@@ -100,6 +100,11 @@ public class MessagesConfigManager {
     public String nightvisionEnabledForPlayerMessage;
     public String nightvisionDisabledForPlayerMessage;
 
+    // CommandSpy Messages
+    public String commandSpyEnabledMessage;
+    public String commandSpyDisabledMessage;
+    public String commandSpyFormatMessage;
+
     // Condense and Uncondense Messages
     public String condenseMessage;
     public String uncondenseMessage;
@@ -110,6 +115,8 @@ public class MessagesConfigManager {
     public String disenchantNoBlockMessage;
     public String disenchantSuccessMessage;
     public String disenchantNoEnchantmentsMessage;
+
+    public String enchantingNotEnoughExpMessage;
 
     // Measure Messages
     public String measureFirstPositionSetMessage;
@@ -259,6 +266,11 @@ public class MessagesConfigManager {
         nightvisionEnabledForPlayerMessage = messages.getString("nightvision_messages.nightvision_enabled_for_player_message");
         nightvisionDisabledForPlayerMessage = messages.getString("nightvision_messages.nightvision_disabled_for_player_message");
 
+        // CommandSpy Messages
+        commandSpyEnabledMessage = messages.getString("commandspy_messages.commandspy_enabled_message");
+        commandSpyDisabledMessage = messages.getString("commandspy_messages.commandspy_disabled_message");
+        commandSpyFormatMessage = messages.getString("commandspy_messages.commandspy_format_message");
+
         // Condense and Uncondense Messages
         condenseMessage = messages.getString("condense_uncondense.condense_message");
         uncondenseMessage = messages.getString("condense_uncondense.uncondense_message");
@@ -269,6 +281,8 @@ public class MessagesConfigManager {
         disenchantNoBlockMessage = messages.getString("disenchant_messages.disenchant_no_block");
         disenchantSuccessMessage = messages.getString("disenchant_messages.disenchant_success");
         disenchantNoEnchantmentsMessage = messages.getString("disenchant_messages.disenchant_no_enchantments");
+
+        enchantingNotEnoughExpMessage = messages.getString("enchanting_messages.enchanting_not_enough_exp");
 
         // Measure Messages
         measureFirstPositionSetMessage = messages.getString("measure_messages.measure_first_position_set");
